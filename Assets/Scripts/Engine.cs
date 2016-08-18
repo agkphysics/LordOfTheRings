@@ -2,11 +2,9 @@
 using System.Collections;
 
 public class Engine : MonoBehaviour {
-	public GameObject camera,light,bird,floor,background,pipeCreator, thumb;
-
+	public GameObject camera,light,bird,floor,background,pipeCreator, birdCamera, thumb;
 
 	private PipeCollider pipeCollider;
-	GameObject birdCamera;
 	bool hasPipeCollider;
 
 	//GUI Bool Elements
@@ -24,8 +22,10 @@ public class Engine : MonoBehaviour {
 		Instantiate(background);
 		Instantiate(pipeCreator);
 		Instantiate(bird);
-		Instantiate (thumb);
-		birdCamera = GameObject.FindWithTag("birdCamera");
+	//	Instantiate (thumb);
+		//birdCamera = GameObject.FindWithTag("birdCamera");
+		//Instantiate(birdCamera);
+
 
 	}
 

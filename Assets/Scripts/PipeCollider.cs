@@ -21,7 +21,7 @@ public class PipeCollider : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		transform.position = bird.transform.position + new Vector3(-5,1,0);
-		thumb.transform.position = bird.transform.position + new Vector3 (2, 0, -2.4f);
+		//thumb.transform.position = bird.transform.position + new Vector3 (2, 0, -2.4f);
 	}
 
 	public void UpdatePipeGenReference(){
