@@ -1,20 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class camera : MonoBehaviour {
+/// <summary>
+/// Camera.
+/// 
+/// Represents the player's POV camera
+/// </summary>
+public class Camera : MonoBehaviour {
 
-	public GameObject player;
+	GameObject player;
 	Vector3 offset;
 
 	void Start()
 	{
+		//Find player and find the offset between camera and player
+		player = GameObject.FindWithTag ("Player");
 		offset = transform.position - player.transform.position;
 	}
+		
 
 	void LateUpdate()
 	{
-		offset = transform.position - player.transform.position;
+		//Move camera to player's position
 		transform.position = player.transform.position + offset;
-		Debug.Log ("NewPos:" + transform.position);
 	}
 }
