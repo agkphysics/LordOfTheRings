@@ -50,7 +50,7 @@ Camera:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011154005512}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
@@ -103,7 +103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81b21524df46c5041914242e7789c431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 100002, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
+  player: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!124 &124000012712484230
 Behaviour:
   m_ObjectHideFlags: 1
