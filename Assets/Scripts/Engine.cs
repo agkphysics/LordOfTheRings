@@ -15,7 +15,7 @@ public class Engine : MonoBehaviour {
 	int score = 0;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		Instantiate(camera);
 		Instantiate(light);
 		Instantiate(floor);
