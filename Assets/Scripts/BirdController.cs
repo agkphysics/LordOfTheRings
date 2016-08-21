@@ -68,7 +68,7 @@ public class BirdController : MonoBehaviour {
 					rotationAmount = 360 - (transform.rotation.eulerAngles.z - upAngle);
 					transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
 				}
-
+                engine.AddToCurrentScore(50);
 				fallCount = 0;
 			}
 		}
@@ -120,7 +120,7 @@ public class BirdController : MonoBehaviour {
 
 	void OnTriggerEnter(Collider scorebox){
 		Debug.Log ("Score Increased");
-		engine.AddToCurrentScore();
+		engine.AddToCurrentScore(500);
 		Destroy (scorebox.gameObject);
 	}
 }

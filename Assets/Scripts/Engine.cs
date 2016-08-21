@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using System;
 
 public class Engine : MonoBehaviour {
 	public GameObject camera,light,bird,floor,background,pipeCreator, birdCamera, thumb;
@@ -29,11 +31,23 @@ public class Engine : MonoBehaviour {
 
 	}
 
-	public void AddToCurrentScore(){
-		score++;
+	public void AddToCurrentScore(int value)
+	{
+        Text scoreText = GameObject.Find("Score").GetComponent<Text>() as Text;
+	    //Text scoreText = GetComponent("Score") as Text;
+		score+= value;
+	    if (scoreText != null)
+	    {
+	        scoreText.text = score.ToString();
+	    }
 	}
 
-	public void CompareCurrentScoreToBest(){
+    private void GetComponent<T>(string v)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void CompareCurrentScoreToBest(){
 		if(score>bestScore) bestScore = score;
 	}
 
@@ -50,7 +64,7 @@ public class Engine : MonoBehaviour {
 	public void Reset(){
 		isDead = false;
 		isNotStarted = true;
-		score = 0;
+        AddToCurrentScore(score * -1);
 		GameObject go = GameObject.FindWithTag("pipecreator");
 		if(go==null) Debug.Log ("pipecreator null");
 		DestroyImmediate (go);
@@ -85,8 +99,8 @@ public class Engine : MonoBehaviour {
 		if (isNotStarted)
 			GUI.Box (new Rect ((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent ("First Person\nFlappy Bird\nPress Space To Jump"));
 
-		if (scoreTicker)
-			GUI.Box (new Rect (Screen.width/2-25, 20, 50, 50), new GUIContent (""+score+""));		
+		//if (scoreTicker)
+		//	GUI.Box (new Rect (Screen.width/2-25, 20, 50, 50), new GUIContent (""+score+""));		
 
 		if (isDead) {
 			//show score screen gui
