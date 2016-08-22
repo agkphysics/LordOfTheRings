@@ -19,7 +19,7 @@ public class Engine : MonoBehaviour {
 		Instantiate(camera);
 		Instantiate(light);
 		Instantiate(floor);
-		Instantiate(background);
+		//Instantiate(background);
 		Instantiate(pipeCreator);
 		Instantiate(bird);
 	//	Instantiate (thumb);
