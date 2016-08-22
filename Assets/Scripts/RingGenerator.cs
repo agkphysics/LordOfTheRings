@@ -20,13 +20,35 @@ public class RingGenerator : MonoBehaviour {
     //Vector3 randPipeX;
     Vector3 randHeight;
     Vector3 randDist;
-	//Vector3 randPipeSeparation;
+
+    //Vector3 randPipeSeparation;
+
+    bool isHighIntensity = false;
 
 	void Start() {
 
-		for (int i = 0; i < 5; i++)
-						RingCreator ();
+        for (int i = 0; i < 50; i++)
+        {
+            if (i % 10 == 0)
+            {
+                isHighIntensity = true;
+                ring.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+            else if (i % 10 == 50)
+            {
+                isHighIntensity = false;
+                ring.GetComponent<SpriteRenderer>().color = Color.green;
+            }
 
+            if (isHighIntensity)
+            {
+                HighIntensity();
+            }
+            else
+            {
+                LowIntensity();
+            }
+        }
 	}
 
 	void Update () {
@@ -41,11 +63,42 @@ public class RingGenerator : MonoBehaviour {
 	}
 
 	public void RingCreator(){
+        HighIntensity();
+
+    }
+
+    public void HighIntensity()
+    {
         GameObject centre;
         centre = Instantiate(ring, nextRingHeight, Quaternion.identity) as GameObject;
-		//Instantiate Top and Bottom Pipes
-        
-		centre.transform.parent = this.transform;
+        //Instantiate Top and Bottom Pipes
+
+        centre.transform.parent = this.transform;
+        centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+
+
+        //Reset height for randomization
+      //  nextRingHeight = nextRingHeight;
+        nextRingDist = nextRingDist - randHeight;
+
+        //Randomize next Positions
+        randHeight = new Vector3(0, Random.Range(0, 20f), 0);
+        randDist = new Vector3(Random.Range(4f, 5f), 0, 0);
+
+
+        nextRingHeight = nextRingHeight + randHeight + randDist;
+        nextRingDist = nextRingDist + randDist + randHeight;
+
+
+    }
+
+    public void LowIntensity()
+    {
+        GameObject centre;
+        centre = Instantiate(ring, nextRingHeight, Quaternion.identity) as GameObject;
+        //Instantiate Top and Bottom Pipes
+
+        centre.transform.parent = this.transform;
         centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
 
 
@@ -55,7 +108,6 @@ public class RingGenerator : MonoBehaviour {
 
         //Randomize next Positions
         randHeight = new Vector3(0, Random.Range(0, 5f), 0);
-
         randDist = new Vector3(Random.Range(4f, 5f), 0, 0);
 
 

@@ -65,8 +65,8 @@ public class Engine : MonoBehaviour {
 		isDead = false;
 		isNotStarted = true;
         AddToCurrentScore(score * -1);
-		GameObject go = GameObject.FindWithTag("ringcreator");
-		if(go==null) Debug.Log ("ringcreator null");
+		GameObject go = GameObject.FindWithTag("ringCreator");
+		if(go==null) Debug.Log ("ringCreator null");
 		DestroyImmediate (go);
 		Instantiate(ringCreator);
 		ringCollider.UpdatePipeGenReference();

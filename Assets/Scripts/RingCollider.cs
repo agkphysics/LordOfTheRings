@@ -14,7 +14,7 @@ public class RingCollider : MonoBehaviour {
 	}
 
 	void Start(){
-		pipeG = GameObject.FindGameObjectWithTag ("ringcreator").GetComponent<RingGenerator> ();
+		pipeG = GameObject.FindGameObjectWithTag ("ringCreator").GetComponent<RingGenerator> ();
 	}
 
 	
@@ -25,7 +25,7 @@ public class RingCollider : MonoBehaviour {
 	}
 
 	public void UpdatePipeGenReference(){
-		pipeG = GameObject.FindGameObjectWithTag ("ringcreator").GetComponent<RingGenerator> ();
+		pipeG = GameObject.FindGameObjectWithTag ("ringCreator").GetComponent<RingGenerator> ();
 	}
 
 	void OnCollisionEnter (Collision coll) {
