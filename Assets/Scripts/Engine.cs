@@ -6,7 +6,7 @@ using System;
 public class Engine : MonoBehaviour {
 	public GameObject camera,light,bird,floor,background,ringCreator, birdCamera, thumb;
 
-	private RingCollider ringCollider;
+	//private RingCollider ringCollider;
 	bool hasPipeCollider;
 
 	//GUI Bool Elements
@@ -69,28 +69,28 @@ public class Engine : MonoBehaviour {
 		if(go==null) Debug.Log ("ringcreator null");
 		DestroyImmediate (go);
 		Instantiate(ringCreator);
-		ringCollider.UpdatePipeGenReference();
+		//ringCollider.UpdatePipeGenReference();
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if(!hasPipeCollider){
-			GameObject go = GameObject.FindWithTag("ringCollider");
-			if(go!=null){
-                ringCollider = GameObject.FindWithTag("ringCollider").GetComponent<RingCollider>();
-				hasPipeCollider = true;
-			}
-		}
+		//if(!hasPipeCollider){
+		//	GameObject go = GameObject.FindWithTag("ringCollider");
+		//	if(go!=null){
+  //              //ringCollider = GameObject.FindWithTag("ringCollider").GetComponent<RingCollider>();
+		//		hasPipeCollider = true;
+		//	}
+		//}
 
 
-				if(Input.GetKey(KeyCode.E)){
-					if(Input.GetKey(KeyCode.A)){
-						if(Input.GetKey(KeyCode.T)){
-							Debug.Log ("Cheat code entered");
-							Destroy(birdCamera);
-						}
-					}
-				}
+		//		if(Input.GetKey(KeyCode.E)){
+		//			if(Input.GetKey(KeyCode.A)){
+		//				if(Input.GetKey(KeyCode.T)){
+		//					Debug.Log ("Cheat code entered");
+		//					Destroy(birdCamera);
+		//				}
+		//			}
+		//		}
 	
 	}
 

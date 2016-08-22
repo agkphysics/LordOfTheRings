@@ -2,39 +2,48 @@
 using System.Collections;
 
 public class RingCollider : MonoBehaviour {
-	private GameObject bird;
-	GameObject thumb;
+	//private GameObject bird;
+	//GameObject thumb;
 
-	RingGenerator pipeG;
+	//RingGenerator pipeG;
 
 	void Awake(){
-		bird = GameObject.FindWithTag ("Player");
-		thumb = GameObject.FindWithTag ("thumb");
-		transform.position = bird.transform.position + new Vector3(-5,1,0);
+		//bird = GameObject.FindWithTag ("Player");
+		//thumb = GameObject.FindWithTag ("thumb");
+		//transform.position = bird.transform.position + new Vector3(-5,1,0);
 	}
 
-	void Start(){
-		pipeG = GameObject.FindGameObjectWithTag ("ringcreator").GetComponent<RingGenerator> ();
-	}
+    void Start()
+    {
+        //pipeG = GameObject.FindGameObjectWithTag("ringcreator").GetComponent<RingGenerator>();
+    }
 
-	
-	// Update is called once per frame
-	void FixedUpdate () {
-		transform.position = bird.transform.position + new Vector3(-5,1,0);
-		//thumb.transform.position = bird.transform.position + new Vector3 (2, 0, -2.4f);
-	}
 
-	public void UpdatePipeGenReference(){
-		pipeG = GameObject.FindGameObjectWithTag ("ringcreator").GetComponent<RingGenerator> ();
-	}
+    //// Update is called once per frame
+    //void FixedUpdate () {
+    //	//transform.position = bird.transform.position + new Vector3(-5,1,0);
+    //	//thumb.transform.position = bird.transform.position + new Vector3 (2, 0, -2.4f);
+    //}
 
-	void OnCollisionEnter (Collision coll) {
-		//Destroy parent pipe object
+    //public void UpdatePipeGenReference()
+    //{
+    //    pipeG = GameObject.FindGameObjectWithTag("ringcreator").GetComponent<RingGenerator>();
+    //}
 
-		if(coll.gameObject.tag.Equals("ring"))
-			pipeG.RingCreator ();
+    void OnCollisionEnter (Collision coll) {
+        //Destroy parent pipe object
 
-		if(!coll.transform.tag.Equals("floor"))
-		   Destroy (coll.transform.parent.gameObject.transform.parent.gameObject);
-	}
+        if (coll.gameObject.tag.Equals("ring"))
+            print("collided");
+        //	pipeG.RingCreator ();
+
+            //if(!coll.transform.tag.Equals("floor"))
+            //   Destroy (coll.transform.parent.gameObject.transform.parent.gameObject);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        print("collided");
+        //characterInQuicksand = true;
+    }
 }

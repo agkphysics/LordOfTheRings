@@ -31,7 +31,7 @@ public class BirdController : MonoBehaviour {
 		Debug.Log ("starting rotation = "+startingRotation);
 		GetComponent<Rigidbody>().useGravity = false;
 		waitingForPlayerToStart = true;
-		Instantiate(ringCollider);
+		//Instantiate(ringCollider);
 	}
 
 	void Update(){
@@ -98,17 +98,23 @@ public class BirdController : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter(){
-		Debug.Log ("Game Over");
-		GetComponent<Rigidbody>().useGravity = false;
-		waitingForPlayerToStart = true;
-		GetComponent<Rigidbody>().velocity=Vector3.zero;
-		GetComponent<Rigidbody>().freezeRotation = true;
-		Debug.Log ("current rotation = "+transform.rotation);
-		engine.Die();
-		engine.CompareCurrentScoreToBest();
-		scoreboard = true;
-		
+	void OnCollisionEnter(Collision obj){
+	    if (obj.gameObject.tag.Equals("ring"))
+	    {
+	        engine.AddToCurrentScore(500);
+	    }
+	    else
+	    {
+	        Debug.Log("Game Over");
+	        GetComponent<Rigidbody>().useGravity = false;
+	        waitingForPlayerToStart = true;
+	        GetComponent<Rigidbody>().velocity = Vector3.zero;
+	        GetComponent<Rigidbody>().freezeRotation = true;
+	        Debug.Log("current rotation = " + transform.rotation);
+	        engine.Die();
+	        engine.CompareCurrentScoreToBest();
+	        scoreboard = true;
+	    }
 	}
 
 	void BirdReset(){
