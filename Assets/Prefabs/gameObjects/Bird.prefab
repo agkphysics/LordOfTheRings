@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf04ab9e4cec24c0ba27ce3c2c9a5328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pipeCollider: {fileID: 100000, guid: adbf1d26c25534c8b8c1714dc0726923, type: 2}
+  ringCollider: {fileID: 100000, guid: b3c943aeec1e37a4089cf59def69e6b7, type: 2}
   boost: 20
   forwardMovement: 2
   upAngle: 45
