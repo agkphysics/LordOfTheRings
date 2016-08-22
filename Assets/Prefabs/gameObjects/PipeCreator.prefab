@@ -25,8 +25,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -38,8 +40,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea00ce6ba8229c47b93db3d1a1469e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bottomPipe: {fileID: 100004, guid: c9bd966da0cfa89479e42d24fabc9c59, type: 2}
-  topPipe: {fileID: 100000, guid: 7c2cbdb760b683e429fc3572f0af657b, type: 2}
+  ring: {fileID: 1000013995134830, guid: 08799117c529d6e4b867d8eb7e9b8a0c, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -51,4 +52,3 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100000}
   m_IsPrefabParent: 1
-  m_IsExploded: 1
