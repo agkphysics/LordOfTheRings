@@ -168,9 +168,9 @@ MonoBehaviour:
   bird: {fileID: 100002, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
   floor: {fileID: 100000, guid: 11d55040c859b4eaa88012c9bbe0e3a5, type: 2}
   background: {fileID: 0}
-  pipeCreator: {fileID: 100000, guid: e48ab545729ed4de6b56f8cf125a7031, type: 2}
+  ringCreator: {fileID: 100000, guid: 7d32237594cd30a438093d1d1ec89213, type: 2}
   birdCamera: {fileID: 0}
-  thumb: {fileID: 100000, guid: e4e57d765d2234f3f93079278c0b0b5c, type: 2}
+  thumb: {fileID: 0}
 --- !u!4 &1172479738
 Transform:
   m_ObjectHideFlags: 0

@@ -2,9 +2,9 @@
 using System.Collections;
 
 public class Engine : MonoBehaviour {
-	public GameObject camera,light,bird,floor,background,pipeCreator, birdCamera, thumb;
+	public GameObject camera,light,bird,floor,background,ringCreator, birdCamera, thumb;
 
-	private PipeCollider pipeCollider;
+	private RingCollider ringCollider;
 	bool hasPipeCollider;
 
 	//GUI Bool Elements
@@ -16,11 +16,11 @@ public class Engine : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		Instantiate(camera);
+		//Instantiate(camera);
 		Instantiate(light);
 		Instantiate(floor);
 		//Instantiate(background);
-		Instantiate(pipeCreator);
+		Instantiate(ringCreator);
 		Instantiate(bird);
 	//	Instantiate (thumb);
 		//birdCamera = GameObject.FindWithTag("birdCamera");
@@ -51,19 +51,19 @@ public class Engine : MonoBehaviour {
 		isDead = false;
 		isNotStarted = true;
 		score = 0;
-		GameObject go = GameObject.FindWithTag("pipecreator");
-		if(go==null) Debug.Log ("pipecreator null");
+		GameObject go = GameObject.FindWithTag("ringcreator");
+		if(go==null) Debug.Log ("ringcreator null");
 		DestroyImmediate (go);
-		Instantiate(pipeCreator);
-		pipeCollider.UpdatePipeGenReference();
+		Instantiate(ringCreator);
+		ringCollider.UpdatePipeGenReference();
 	}
 
 	// Update is called once per frame
 	void Update () {
 		if(!hasPipeCollider){
-			GameObject go = GameObject.FindWithTag("pipeCollider");
+			GameObject go = GameObject.FindWithTag("ringCollider");
 			if(go!=null){
-				pipeCollider = GameObject.FindWithTag("pipeCollider").GetComponent<PipeCollider>();
+                ringCollider = GameObject.FindWithTag("ringCollider").GetComponent<RingCollider>();
 				hasPipeCollider = true;
 			}
 		}
@@ -83,7 +83,7 @@ public class Engine : MonoBehaviour {
 	void OnGUI () {
 
 		if (isNotStarted)
-			GUI.Box (new Rect ((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent ("First Person\nFlappy Bird\nPress Space To Jump"));
+			GUI.Box (new Rect ((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent ("First Person\nHIITCopter\nPress Space To Jump"));
 
 		if (scoreTicker)
 			GUI.Box (new Rect (Screen.width/2-25, 20, 50, 50), new GUIContent (""+score+""));		

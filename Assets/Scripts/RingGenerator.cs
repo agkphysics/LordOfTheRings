@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PipeGenerator : MonoBehaviour {
+public class RingGenerator : MonoBehaviour {
 
 	//public GameObject bottomPipe;
 	//public GameObject topPipe;
@@ -25,7 +25,7 @@ public class PipeGenerator : MonoBehaviour {
 	void Start() {
 
 		for (int i = 0; i < 5; i++)
-						PipeCreator ();
+						RingCreator ();
 
 	}
 
@@ -33,28 +33,28 @@ public class PipeGenerator : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.P)) {
 		
-			PipeCreator();
+			RingCreator();
 
 
 		}
 
 	}
 
-	public void PipeCreator(){
+	public void RingCreator(){
         GameObject centre;
         centre = Instantiate(ring, nextRingHeight, Quaternion.identity) as GameObject;
 		//Instantiate Top and Bottom Pipes
         
 		centre.transform.parent = this.transform;
         centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-   
+
 
         //Reset height for randomization
         nextRingHeight = nextRingHeight - randHeight;
         nextRingDist = nextRingDist - randHeight;
 
         //Randomize next Positions
-        randHeight = new Vector3(0, Random.Range(-2f, 2f), 0);
+        randHeight = new Vector3(0, Random.Range(0, 5f), 0);
 
         randDist = new Vector3(Random.Range(4f, 5f), 0, 0);
 

@@ -8,9 +8,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
-  - 114: {fileID: 11400000}
+  - 114: {fileID: 114000011638077590}
   m_Layer: 0
-  m_Name: PipeCreator
+  m_Name: RingCreator
   m_TagString: pipecreator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,18 +29,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bea00ce6ba8229c47b93db3d1a1469e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ring: {fileID: 1000013995134830, guid: 08799117c529d6e4b867d8eb7e9b8a0c, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -52,3 +40,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100000}
   m_IsPrefabParent: 1
+--- !u!114 &114000011638077590
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 199a80daabbd2964abd5b70c89e6b4b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ring: {fileID: 1000013995134830, guid: 08799117c529d6e4b867d8eb7e9b8a0c, type: 2}

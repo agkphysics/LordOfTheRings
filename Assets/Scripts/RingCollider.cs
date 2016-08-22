@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PipeCollider : MonoBehaviour {
+public class RingCollider : MonoBehaviour {
 	private GameObject bird;
 	GameObject thumb;
 
-	PipeGenerator pipeG;
+	RingGenerator pipeG;
 
 	void Awake(){
 		bird = GameObject.FindWithTag ("Player");
@@ -14,7 +14,7 @@ public class PipeCollider : MonoBehaviour {
 	}
 
 	void Start(){
-		pipeG = GameObject.FindGameObjectWithTag ("pipecreator").GetComponent<PipeGenerator> ();
+		pipeG = GameObject.FindGameObjectWithTag ("ringcreator").GetComponent<RingGenerator> ();
 	}
 
 	
@@ -25,14 +25,14 @@ public class PipeCollider : MonoBehaviour {
 	}
 
 	public void UpdatePipeGenReference(){
-		pipeG = GameObject.FindGameObjectWithTag ("pipecreator").GetComponent<PipeGenerator> ();
+		pipeG = GameObject.FindGameObjectWithTag ("ringcreator").GetComponent<RingGenerator> ();
 	}
 
 	void OnCollisionEnter (Collision coll) {
 		//Destroy parent pipe object
 
-		if(coll.gameObject.tag.Equals("pipe"))
-			pipeG.PipeCreator ();
+		if(coll.gameObject.tag.Equals("ring"))
+			pipeG.RingCreator ();
 
 		if(!coll.transform.tag.Equals("floor"))
 		   Destroy (coll.transform.parent.gameObject.transform.parent.gameObject);
