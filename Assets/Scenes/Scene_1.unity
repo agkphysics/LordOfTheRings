@@ -170,7 +170,7 @@ MonoBehaviour:
   background: {fileID: 100000, guid: 9478f409f51924d1a8fecbadf87047f8, type: 2}
   ringCreator: {fileID: 100000, guid: 7d32237594cd30a438093d1d1ec89213, type: 2}
   birdCamera: {fileID: 1000011154005512, guid: 82f09acfce3e9634ea433be3b5a37aa9, type: 2}
-  thumb: {fileID: 100000, guid: e4e57d765d2234f3f93079278c0b0b5c, type: 2}
+  thumb: {fileID: 0}
 --- !u!4 &1172479738
 Transform:
   m_ObjectHideFlags: 0

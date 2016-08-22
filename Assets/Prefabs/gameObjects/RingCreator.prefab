@@ -51,4 +51,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 199a80daabbd2964abd5b70c89e6b4b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ring: {fileID: 1000013995134830, guid: c630521f531d285449aa8eea5e027307, type: 2}
+  ring: {fileID: 1000013995134830, guid: 08799117c529d6e4b867d8eb7e9b8a0c, type: 2}

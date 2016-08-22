@@ -16,7 +16,7 @@ public class Engine : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		Instantiate(camera);
+		//Instantiate(camera);
 		Instantiate(light);
 		Instantiate(floor);
 		Instantiate(background);

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BirdController : MonoBehaviour {
 
-	public GameObject pipeCollider;
+	public GameObject ringCollider;
 
 	public float boost = 20f;
 	public float forwardMovement = 2f;
@@ -31,7 +31,7 @@ public class BirdController : MonoBehaviour {
 		Debug.Log ("starting rotation = "+startingRotation);
 		GetComponent<Rigidbody>().useGravity = false;
 		waitingForPlayerToStart = true;
-		Instantiate(pipeCollider);
+		Instantiate(ringCollider);
 	}
 
 	void Update(){

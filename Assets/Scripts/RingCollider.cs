@@ -14,7 +14,7 @@ public class RingCollider : MonoBehaviour {
 	}
 
 	void Start(){
-		pipeG = GameObject.FindGameObjectWithTag ("pipecreator").GetComponent<RingGenerator> ();
+		pipeG = GameObject.FindGameObjectWithTag ("ringcreator").GetComponent<RingGenerator> ();
 	}
 
 	
@@ -25,13 +25,13 @@ public class RingCollider : MonoBehaviour {
 	}
 
 	public void UpdatePipeGenReference(){
-		pipeG = GameObject.FindGameObjectWithTag ("pipecreator").GetComponent<RingGenerator> ();
+		pipeG = GameObject.FindGameObjectWithTag ("ringcreator").GetComponent<RingGenerator> ();
 	}
 
 	void OnCollisionEnter (Collision coll) {
 		//Destroy parent pipe object
 
-		if(coll.gameObject.tag.Equals("pipe"))
+		if(coll.gameObject.tag.Equals("ring"))
 			pipeG.RingCreator ();
 
 		if(!coll.transform.tag.Equals("floor"))
