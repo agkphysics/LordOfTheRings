@@ -1,16 +1,16 @@
 fileFormatVersion: 2
 guid: b2cbd87f9dd4d4a4f99b9d13a54f46f0
-timeCreated: 1471496757
+timeCreated: 1471822030
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - camera: {fileID: 100002, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
   - light: {instanceID: 0}
-  - bird: {instanceID: 0}
+  - bird: {fileID: 100002, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
   - floor: {instanceID: 0}
   - background: {instanceID: 0}
-  - pipeCreator: {instanceID: 0}
+  - ringCreator: {instanceID: 0}
   - birdCamera: {instanceID: 0}
   - thumb: {instanceID: 0}
   executionOrder: 0
