@@ -82,7 +82,7 @@ public class RingGenerator : MonoBehaviour {
         nextRingDist = nextRingDist - randHeight;
 
         //Randomize next Positions
-        randHeight = new Vector3(0, Random.Range(0, 20f), 0);
+        randHeight = new Vector3(0, Random.Range(0, 10f), 0);
         randDist = new Vector3(Random.Range(4f, 5f), 0, 0);
 
 
