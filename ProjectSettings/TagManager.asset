@@ -12,6 +12,8 @@ TagManager:
   - ringCollider
   - birdCamera
   - thumb
+  - ringCreator
+  - pipeCollider
   layers:
   - Default
   - TransparentFX

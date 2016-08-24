@@ -32,12 +32,12 @@ public class RingGenerator : MonoBehaviour {
             if (i % 10 == 0)
             {
                 isHighIntensity = true;
-                ring.GetComponent<SpriteRenderer>().color = Color.red;
+                ring.GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
             }
             else if (i % 10 == 50)
             {
                 isHighIntensity = false;
-                ring.GetComponent<SpriteRenderer>().color = Color.green;
+                ring.GetComponent<MeshRenderer>().sharedMaterial.color = Color.green;
             }
 
             if (isHighIntensity)
@@ -75,6 +75,8 @@ public class RingGenerator : MonoBehaviour {
 
         centre.transform.parent = this.transform;
         centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+
+        centre.transform.localScale = new Vector3(2,2,0.5f);
 
 
         //Reset height for randomization

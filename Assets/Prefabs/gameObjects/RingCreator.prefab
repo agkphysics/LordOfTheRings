@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
-  - 114: {fileID: 114000011467925812}
+  - 114: {fileID: 200255796}
   m_Layer: 0
   m_Name: RingCreator
   m_TagString: pipecreator
@@ -40,9 +40,9 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100000}
   m_IsPrefabParent: 1
---- !u!114 &114000011467925812
+--- !u!114 &200255796
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
@@ -51,4 +51,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c95ab487a6a9e14b8bc113e0c91144f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ring: {fileID: 1000013995134830, guid: 08799117c529d6e4b867d8eb7e9b8a0c, type: 2}
+  ring: {fileID: 1000012654075858, guid: aa5ab5106bc46f7448e0be6184c1e82b, type: 2}
