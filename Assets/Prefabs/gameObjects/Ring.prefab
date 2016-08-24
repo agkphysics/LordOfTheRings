@@ -24,9 +24,10 @@ GameObject:
   - 95: {fileID: 95000010134257572}
   - 198: {fileID: 198000010722992154}
   - 199: {fileID: 199000012867106528}
+  - 65: {fileID: 65000011928183164}
   m_Layer: 0
   m_Name: Ring
-  m_TagString: Untagged
+  m_TagString: ring
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,6 +81,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012654075858}
   m_Mesh: {fileID: 4300000, guid: 68266a35d2a0c7445a9e7dd15dc17237, type: 3}
+--- !u!65 &65000011928183164
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012654075858}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.998426, y: 2, z: 0.01}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95000010134257572
 Animator:
   serializedVersion: 3
