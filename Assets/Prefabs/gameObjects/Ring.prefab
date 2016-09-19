@@ -25,6 +25,7 @@ GameObject:
   - 198: {fileID: 198000010722992154}
   - 199: {fileID: 199000012867106528}
   - 65: {fileID: 65000011928183164}
+  - 114: {fileID: 114000010370901486}
   m_Layer: 0
   m_Name: Ring
   m_TagString: ring
@@ -110,6 +111,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114000010370901486
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012654075858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3d9f357dfc9df04789b02a721170a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!198 &198000010722992154
 ParticleSystem:
   m_ObjectHideFlags: 1

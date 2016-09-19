@@ -14,7 +14,10 @@ public class RingGenerator : MonoBehaviour {
     Vector3 randDist;
 
     int ringCount = 0;
+
+    //This is abut 36 seconds long.
     public int ringsPerInterval = 20;
+    int hrLvl = 1;
 
     //Vector3 randPipeSeparation;
 
@@ -26,6 +29,22 @@ public class RingGenerator : MonoBehaviour {
             NewRing();
         }
 	}
+
+    void Update()
+    {
+        //TODO
+        //Implement the HR level check code here
+
+        if (hrLvl == 4)
+        {
+            PhaseChange(false);
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            //RingCreator();
+            NewRing();
+        }
+    }
 
     public void NewRing()
     {
@@ -41,20 +60,30 @@ public class RingGenerator : MonoBehaviour {
         ringCount++;
         if(ringCount >= ringsPerInterval)
         {
-            ringCount = 0;
-            isHighIntensity = (isHighIntensity ? false : true);
+            PhaseChange();
         }
     }
 
-	void Update () {
-
-		if (Input.GetKeyDown (KeyCode.P)) 
+    void PhaseChange()
+    {
+        ringCount = 0;
+        //If heart rate is dangerously high, go to a low intensity interval.
+        if(hrLvl == 4)
         {
-			//RingCreator();
-            NewRing();
-		}
+            isHighIntensity = false;
+            return;
+        }
 
-	}
+        isHighIntensity = (isHighIntensity ? false : true);
+    }
+
+    void PhaseChange(bool toHigh)
+    {
+        ringCount = 0;
+        isHighIntensity = toHigh;
+    }
+
+
 
 	public void RingCreator(){
         HighIntensity();
@@ -110,10 +139,7 @@ public class RingGenerator : MonoBehaviour {
         randHeight = new Vector3(0, Random.Range(0, 5f), 0);
         randDist = new Vector3(Random.Range(4f, 5f), 0, 0);
 
-
         nextRingHeight = nextRingHeight + randHeight + randDist;
         nextRingDist = nextRingDist + randDist + randHeight;
-
-
     }
 }
