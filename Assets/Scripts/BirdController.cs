@@ -55,11 +55,17 @@ public class BirdController : MonoBehaviour {
 			}
 
 		}else{
-			if(Input.GetKeyDown(KeyCode.Space)){
+            if (Input.GetKeyDown(KeyCode.Space) || gameObject.GetComponent<RowingMachineController>().waitingRow)
+            {
+                gameObject.GetComponent<RowingMachineController>().waitingRow = false;
+                uint rowBoost = GetComponent<RowingMachineController>().waitingDistance;
+
+
 				if(GetComponent<Rigidbody>().velocity.y<0){
 					GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x,0,0);
 				}
-				GetComponent<Rigidbody>().AddForce(Vector3.up*boost,ForceMode.Impulse);
+                GetComponent<Rigidbody>().AddForce(Vector3.up * GetComponent<RowingMachineController>().currentForce / 5.0f, ForceMode.Impulse);
+                Debug.Log("Force equals : " + Vector3.up * GetComponent<RowingMachineController>().currentForce / 5.0f);
 				if(transform.rotation.eulerAngles.z<upAngle){
 					rotationAmount = upAngle - transform.rotation.eulerAngles.z;
 					transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
@@ -72,6 +78,15 @@ public class BirdController : MonoBehaviour {
 				fallCount = 0;
 			}
 		}
+
+        if (GetComponent<Rigidbody>().velocity.y < -3.0f)
+        {
+            GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, -3.0f, 0);
+        }
+        if (GetComponent<Rigidbody>().velocity.y > 10.0f)
+        {
+            GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, 10.0f, 0);
+        }
 	}
 
 	void FixedUpdate(){

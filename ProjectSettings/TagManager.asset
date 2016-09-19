@@ -14,6 +14,9 @@ TagManager:
   - thumb
   - ringCreator
   - pipeCollider
+  - pipecreator
+  - pipe
+  - RowingMachine
   layers:
   - Default
   - TransparentFX

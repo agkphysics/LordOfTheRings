@@ -76,7 +76,7 @@ public class RingGenerator : MonoBehaviour {
         centre.transform.parent = this.transform;
         centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
 
-        centre.transform.localScale = new Vector3(2,2,0.5f);
+        centre.transform.localScale = new Vector3(5,5,1.25f);
 
 
         //Reset height for randomization
