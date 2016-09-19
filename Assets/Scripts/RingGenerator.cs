@@ -7,17 +7,24 @@ public class RingGenerator : MonoBehaviour {
 
 	Vector3 ringOrigin = Vector3.zero;
 
-	Vector3 nextRingHeight = Vector3.up;
+	Vector3 nextRingHeight = new Vector3(0, 10f, 0);
     Vector3 nextRingDist = Vector3.zero;
 
     Vector3 randHeight;
     Vector3 randDist;
 
+    public int difficulty = 2;
+
     int ringCount = 0;
+
+    public enum Intensity
+    {
+        Low, Optimal, OverExertion
+    };
 
     //This is abut 36 seconds long.
     public int ringsPerInterval = 20;
-    int hrLvl = 1;
+    public Intensity hrLvl = Intensity.Low;
 
     //Vector3 randPipeSeparation;
 
@@ -35,9 +42,9 @@ public class RingGenerator : MonoBehaviour {
         //TODO
         //Implement the HR level check code here
 
-        if (hrLvl == 4)
+        if (hrLvl == Intensity.OverExertion)
         {
-            PhaseChange(false);
+            HandleOverExertion();
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -68,8 +75,16 @@ public class RingGenerator : MonoBehaviour {
     {
         ringCount = 0;
         //If heart rate is dangerously high, go to a low intensity interval.
-        if(hrLvl == 4)
+        if (hrLvl == Intensity.OverExertion)
         {
+            isHighIntensity = false;
+            DecreaseDifficulty();
+            return;
+        } 
+        // Case where in high intensity interval but low heart rate. Do another high intensity interval
+        else if (isHighIntensity && hrLvl == Intensity.Low)
+        {
+            IncreaseDifficulty();
             isHighIntensity = false;
             return;
         }
@@ -77,17 +92,30 @@ public class RingGenerator : MonoBehaviour {
         isHighIntensity = (isHighIntensity ? false : true);
     }
 
-    void PhaseChange(bool toHigh)
+    // Called when user is overexerted 
+    void HandleOverExertion()
     {
         ringCount = 0;
-        isHighIntensity = toHigh;
+        isHighIntensity = false;
+    }
+
+    void DecreaseDifficulty()
+    {
+        if (difficulty > 0)
+        {
+            difficulty--;
+        }
+    }
+
+    void IncreaseDifficulty()
+    {
+        difficulty++;
     }
 
 
-
-	public void RingCreator(){
+	public void RingCreator()
+    {
         HighIntensity();
-
     }
 
     public void HighIntensity()
@@ -107,15 +135,17 @@ public class RingGenerator : MonoBehaviour {
       //  nextRingHeight = nextRingHeight;
         nextRingDist = nextRingDist - randHeight;
 
+        // Calculation for adjusting difficulty
+        float nextHeightMax = 15f + ((float)difficulty * 3f);
+        float nextHeightMin = 10f + ((float)difficulty * 3f);
+
         //Randomize next Positions
-        randHeight = new Vector3(0, Random.Range(0, 10f), 0);
-        randDist = new Vector3(Random.Range(4f, 5f), 0, 0);
+        randHeight = new Vector3(0, Random.Range(nextHeightMin, nextHeightMax), 0);
+        randDist = new Vector3(Random.Range(10f, 11f), 0, 0);
 
 
         nextRingHeight = nextRingHeight + randHeight + randDist;
         nextRingDist = nextRingDist + randDist + randHeight;
-
-
     }
 
     public void LowIntensity()
@@ -136,8 +166,8 @@ public class RingGenerator : MonoBehaviour {
         nextRingDist = nextRingDist - randHeight;
 
         //Randomize next Positions
-        randHeight = new Vector3(0, Random.Range(0, 5f), 0);
-        randDist = new Vector3(Random.Range(4f, 5f), 0, 0);
+        randHeight = new Vector3(0, Random.Range(10f, 15f), 0);
+        randDist = new Vector3(Random.Range(10f, 11f), 0, 0);
 
         nextRingHeight = nextRingHeight + randHeight + randDist;
         nextRingDist = nextRingDist + randDist + randHeight;
