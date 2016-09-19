@@ -3,61 +3,55 @@ using System.Collections;
 
 public class RingGenerator : MonoBehaviour {
 
-	//public GameObject bottomPipe;
-	//public GameObject topPipe;
-
     public GameObject ring;
 
-	//Vector3 topPipeOrigin = Vector3.up + new Vector3(0, 2, 0);
 	Vector3 ringOrigin = Vector3.zero;
 
 	Vector3 nextRingHeight = Vector3.up;
     Vector3 nextRingDist = Vector3.zero;
 
-    //Vector3 nextBottomPipePosition = Vector3.zero;
-
-    //vars for distance between pipes horizontally (new pair), vertically (space between pipes), and space between pipes
-    //Vector3 randPipeX;
     Vector3 randHeight;
     Vector3 randDist;
+
+    int ringCount = 0;
+    public int ringsPerInterval = 20;
 
     //Vector3 randPipeSeparation;
 
     bool isHighIntensity = false;
 
 	void Start() {
-
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 3; i++)
         {
-            if (i % 10 == 0)
-            {
-                isHighIntensity = true;
-                ring.GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
-            }
-            else if (i % 10 == 50)
-            {
-                isHighIntensity = false;
-                ring.GetComponent<MeshRenderer>().sharedMaterial.color = Color.green;
-            }
-
-            if (isHighIntensity)
-            {
-                HighIntensity();
-            }
-            else
-            {
-                LowIntensity();
-            }
+            NewRing();
         }
 	}
 
+    public void NewRing()
+    {
+        if(isHighIntensity)
+        {
+            HighIntensity();
+        }
+        else
+        {
+            LowIntensity();
+        }
+
+        ringCount++;
+        if(ringCount >= ringsPerInterval)
+        {
+            ringCount = 0;
+            isHighIntensity = (isHighIntensity ? false : true);
+        }
+    }
+
 	void Update () {
 
-		if (Input.GetKeyDown (KeyCode.P)) {
-		
-			RingCreator();
-
-
+		if (Input.GetKeyDown (KeyCode.P)) 
+        {
+			//RingCreator();
+            NewRing();
 		}
 
 	}
@@ -69,6 +63,7 @@ public class RingGenerator : MonoBehaviour {
 
     public void HighIntensity()
     {
+        ring.GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
         GameObject centre;
         centre = Instantiate(ring, nextRingHeight, Quaternion.identity) as GameObject;
         //Instantiate Top and Bottom Pipes
@@ -96,6 +91,8 @@ public class RingGenerator : MonoBehaviour {
 
     public void LowIntensity()
     {
+        ring.GetComponent<MeshRenderer>().sharedMaterial.color = Color.green;
+
         GameObject centre;
         centre = Instantiate(ring, nextRingHeight, Quaternion.identity) as GameObject;
         //Instantiate Top and Bottom Pipes
@@ -103,6 +100,7 @@ public class RingGenerator : MonoBehaviour {
         centre.transform.parent = this.transform;
         centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
 
+        centre.transform.localScale = new Vector3(5, 5, 1.25f);
 
         //Reset height for randomization
         nextRingHeight = nextRingHeight - randHeight;

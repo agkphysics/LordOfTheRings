@@ -182,7 +182,7 @@ MonoBehaviour:
   forwardMovement: 2
   upAngle: 45
   downAngle: 280
-  startingPosition: {x: -5, y: 20, z: 0}
+  startingPosition: {x: -5, y: 5, z: 0}
   zRotation: 0
   startingRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!124 &12400000
