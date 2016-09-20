@@ -15,21 +15,25 @@ public class Engine : MonoBehaviour {
 	bool isDead = false;
 	int bestScore = 0;
 	int score = 0;
+    public int age = 20;
+    public InputField ageInputField = null;
+    string test = "123";
 
-	// Use this for initialization
-	void Awake () {
+    public object InputFieldEventSystemManager { get; private set; }
+
+
+    // Use this for initialization
+    void Awake () {
 		//Instantiate(camera);
 		Instantiate(light);
 		Instantiate(floor);
 		//Instantiate(background);
 		Instantiate(ringCreator);
-		Instantiate(bird);
-	//	Instantiate (thumb);
-		//birdCamera = GameObject.FindWithTag("birdCamera");
-		//Instantiate(birdCamera);
+        ageInputField.characterValidation = InputField.CharacterValidation.Integer;
+        Destroy(gameObject.GetComponent<InputField>());
 
 
-	}
+    }
 
 	public void AddToCurrentScore(int value)
 	{
@@ -54,7 +58,15 @@ public class Engine : MonoBehaviour {
 	public void StartGame(){
 		isNotStarted = false;
 		scoreTicker = true;
-	}
+
+
+        if (ageInputField.isActiveAndEnabled)
+        {
+            Debug.Log("Age: " + ageInputField.text);
+            age = int.Parse(ageInputField.text);
+            ageInputField.enabled = false;
+        }
+    }
 	
 	public void Die(){
 		isDead = true;
@@ -94,15 +106,22 @@ public class Engine : MonoBehaviour {
 	
 	}
 
+
+
 	void OnGUI () {
 
-		if (isNotStarted)
-			GUI.Box (new Rect ((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent ("First Person\nHIITCopter\nPress Space To Jump"));
+        if (isNotStarted)
+        {
+            // nameInputField = GUI.TextField(new Rect(10, 10, 200, 20), "Enter Age", 25);
+            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("First Person\nHIITCopter\nPress Space To Jump"));
+        }
+         
+               
 
-		//if (scoreTicker)
-		//	GUI.Box (new Rect (Screen.width/2-25, 20, 50, 50), new GUIContent (""+score+""));		
+        //if (scoreTicker)
+        //	GUI.Box (new Rect (Screen.width/2-25, 20, 50, 50), new GUIContent (""+score+""));		
 
-		if (isDead) {
+        if (isDead) {
 			//show score screen gui
 			GUI.Box (new Rect ((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent ("Game Over"));
 			GUI.Box (new Rect ((Screen.width / 3), (Screen.height / 8 * 2), (Screen.width / 3), (Screen.height / 8)), new GUIContent ("Score" + "\t\t\t\t\t\t\t\t\t"+ "Best" + "\n" + 
