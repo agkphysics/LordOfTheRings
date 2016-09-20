@@ -29,10 +29,6 @@ public class Engine : MonoBehaviour {
 		Instantiate(floor);
 		//Instantiate(background);
 		Instantiate(ringCreator);
-		Instantiate(bird);
-        //	Instantiate (thumb);
-        //birdCamera = GameObject.FindWithTag("birdCamera");
-        //Instantiate(birdCamera);
         ageInputField.characterValidation = InputField.CharacterValidation.Integer;
         Destroy(gameObject.GetComponent<InputField>());
 

@@ -55,11 +55,41 @@ public class BirdController : MonoBehaviour {
 			}
 
 		}else{
-			if(Input.GetKeyDown(KeyCode.Space)){
+            //Remove this if block, only for testing using space bar
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                gameObject.GetComponent<RowingMachineController>().waitingRow = false;
+                uint rowBoost = GetComponent<RowingMachineController>().waitingDistance;
+
+
+                if (GetComponent<Rigidbody>().velocity.y < 0)
+                {
+                    GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, 0, 0);
+                }
+                GetComponent<Rigidbody>().AddForce(Vector3.up * 30.0f / 5.0f, ForceMode.Impulse);
+                if (transform.rotation.eulerAngles.z < upAngle)
+                {
+                    rotationAmount = upAngle - transform.rotation.eulerAngles.z;
+                    transform.RotateAround(transform.position, Vector3.forward, rotationAmount * .5f);
+                }
+                else if (transform.rotation.eulerAngles.z > 180)
+                {
+                    rotationAmount = 360 - (transform.rotation.eulerAngles.z - upAngle);
+                    transform.RotateAround(transform.position, Vector3.forward, rotationAmount * .5f);
+                }
+                engine.AddToCurrentScore(50);
+                fallCount = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Space) || gameObject.GetComponent<RowingMachineController>().waitingRow)
+            {
+                gameObject.GetComponent<RowingMachineController>().waitingRow = false;
+                uint rowBoost = GetComponent<RowingMachineController>().waitingDistance;
+
+
 				if(GetComponent<Rigidbody>().velocity.y<0){
 					GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x,0,0);
 				}
-				GetComponent<Rigidbody>().AddForce(Vector3.up*boost,ForceMode.Impulse);
+                GetComponent<Rigidbody>().AddForce(Vector3.up * GetComponent<RowingMachineController>().currentForce / 5.0f, ForceMode.Impulse);
 				if(transform.rotation.eulerAngles.z<upAngle){
 					rotationAmount = upAngle - transform.rotation.eulerAngles.z;
 					transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
@@ -72,6 +102,15 @@ public class BirdController : MonoBehaviour {
 				fallCount = 0;
 			}
 		}
+
+        if (GetComponent<Rigidbody>().velocity.y < -3.0f)
+        {
+            GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, -3.0f, 0);
+        }
+        if (GetComponent<Rigidbody>().velocity.y > 10.0f)
+        {
+            GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, 10.0f, 0);
+        }
 	}
 
 	void FixedUpdate(){
@@ -101,19 +140,21 @@ public class BirdController : MonoBehaviour {
 	void OnCollisionEnter(Collision obj){
 	    if (obj.gameObject.tag.Equals("ring"))
 	    {
-	        engine.AddToCurrentScore(500);
+
+	       // engine.AddToCurrentScore(500);
+            
 	    }
 	    else
 	    {
-	        Debug.Log("Game Over");
-	        GetComponent<Rigidbody>().useGravity = false;
-	        waitingForPlayerToStart = true;
-	        GetComponent<Rigidbody>().velocity = Vector3.zero;
-	        GetComponent<Rigidbody>().freezeRotation = true;
-	        Debug.Log("current rotation = " + transform.rotation);
-	        engine.Die();
-	        engine.CompareCurrentScoreToBest();
-	        scoreboard = true;
+            //Debug.Log("Game Over");
+            //GetComponent<Rigidbody>().useGravity = false;
+            //waitingForPlayerToStart = true;
+            //GetComponent<Rigidbody>().velocity = Vector3.zero;
+            //GetComponent<Rigidbody>().freezeRotation = true;
+            //Debug.Log("current rotation = " + transform.rotation);
+            //engine.Die();
+            //engine.CompareCurrentScoreToBest();
+            //scoreboard = true;
 	    }
 	}
 
@@ -126,7 +167,9 @@ public class BirdController : MonoBehaviour {
 
 	void OnTriggerEnter(Collider scorebox){
 		Debug.Log ("Score Increased");
-		engine.AddToCurrentScore(500);
+        GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().NewRing();
+
+        engine.AddToCurrentScore(500);
 		Destroy (scorebox.gameObject);
 	}
 }
