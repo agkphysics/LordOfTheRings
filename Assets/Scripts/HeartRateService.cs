@@ -51,7 +51,7 @@ public class HeartRateService : MonoBehaviour {
 
     private Double calculateMaxHeartRate()
     {
-        var age = int.Parse(GameObject.Find("GameObjectSpawner").GetComponent<Engine>().text);
+        var age = 20;
         int maxHeartRate = 220 - age;
         return maxHeartRate;
     }
