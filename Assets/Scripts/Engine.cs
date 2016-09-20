@@ -16,8 +16,6 @@ public class Engine : MonoBehaviour {
 	int bestScore = 0;
 	int score = 0;
     public int age = 20;
-    public InputField ageInputField = null;
-    string test = "123";
 
     public object InputFieldEventSystemManager { get; private set; }
 
@@ -30,8 +28,6 @@ public class Engine : MonoBehaviour {
         //Instantiate(background);
         Instantiate(bird);
 		Instantiate(ringCreator);
-        ageInputField.characterValidation = InputField.CharacterValidation.Integer;
-        Destroy(gameObject.GetComponent<InputField>());
 
 
     }
@@ -59,14 +55,6 @@ public class Engine : MonoBehaviour {
 	public void StartGame(){
 		isNotStarted = false;
 		scoreTicker = true;
-
-
-        if (ageInputField.isActiveAndEnabled)
-        {
-            Debug.Log("Age: " + ageInputField.text);
-            age = int.Parse(ageInputField.text);
-            ageInputField.enabled = false;
-        }
     }
 	
 	public void Die(){
