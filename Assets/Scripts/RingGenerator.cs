@@ -3,7 +3,8 @@ using System.Collections;
 
 public class RingGenerator : MonoBehaviour {
 
-    public GameObject ring;
+    public GameObject lowIntensityRing;
+    public GameObject highIntensityRing;
 
 	Vector3 ringOrigin = Vector3.zero;
 
@@ -13,7 +14,7 @@ public class RingGenerator : MonoBehaviour {
     Vector3 randHeight;
     Vector3 randDist;
 
-    public int difficulty = 2;
+    public int difficulty = 1;
 
     int ringCount = 0;
 
@@ -81,7 +82,7 @@ public class RingGenerator : MonoBehaviour {
             DecreaseDifficulty();
             return;
         } 
-        // Case where in high intensity interval but low heart rate. Do another high intensity interval
+        // Case where in high intensity interval but low heart rate. Increase difficulty of next high intensity
         else if (isHighIntensity && hrLvl == Intensity.Low)
         {
             IncreaseDifficulty();
@@ -120,9 +121,9 @@ public class RingGenerator : MonoBehaviour {
 
     public void HighIntensity()
     {
-        ring.GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
+        highIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
         GameObject centre;
-        centre = Instantiate(ring, nextRingHeight, Quaternion.identity) as GameObject;
+        centre = Instantiate(highIntensityRing, nextRingHeight, Quaternion.identity) as GameObject;
         //Instantiate Top and Bottom Pipes
 
         centre.transform.parent = this.transform;
@@ -150,10 +151,10 @@ public class RingGenerator : MonoBehaviour {
 
     public void LowIntensity()
     {
-        ring.GetComponent<MeshRenderer>().sharedMaterial.color = Color.green;
+        lowIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.green;
 
         GameObject centre;
-        centre = Instantiate(ring, nextRingHeight, Quaternion.identity) as GameObject;
+        centre = Instantiate(lowIntensityRing, nextRingHeight, Quaternion.identity) as GameObject;
         //Instantiate Top and Bottom Pipes
 
         centre.transform.parent = this.transform;

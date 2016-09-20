@@ -51,4 +51,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c95ab487a6a9e14b8bc113e0c91144f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ring: {fileID: 1000012654075858, guid: aa5ab5106bc46f7448e0be6184c1e82b, type: 2}
+  lowIntensityRing: {fileID: 1000012654075858, guid: aa5ab5106bc46f7448e0be6184c1e82b,
+    type: 2}
+  highIntensityRing: {fileID: 1000012654075858, guid: 1b2d13362feb02e40a88936f5894c10a,
+    type: 2}
+  difficulty: 2
+  ringsPerInterval: 8
+  hrLvl: 0

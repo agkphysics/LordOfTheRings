@@ -398,7 +398,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &880207837
 RectTransform:
   m_ObjectHideFlags: 0
@@ -543,7 +543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2cbd87f9dd4d4a4f99b9d13a54f46f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 1000011154005512, guid: 82f09acfce3e9634ea433be3b5a37aa9, type: 2}
+  camera: {fileID: 0}
   light: {fileID: 100000, guid: daa52f8e57de04f20aed9b6b82257eb2, type: 2}
   bird: {fileID: 100002, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
   floor: {fileID: 100000, guid: 11d55040c859b4eaa88012c9bbe0e3a5, type: 2}
@@ -552,7 +552,6 @@ MonoBehaviour:
   birdCamera: {fileID: 0}
   thumb: {fileID: 0}
   age: 20
-  ageInputField: {fileID: 880207838}
 --- !u!4 &1172479738
 Transform:
   m_ObjectHideFlags: 0
@@ -798,7 +797,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400006, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 2}
       propertyPath: m_LocalPosition.y
@@ -872,12 +871,12 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
       objectReference: {fileID: 0}
-    - target: {fileID: 400008, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
+    - target: {fileID: 11400010, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 2}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 400008, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 2}
-      propertyPath: m_LocalRotation.z
+    - target: {fileID: 11462408, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 2}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 2}

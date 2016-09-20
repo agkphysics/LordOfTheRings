@@ -27,7 +27,7 @@ GameObject:
   - 65: {fileID: 65000011928183164}
   - 114: {fileID: 114000010370901486}
   m_Layer: 0
-  m_Name: Ring
+  m_Name: HighIntensityRing
   m_TagString: ring
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: f6b8cccba90a3bf498e9d285fdebbc30, type: 2}
+  - {fileID: 2100000, guid: b71022d067d2ee742af62ccfebee5330, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}

@@ -20,7 +20,7 @@ public class BirdController : MonoBehaviour {
 	private float rotationAmount;
 	
 	void Awake(){
-		engine = GameObject.Find ("GameObjectSpawner").GetComponent<Engine>();
+		engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
 	}
 
 	// Use this for initialization
