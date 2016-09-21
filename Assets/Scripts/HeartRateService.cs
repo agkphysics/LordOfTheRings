@@ -25,28 +25,29 @@ public class HeartRateService : MonoBehaviour {
         // txt.text = input;
         // heartRate = int.Parse(input);
  
-            StartCoroutine(WaitForRequest(new WWW("http://172.23.76.194:8080/api/heartrate")));
+            //StartCoroutine(WaitForRequest(new WWW("http://172.23.76.194:8080/api/heartrate")));
 
 
-        Debug.Log(currentHeartStatus);
+        //Debug.Log(currentHeartStatus);
 
     }
 
     IEnumerator WaitForRequest(WWW www)
     {
-        yield return www;
+        return null;
+        //yield return www;
 
-        // check for errors
-        if (www.error == null)
-        {
-            Debug.Log("WWW Ok!: " + www.text);
-        }
-        else {
-            Debug.Log("WWW Error: " + www.error);
-        }
+        //// check for errors
+        //if (www.error == null)
+        //{
+        //    Debug.Log("WWW Ok!: " + www.text);
+        //}
+        //else {
+        //    Debug.Log("WWW Error: " + www.error);
+        //}
 
-        var jsonHeartRate = JsonUtility.FromJson<HeartRate>(www.text);
-        this.heartRate = (jsonHeartRate.heartrate);
+        //var jsonHeartRate = JsonUtility.FromJson<HeartRate>(www.text);
+        //this.heartRate = (jsonHeartRate.heartrate);
 
     }
 
