@@ -112,6 +112,11 @@ public class Engine : MonoBehaviour {
         {
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Row To Start The CHOOOOOOOPER"));
         }
+
+        if (isWarmingUp)
+        {
+            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Row To Start The CHOOOOOOOPER"));
+        }
          
                
 
