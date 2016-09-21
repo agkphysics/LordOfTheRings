@@ -11,25 +11,48 @@ public class HeartRateService : MonoBehaviour {
     private Double maxHeartRate = 0;
     public HeartStatus currentHeartStatus = HeartStatus.Resting;
     Text txt;
+
     // Use this for initialization
     void Start () {
         txt = gameObject.GetComponent<Text>();
+
+
+        if (maxHeartRate == 0)
+        {
+            this.maxHeartRate = calculateMaxHeartRate();
+        }
     }
 	
 	// Update is called once per frame
 	void Update () {
-        //string input = System.IO.File.ReadAllText(@"C:\Users\ofekw\AppData\Local\Packages\Microsoft.SDKSamples.BluetoothGattHeartRate.CS_8wekyb3d8bbwe\LocalState\heartrate.txt");
-        //txt.text = input;
-        //heartRate = int.Parse(input);
+        // string input = System.IO.File.ReadAllText(@"C:\Users\ofekw\AppData\Local\Packages\Microsoft.SDKSamples.BluetoothGattHeartRate.CS_8wekyb3d8bbwe\LocalState\heartrate.txt");
+        // txt.text = input;
+        // heartRate = int.Parse(input);
+ 
+            StartCoroutine(WaitForRequest(new WWW("http://localhost:8080/api/heartrate")));
 
-        //if (maxHeartRate == 0)
-        //{
-        //    this.maxHeartRate = calculateMaxHeartRate();
-        //}
 
-        //currentHeartStatus = calculateHeartStatus();
-        //Debug.Log(currentHeartStatus);
+        Debug.Log(currentHeartStatus);
 
+    }
+
+    IEnumerator WaitForRequest(WWW www)
+    {
+        yield return www;
+
+        // check for errors
+        if (www.error == null)
+        {
+            Debug.Log("WWW Ok!: " + www.data);
+        }
+        else {
+            Debug.Log("WWW Error: " + www.error);
+        }
+
+        var jsonHeartRate = JsonUtility.FromJson<HeartRate>(www.data);
+
+        this.heartRate = (jsonHeartRate.heartrate);
+        txt.text = heartRate.ToString();
 
     }
 
@@ -54,5 +77,12 @@ public class HeartRateService : MonoBehaviour {
         var age = 20;
         int maxHeartRate = 220 - age;
         return maxHeartRate;
+    }
+
+    [Serializable]
+    public class HeartRate
+    {
+        public String time;
+        public int heartrate;
     }
 }
