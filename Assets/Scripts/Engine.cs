@@ -6,6 +6,7 @@ using System;
 public class Engine : MonoBehaviour {
 	public GameObject camera,light,bird,floor,background,ringCreator, birdCamera, thumb;
 
+    public GUISkin skin;
 	//private RingCollider ringCollider;
 	bool hasPipeCollider;
 
@@ -98,11 +99,11 @@ public class Engine : MonoBehaviour {
 
 
 	void OnGUI () {
-
+        GUI.skin = skin;
         if (isNotStarted)
         {
             // nameInputField = GUI.TextField(new Rect(10, 10, 200, 20), "Enter Age", 25);
-            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("First Person\nHIITCopter\nPress Space To Jump"));
+            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Welcome to HIITCopter!\n Start rowing to begin!"));
         }
          
                
