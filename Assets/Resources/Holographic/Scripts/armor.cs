@@ -12,18 +12,26 @@ public class armor : MonoBehaviour
 	//An integer to advance frames
 	private int frameCounter = 0;	
 	private float a=1; //alpha control
-	public static float armor_=100;
-	
-	void Awake()
+	public static float armor_=0;
+
+    GameObject rowingMachine;
+    Rower rowerScript;
+
+    void Awake()
 	{
 		//Get a reference to the Material of the game object this script is attached to
 		this.goMaterial = this.GetComponent<Renderer>().material;
 		this.GetComponent<Renderer>().material.color = new Color(this.GetComponent<Renderer>().material.color.r,this.GetComponent<Renderer>().material.color.b,this.GetComponent<Renderer>().material.color.g,.65f*a);
-	}
+        
+    }
 
 	void Start ()
 	{
-		print(this.GetComponent<Renderer>().material.color);
+        rowingMachine= GameObject.Find("RowingMachine");
+        rowerScript= rowingMachine.GetComponent<Rower>();
+        armor_ = rowerScript.rowPower;
+        Debug.Log(armor_);
+        print(this.GetComponent<Renderer>().material.color);
 		//Load all textures found on the Sequence folder, that is placed inside the resources folder
 		this.objects = Resources.LoadAll("Holographic/output/main/armor", typeof(Texture));
 
@@ -43,12 +51,9 @@ public class armor : MonoBehaviour
 
 	void Update ()
 	{
-		armor_=sliders.armor;
-		
-		if (a!=sliders.opacity){
-			a= sliders.opacity;
-this.GetComponent<Renderer>().material.color = new Color(this.GetComponent<Renderer>().material.color.r,this.GetComponent<Renderer>().material.color.b,this.GetComponent<Renderer>().material.color.g,.65f*a);
-		}
+
+        armor_ = rowerScript.rowPower;
+        Debug.Log(armor_);		
 		frameCounter=(int)Mathf.Round((100f-armor_)/5.263f);
 		goMaterial.mainTexture = textures[frameCounter];
 
