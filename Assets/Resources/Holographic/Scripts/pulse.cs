@@ -48,6 +48,22 @@ this.GetComponent<Renderer>().material.color = new Color(this.GetComponent<Rende
 		this.transform.Find("p_text").GetComponent<TextMesh>().text=pulse_.ToString();
         delay = 1/pulse_;
 
+        Color defaultColor = this.GetComponent<Renderer>().material.color;
+        //currentHeartStatus = HeartStatus.Optimal;
+        //switch (currentHeartStatus)
+        //{
+        //    case HeartStatus.Resting:
+        //        this.GetComponent<Renderer>().material.color = defaultColor;
+        //        break;
+        //    case HeartStatus.Optimal:
+        //        this.GetComponent<Renderer>().material.color = Color.green;
+        //        break;
+        //    case HeartStatus.Resting:
+        //        this.GetComponent<Renderer>().material.color = Color.red;
+        //        break;
+        //}
+        this.GetComponent<Renderer>().material.color = new Color(10,1,1,1);
+
 
         StartCoroutine("PlayLoop",delay);
 		
