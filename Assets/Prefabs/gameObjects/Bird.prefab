@@ -60,8 +60,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
-  m_LocalPosition: {x: 13.672013, y: 21.102962, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 20, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -152,7 +152,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 8
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!81 &8100000
 AudioListener:
@@ -185,6 +185,7 @@ MonoBehaviour:
   upAngle: 45
   downAngle: 280
   forceDivider: 8
+  workoutPhase: 0
   startingPosition: {x: -20, y: 0.3, z: 0}
   zRotation: 0
   startingRotation: {x: -0, y: -0, z: 0.38268343, w: 0.92387956}
@@ -245,10 +246,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010116614278}
-  m_LocalRotation: {x: 0.24220751, y: 0.57520086, z: -0.30887985, w: 0.71768576}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.031386282, y: 0.063312516, z: -0.049863543}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 45, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
   m_Children: []
   m_Father: {fileID: 400002}
   m_RootOrder: 1
