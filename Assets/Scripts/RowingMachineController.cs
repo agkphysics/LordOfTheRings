@@ -34,6 +34,7 @@ public class RowingMachineController : MonoBehaviour {
 
         if(oldPace != pace || oldPower != power)
         {
+
             Row(distance, power, pace);
         }
 	}

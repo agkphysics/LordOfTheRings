@@ -8,16 +8,22 @@ public class BirdController : MonoBehaviour {
 	public float boost = 20f;
 	public float forwardMovement = 2f;
 	public int upAngle=45, downAngle=280; //-80 degrees
+    public float forceDivider = 8.0f; // lower is faster
 
-	public Vector3 startingPosition = Vector3.up*5.0f;
+    public int workoutPhase = 0; //0 menu screen, 1 warmup, 2 intervals
+
+	public Vector3 startingPosition;
 	[Range (-90,90)] public int zRotation;
 	public Quaternion startingRotation;
 
 	private bool waitingForPlayerToStart, scoreboard;
 
 	private Engine engine;
-	private int fallCount=0, scoreShowingCount = 0;
+    private int fallCount = 0;
+    private int scoreShowingCount = 0;
 	private float rotationAmount;
+
+    public uint warmupDistance;
 	
 	void Awake(){
 		engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
@@ -26,114 +32,152 @@ public class BirdController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		transform.position = startingPosition;
-		transform.RotateAround(transform.position,Vector3.forward,upAngle);
 		startingRotation = transform.rotation;
-		Debug.Log ("starting rotation = "+startingRotation);
-		GetComponent<Rigidbody>().useGravity = false;
+
+        GetComponent<Rigidbody>().useGravity = false;
 		waitingForPlayerToStart = true;
-		//Instantiate(ringCollider);
+        GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, 0, 0);
+
 	}
 
 	void Update(){
-		if(scoreboard){
-			if(Input.GetKeyDown(KeyCode.Space) && scoreShowingCount<1){
-				scoreShowingCount++;
-			}else if(Input.GetKeyDown(KeyCode.Space)){
-				engine.Reset();
-				BirdReset();
-				scoreboard = false;
-			}
-		}else if(waitingForPlayerToStart){
+
+        //if(scoreboard){
+        //    if(Input.GetKeyDown(KeyCode.Space) && scoreShowingCount<1){
+        //        scoreShowingCount++;
+        //    }else if(Input.GetKeyDown(KeyCode.Space)){
+        //        engine.Reset();
+        //        BirdReset();
+        //        scoreboard = false;
+        //    }
+        //}else 
+        if(waitingForPlayerToStart){
 			if(Input.GetKeyDown(KeyCode.Space)){
 				scoreShowingCount = 0;
-				Debug.Log ("Starting Game");
-				engine.StartGame();
+
+                engine.StartGame();
+
 				waitingForPlayerToStart = false;
-				GetComponent<Rigidbody>().freezeRotation = false;
+
+                //GetComponent<Rigidbody>().freezeRotation = false;
 				GetComponent<Rigidbody>().useGravity = true;
-				GetComponent<Rigidbody>().AddForce(Vector3.right*boost,ForceMode.Force);
 			}
 
 		}else{
             //Remove this if block, only for testing using space bar
-            if (Input.GetKeyDown(KeyCode.Space))
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    gameObject.GetComponent<RowingMachineController>().waitingRow = false;
+            //    uint rowBoost = GetComponent<RowingMachineController>().waitingDistance;
+
+
+            //    if (GetComponent<Rigidbody>().velocity.y < 0)
+            //    {
+            //        GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, 0, 0);
+            //    }
+            //    GetComponent<Rigidbody>().AddForce(Vector3.up * 30.0f / 5.0f, ForceMode.Impulse);
+            //    if (transform.rotation.eulerAngles.z < upAngle)
+            //    {
+            //        rotationAmount = upAngle - transform.rotation.eulerAngles.z;
+            //        transform.RotateAround(transform.position, Vector3.forward, rotationAmount * .5f);
+            //    }
+            //    else if (transform.rotation.eulerAngles.z > 180)
+            //    {
+            //        rotationAmount = 360 - (transform.rotation.eulerAngles.z - upAngle);
+            //        transform.RotateAround(transform.position, Vector3.forward, rotationAmount * .5f);
+            //    }
+            //    engine.AddToCurrentScore(50);
+            //    fallCount = 0;
+            //}
+            //else 
+            if (engine.isWarmingUp)
             {
-                gameObject.GetComponent<RowingMachineController>().waitingRow = false;
-                uint rowBoost = GetComponent<RowingMachineController>().waitingDistance;
+                
+
+                //Show WarmUP progress here
 
 
-                if (GetComponent<Rigidbody>().velocity.y < 0)
+                if (Input.GetKeyDown(KeyCode.Space) || gameObject.GetComponent<RowingMachineController>().waitingRow)
                 {
-                    GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, 0, 0);
+                    gameObject.GetComponent<RowingMachineController>().waitingRow = false;
+
+                    GetComponent<Rigidbody>().AddForce(Vector3.up * GetComponent<RowingMachineController>().currentForce / (forceDivider), ForceMode.Impulse);
+
+                    fallCount = 0;
                 }
-                GetComponent<Rigidbody>().AddForce(Vector3.up * 30.0f / 5.0f, ForceMode.Impulse);
-                //if (transform.rotation.eulerAngles.z < upAngle)
-                //{
-                //    rotationAmount = upAngle - transform.rotation.eulerAngles.z;
-                //    transform.RotateAround(transform.position, Vector3.forward, rotationAmount * .5f);
-                //}
-                //else if (transform.rotation.eulerAngles.z > 180)
-                //{
-                //    rotationAmount = 360 - (transform.rotation.eulerAngles.z - upAngle);
-                //    transform.RotateAround(transform.position, Vector3.forward, rotationAmount * .5f);
-                //}
-                engine.AddToCurrentScore(50);
-                fallCount = 0;
+
+                
             }
-            if (Input.GetKeyDown(KeyCode.Space) || gameObject.GetComponent<RowingMachineController>().waitingRow)
+            else if (Input.GetKeyDown(KeyCode.Space) || gameObject.GetComponent<RowingMachineController>().waitingRow)
             {
                 gameObject.GetComponent<RowingMachineController>().waitingRow = false;
-                uint rowBoost = GetComponent<RowingMachineController>().waitingDistance;
-
 
 				if(GetComponent<Rigidbody>().velocity.y<0){
 					GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x,0,0);
 				}
-                GetComponent<Rigidbody>().AddForce(Vector3.up * GetComponent<RowingMachineController>().currentForce / 5.0f, ForceMode.Impulse);
-				//if(transform.rotation.eulerAngles.z<upAngle){
-				//	rotationAmount = upAngle - transform.rotation.eulerAngles.z;
-				//	transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
-				//}
-				//else if(transform.rotation.eulerAngles.z>180){
-				//	rotationAmount = 360 - (transform.rotation.eulerAngles.z - upAngle);
-				//	transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
-				//}
+                GetComponent<Rigidbody>().AddForce(Vector3.up * GetComponent<RowingMachineController>().currentForce / forceDivider, ForceMode.Impulse);
+
                 engine.AddToCurrentScore(50);
 				fallCount = 0;
-			}
+                
+            }
+
 		}
 
-        if (GetComponent<Rigidbody>().velocity.y < -3.0f)
+        if (engine.isWarmingUp)
         {
-            GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, -3.0f, 0);
+            if (GetComponent<Rigidbody>().velocity.y < 0)
+            {
+                GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+                Debug.Log("Else clamp the y velocity");
+
+            }
+            else if (GetComponent<Rigidbody>().velocity.y > 3.0f)
+            {
+                GetComponent<Rigidbody>().velocity = new Vector3(0, 3.0f, 0);
+            }
+            else
+            {
+                GetComponent<Rigidbody>().velocity = new Vector3(0, GetComponent<Rigidbody>().velocity.y, 0);
+                Debug.Log("Else reachedf");
+
+            }
         }
-        if (GetComponent<Rigidbody>().velocity.y > 10.0f)
+        else
         {
-            GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, 10.0f, 0);
+            Debug.Log("LJSHBGDFLJSDBF");
+            if (GetComponent<Rigidbody>().velocity.y < -3.0f)
+            {
+                GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, -3.0f, 0);
+            }
+            if (GetComponent<Rigidbody>().velocity.y > 10.0f)
+            {
+                GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, 10.0f, 0);
+            }
         }
 	}
 
 	void FixedUpdate(){
 		if(!waitingForPlayerToStart){
-			transform.position += Vector3.right*Time.fixedDeltaTime*forwardMovement;
-			//if(GetComponent<Rigidbody>().velocity.y<0){ //falling
-			//	if(transform.rotation.eulerAngles.z > downAngle || transform.rotation.eulerAngles.z<180 ){
-			//		if(fallCount<10){
-			//			//Debug.Log ("small fall");
-			//			transform.RotateAround(transform.position,Vector3.forward,-.5f);
-			//		}else{
-			//			//drop rotation until it's facing is almost down (-80 degrees?)
-			//			//Debug.Log ("larger fall");
-			//			transform.RotateAround(transform.position,Vector3.forward,-2);
-			//		}
-			//	}
-			//	fallCount++;
-			//}else{
-			//	//increase rotation on Z until bird is facing in proper up direction
-			//	if(transform.rotation.eulerAngles.z<upAngle ){
-			//		transform.RotateAround(transform.position,Vector3.forward,2);
-			//	}
-			//}
+            uint rowDistance = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<Rower>().rowDistance;
+
+            if (engine.isWarmingUp)
+            {
+
+
+                if (rowDistance > warmupDistance)
+                {
+                    engine.isWarmingUp = false;
+                    GetComponent<Rigidbody>().AddForce(Vector3.right * boost, ForceMode.Force);
+
+                }
+            }
+
+            if (rowDistance > warmupDistance)
+            {
+                transform.position += Vector3.right * Time.fixedDeltaTime * forwardMovement;
+               
+            }
 		}
 	}
 
@@ -141,22 +185,18 @@ public class BirdController : MonoBehaviour {
 	    if (obj.gameObject.tag.Equals("ring"))
 	    {
 
-	       // engine.AddToCurrentScore(500);
             
 	    }
 	    else
 	    {
-            //Debug.Log("Game Over");
-            //GetComponent<Rigidbody>().useGravity = false;
-            //waitingForPlayerToStart = true;
-            //GetComponent<Rigidbody>().velocity = Vector3.zero;
-            //GetComponent<Rigidbody>().freezeRotation = true;
-            //Debug.Log("current rotation = " + transform.rotation);
-            //engine.Die();
-            //engine.CompareCurrentScoreToBest();
-            //scoreboard = true;
+
 	    }
 	}
+
+    void StartWorkout()
+    {
+
+    }
 
 	void BirdReset(){
 		GetComponent<Rigidbody>().velocity=Vector3.zero;
