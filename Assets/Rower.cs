@@ -29,7 +29,6 @@ public class Rower : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         numRowers = InitRower();
-        Debug.Log(string.Format("Rower Initialisation: {0}", numRowers));
 	}
 	
 	// Update is called once per frame
@@ -40,6 +39,8 @@ public class Rower : MonoBehaviour {
             RowData rowData = new RowData();
             GetRowData(ref rowData);
             //Debug.Log(string.Format("Power: {0}, Pace: {1}, Distance: {2}", rowData.Power, rowData.Pace, rowData.Horizontal));
+            
+
             rowPace = rowData.Pace;
             rowPower = rowData.Power;
             rowDistance = rowData.Horizontal;

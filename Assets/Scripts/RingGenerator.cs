@@ -47,7 +47,6 @@ public class RingGenerator : MonoBehaviour {
 
         if(!hasInitialSpawned)
         {
-            Debug.Log("LSIDJFGHLSDGFVBKSUJHVDBFKJHSGDF");
             if(!engine.isWarmingUp && !engine.isNotStarted)
             {
                 for (int i = 0; i < 3; i++)
