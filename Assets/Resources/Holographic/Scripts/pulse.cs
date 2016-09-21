@@ -56,13 +56,12 @@ this.GetComponent<Renderer>().material.color = new Color(this.GetComponent<Rende
         //        this.GetComponent<Renderer>().material.color = defaultColor;
         //        break;
         //    case HeartStatus.Optimal:
-        //        this.GetComponent<Renderer>().material.color = Color.green;
+        //        this.GetComponent<Renderer>().material.color = new Color(0.1f,1.2f,0.1f,1f);
         //        break;
-        //    case HeartStatus.Resting:
-        //        this.GetComponent<Renderer>().material.color = Color.red;
+        //    case HeartStatus.OverExert:
+        //        this.GetComponent<Renderer>().material.color = new Color(3f,0.2f,0.2f,1f);
         //        break;
         //}
-        this.GetComponent<Renderer>().material.color = new Color(10,1,1,1);
 
 
         StartCoroutine("PlayLoop",delay);
