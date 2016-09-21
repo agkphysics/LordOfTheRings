@@ -10,11 +10,12 @@ public class HeartRateService : MonoBehaviour {
     public Double heartRate = 0;
     private Double maxHeartRate = 0;
     public HeartStatus currentHeartStatus = HeartStatus.Resting;
-    WWW www = new WWW("http://hiitcopter.herokuapp.com/api/heartrate");
     Text txt;
+
     // Use this for initialization
     void Start () {
         txt = gameObject.GetComponent<Text>();
+
 
         if (maxHeartRate == 0)
         {
@@ -27,9 +28,10 @@ public class HeartRateService : MonoBehaviour {
         // string input = System.IO.File.ReadAllText(@"C:\Users\ofekw\AppData\Local\Packages\Microsoft.SDKSamples.BluetoothGattHeartRate.CS_8wekyb3d8bbwe\LocalState\heartrate.txt");
         // txt.text = input;
         // heartRate = int.Parse(input);
+ 
+            StartCoroutine(WaitForRequest(new WWW("http://localhost:8080/api/heartrate")));
 
 
-        StartCoroutine(WaitForRequest(www));
         Debug.Log(currentHeartStatus);
 
     }
@@ -50,6 +52,7 @@ public class HeartRateService : MonoBehaviour {
         var jsonHeartRate = JsonUtility.FromJson<HeartRate>(www.data);
 
         this.heartRate = (jsonHeartRate.heartrate);
+        txt.text = heartRate.ToString();
 
     }
 
