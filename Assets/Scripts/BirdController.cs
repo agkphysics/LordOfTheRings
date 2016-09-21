@@ -67,16 +67,16 @@ public class BirdController : MonoBehaviour {
                     GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, 0, 0);
                 }
                 GetComponent<Rigidbody>().AddForce(Vector3.up * 30.0f / 5.0f, ForceMode.Impulse);
-                if (transform.rotation.eulerAngles.z < upAngle)
-                {
-                    rotationAmount = upAngle - transform.rotation.eulerAngles.z;
-                    transform.RotateAround(transform.position, Vector3.forward, rotationAmount * .5f);
-                }
-                else if (transform.rotation.eulerAngles.z > 180)
-                {
-                    rotationAmount = 360 - (transform.rotation.eulerAngles.z - upAngle);
-                    transform.RotateAround(transform.position, Vector3.forward, rotationAmount * .5f);
-                }
+                //if (transform.rotation.eulerAngles.z < upAngle)
+                //{
+                //    rotationAmount = upAngle - transform.rotation.eulerAngles.z;
+                //    transform.RotateAround(transform.position, Vector3.forward, rotationAmount * .5f);
+                //}
+                //else if (transform.rotation.eulerAngles.z > 180)
+                //{
+                //    rotationAmount = 360 - (transform.rotation.eulerAngles.z - upAngle);
+                //    transform.RotateAround(transform.position, Vector3.forward, rotationAmount * .5f);
+                //}
                 engine.AddToCurrentScore(50);
                 fallCount = 0;
             }
@@ -90,14 +90,14 @@ public class BirdController : MonoBehaviour {
 					GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x,0,0);
 				}
                 GetComponent<Rigidbody>().AddForce(Vector3.up * GetComponent<RowingMachineController>().currentForce / 5.0f, ForceMode.Impulse);
-				if(transform.rotation.eulerAngles.z<upAngle){
-					rotationAmount = upAngle - transform.rotation.eulerAngles.z;
-					transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
-				}
-				else if(transform.rotation.eulerAngles.z>180){
-					rotationAmount = 360 - (transform.rotation.eulerAngles.z - upAngle);
-					transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
-				}
+				//if(transform.rotation.eulerAngles.z<upAngle){
+				//	rotationAmount = upAngle - transform.rotation.eulerAngles.z;
+				//	transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
+				//}
+				//else if(transform.rotation.eulerAngles.z>180){
+				//	rotationAmount = 360 - (transform.rotation.eulerAngles.z - upAngle);
+				//	transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
+				//}
                 engine.AddToCurrentScore(50);
 				fallCount = 0;
 			}
@@ -116,24 +116,24 @@ public class BirdController : MonoBehaviour {
 	void FixedUpdate(){
 		if(!waitingForPlayerToStart){
 			transform.position += Vector3.right*Time.fixedDeltaTime*forwardMovement;
-			if(GetComponent<Rigidbody>().velocity.y<0){ //falling
-				if(transform.rotation.eulerAngles.z > downAngle || transform.rotation.eulerAngles.z<180 ){
-					if(fallCount<10){
-						//Debug.Log ("small fall");
-						transform.RotateAround(transform.position,Vector3.forward,-.5f);
-					}else{
-						//drop rotation until it's facing is almost down (-80 degrees?)
-						//Debug.Log ("larger fall");
-						transform.RotateAround(transform.position,Vector3.forward,-2);
-					}
-				}
-				fallCount++;
-			}else{
-				//increase rotation on Z until bird is facing in proper up direction
-				if(transform.rotation.eulerAngles.z<upAngle ){
-					transform.RotateAround(transform.position,Vector3.forward,2);
-				}
-			}
+			//if(GetComponent<Rigidbody>().velocity.y<0){ //falling
+			//	if(transform.rotation.eulerAngles.z > downAngle || transform.rotation.eulerAngles.z<180 ){
+			//		if(fallCount<10){
+			//			//Debug.Log ("small fall");
+			//			transform.RotateAround(transform.position,Vector3.forward,-.5f);
+			//		}else{
+			//			//drop rotation until it's facing is almost down (-80 degrees?)
+			//			//Debug.Log ("larger fall");
+			//			transform.RotateAround(transform.position,Vector3.forward,-2);
+			//		}
+			//	}
+			//	fallCount++;
+			//}else{
+			//	//increase rotation on Z until bird is facing in proper up direction
+			//	if(transform.rotation.eulerAngles.z<upAngle ){
+			//		transform.RotateAround(transform.position,Vector3.forward,2);
+			//	}
+			//}
 		}
 	}
 
