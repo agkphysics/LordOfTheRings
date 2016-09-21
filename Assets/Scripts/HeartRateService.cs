@@ -18,17 +18,17 @@ public class HeartRateService : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        string input = System.IO.File.ReadAllText(@"C:\Users\ofekw\AppData\Local\Packages\Microsoft.SDKSamples.BluetoothGattHeartRate.CS_8wekyb3d8bbwe\LocalState\heartrate.txt");
-        txt.text = input;
-        heartRate = int.Parse(input);
+        //string input = System.IO.File.ReadAllText(@"C:\Users\ofekw\AppData\Local\Packages\Microsoft.SDKSamples.BluetoothGattHeartRate.CS_8wekyb3d8bbwe\LocalState\heartrate.txt");
+        //txt.text = input;
+        //heartRate = int.Parse(input);
 
-        if (maxHeartRate == 0)
-        {
-            this.maxHeartRate = calculateMaxHeartRate();
-        }
+        //if (maxHeartRate == 0)
+        //{
+        //    this.maxHeartRate = calculateMaxHeartRate();
+        //}
 
-        currentHeartStatus = calculateHeartStatus();
-        Debug.Log(currentHeartStatus);
+        //currentHeartStatus = calculateHeartStatus();
+        //Debug.Log(currentHeartStatus);
 
 
     }

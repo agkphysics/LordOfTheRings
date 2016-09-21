@@ -15,7 +15,10 @@ public class pulse : MonoBehaviour
 	private float pulse_= 0f;
 	private int t=85;
 	private float a=1; //alpha control
-	void Awake()
+
+    HeartRateService hrscript;
+
+    void Awake()
 	{
 		//Get a reference to the Material of the game object this script is attached to
 		this.goMaterial = this.GetComponent<Renderer>().material;
@@ -24,8 +27,10 @@ public class pulse : MonoBehaviour
 
 	void Start ()
 	{
-		//Load all textures found on the Sequence folder, that is placed inside the resources folder
-		this.objects = Resources.LoadAll("Holographic/output/pulse", typeof(Texture));
+        hrscript = this.GetComponent<HeartRateService>();
+        pulse_ = (float) hrscript.heartRate;
+        //Load all textures found on the Sequence folder, that is placed inside the resources folder
+        this.objects = Resources.LoadAll("Holographic/output/pulse", typeof(Texture));
 
 		//Initialize the array of textures with the same size as the objects array
 		this.textures = new Texture[objects.Length];
@@ -39,12 +44,8 @@ public class pulse : MonoBehaviour
 
 	void Update ()
 	{t++;
-		
-		if (a!=sliders.opacity){
-			a= sliders.opacity;
-this.GetComponent<Renderer>().material.color = new Color(this.GetComponent<Renderer>().material.color.r,this.GetComponent<Renderer>().material.color.b,this.GetComponent<Renderer>().material.color.g,.65f*a);
-		}
-		pulse_ =100f;
+
+        pulse_ = (float) hrscript.heartRate;
 		this.transform.Find("p_text").GetComponent<TextMesh>().text=pulse_.ToString();
         delay = 1/pulse_;
 
