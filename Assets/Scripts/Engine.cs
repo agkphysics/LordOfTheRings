@@ -6,6 +6,7 @@ using System;
 public class Engine : MonoBehaviour {
 	public GameObject camera,light,bird,floor,background,ringCreator, birdCamera, thumb;
 
+    public GUISkin skin;
 	//private RingCollider ringCollider;
 	bool hasPipeCollider;
 
@@ -98,6 +99,7 @@ public class Engine : MonoBehaviour {
 
 
 	void OnGUI () {
+        GUI.skin = skin;
 
         if (isNotStarted)
         {
