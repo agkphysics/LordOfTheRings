@@ -10,13 +10,9 @@ public class HeartRateService : MonoBehaviour {
     public Double heartRate = 0;
     private Double maxHeartRate = 0;
     public HeartStatus currentHeartStatus = HeartStatus.Resting;
-    Text txt;
 
     // Use this for initialization
     void Start () {
-        txt = gameObject.GetComponent<Text>();
-
-
         if (maxHeartRate == 0)
         {
             this.maxHeartRate = calculateMaxHeartRate();
@@ -29,7 +25,7 @@ public class HeartRateService : MonoBehaviour {
         // txt.text = input;
         // heartRate = int.Parse(input);
  
-            StartCoroutine(WaitForRequest(new WWW("http://localhost:8080/api/heartrate")));
+            StartCoroutine(WaitForRequest(new WWW("http://172.23.76.194:8080/api/heartrate")));
 
 
         Debug.Log(currentHeartStatus);
@@ -43,20 +39,18 @@ public class HeartRateService : MonoBehaviour {
         // check for errors
         if (www.error == null)
         {
-            Debug.Log("WWW Ok!: " + www.data);
+            Debug.Log("WWW Ok!: " + www.text);
         }
         else {
             Debug.Log("WWW Error: " + www.error);
         }
 
-        var jsonHeartRate = JsonUtility.FromJson<HeartRate>(www.data);
-
+        var jsonHeartRate = JsonUtility.FromJson<HeartRate>(www.text);
         this.heartRate = (jsonHeartRate.heartrate);
-        txt.text = heartRate.ToString();
 
     }
 
-    private HeartStatus calculateHeartStatus()
+    public HeartStatus calculateHeartStatus()
     {
         if((this.heartRate  / this.maxHeartRate) > 0.85)
         {
@@ -74,7 +68,7 @@ public class HeartRateService : MonoBehaviour {
 
     private Double calculateMaxHeartRate()
     {
-        var age = 20;
+        var age = 50;
         int maxHeartRate = 220 - age;
         return maxHeartRate;
     }

@@ -15,8 +15,7 @@ public class pulse : MonoBehaviour
 	private float pulse_= 0f;
 	private int t=85;
 	private float a=1; //alpha control
-
-    HeartRateService hrscript;
+    private HeartRateService hrscript;
 
     void Awake()
 	{
@@ -50,19 +49,18 @@ public class pulse : MonoBehaviour
         delay = 1/pulse_;
 
         Color defaultColor = this.GetComponent<Renderer>().material.color;
-        //currentHeartStatus = HeartStatus.Optimal;
-        //switch (currentHeartStatus)
-        //{
-        //    case HeartStatus.Resting:
-        //        this.GetComponent<Renderer>().material.color = defaultColor;
-        //        break;
-        //    case HeartStatus.Optimal:
-        //        this.GetComponent<Renderer>().material.color = new Color(0.1f,1.2f,0.1f,1f);
-        //        break;
-        //    case HeartStatus.OverExert:
-        //        this.GetComponent<Renderer>().material.color = new Color(3f,0.2f,0.2f,1f);
-        //        break;
-        //}
+        switch (hrscript.calculateHeartStatus())
+        {
+            case HeartRateService.HeartStatus.Resting:
+                this.GetComponent<Renderer>().material.color = defaultColor;
+                break;
+            case HeartRateService.HeartStatus.Optimal:
+                this.GetComponent<Renderer>().material.color =  new Color(0.1f, 1.2f, 0.1f, 1f);
+                break;
+            case HeartRateService.HeartStatus.Overexerting:
+                this.GetComponent<Renderer>().material.color = new Color(3f, 0.2f, 0.2f, 1f);
+                break;
+        }
 
 
         StartCoroutine("PlayLoop",delay);
