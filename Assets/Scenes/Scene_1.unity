@@ -551,6 +551,8 @@ MonoBehaviour:
   ringCreator: {fileID: 100000, guid: 1a8323cfca871964e9393c3de12d2d32, type: 2}
   birdCamera: {fileID: 0}
   thumb: {fileID: 0}
+  isNotStarted: 1
+  isWarmingUp: 0
   age: 20
 --- !u!4 &1172479738
 Transform:
@@ -877,6 +879,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11462408, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 2}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400010, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 2}
+      propertyPath: Acceleration
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:

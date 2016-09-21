@@ -8,15 +8,16 @@ public class RingGenerator : MonoBehaviour {
 
 	Vector3 ringOrigin = Vector3.zero;
 
-	Vector3 nextRingHeight = new Vector3(0, 10f, 0);
-    Vector3 nextRingDist = Vector3.zero;
+    Vector3 nextRingPosition = new Vector3(0, 10f, 0);
 
-    Vector3 randHeight;
-    Vector3 randDist;
+    Vector3 randPos;
 
     public int difficulty = 1;
 
     int ringCount = 0;
+
+    private Engine engine;
+    bool hasInitialSpawned = false;
 
     public enum Intensity
     {
@@ -31,26 +32,52 @@ public class RingGenerator : MonoBehaviour {
 
     bool isHighIntensity = false;
 
-	void Start() {
-        for (int i = 0; i < 3; i++)
-        {
-            NewRing();
-        }
+    void Awake()
+    {
+        engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
+    }
+
+	void Start()
+    {
+
 	}
 
     void Update()
     {
-        //TODO
-        //Implement the HR level check code here
 
-        if (hrLvl == Intensity.OverExertion)
+        if(!hasInitialSpawned)
         {
-            HandleOverExertion();
+            Debug.Log("LSIDJFGHLSDGFVBKSUJHVDBFKJHSGDF");
+            if(!engine.isWarmingUp && !engine.isNotStarted)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    NewRing();
+                }
+                hasInitialSpawned = true;
+            }
         }
-        if (Input.GetKeyDown(KeyCode.P))
+
+        uint rowDistance = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<Rower>().rowDistance;
+
+        if (rowDistance < 100)
         {
-            //RingCreator();
-            NewRing();
+            // Do Nothing
+        } 
+        else
+        {
+            //TODO
+            //Implement the HR level check code here
+
+            if (hrLvl == Intensity.OverExertion)
+            {
+                HandleOverExertion();
+            }
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                //RingCreator();
+                NewRing();
+            }
         }
     }
 
@@ -121,56 +148,73 @@ public class RingGenerator : MonoBehaviour {
 
     public void HighIntensity()
     {
-        highIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
-        GameObject centre;
-        centre = Instantiate(highIntensityRing, nextRingHeight, Quaternion.identity) as GameObject;
-        //Instantiate Top and Bottom Pipes
+        //highIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
+        //GameObject centre;
+        //centre = Instantiate(highIntensityRing, nextRingPosition, Quaternion.identity) as GameObject;
+        ////Instantiate Top and Bottom Pipes
 
-        centre.transform.parent = this.transform;
-        centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+        //centre.transform.parent = this.transform;
+        //centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
 
-        centre.transform.localScale = new Vector3(5,5,1.25f);
+        //centre.transform.localScale = new Vector3(5,5,1.25f);
 
 
         //Reset height for randomization
       //  nextRingHeight = nextRingHeight;
-        nextRingDist = nextRingDist - randHeight;
+        //nextRingDist = nextRingDist - randHeight;
+
+        //// Calculation for adjusting difficulty
+        //float nextHeightMax = 8f + ((float)difficulty * 2f);
+        //float nextHeightMin = 3f + ((float)difficulty * 2f);
+
+        ////Randomize next Positions
+        //randHeight = new Vector3(0, Random.Range(nextHeightMin, nextHeightMax), 0);
+        //randDist = new Vector3(10f, 0, 0);
+
+
+        //nextRingPosition = new Vector3(0, GameObject.FindGameObjectWithTag("Player").transform.position.y, 0) + randHeight + randDist;
+        //nextRingDist = nextRingDist + randDist + randHeight;
+        highIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
 
         // Calculation for adjusting difficulty
-        float nextHeightMax = 15f + ((float)difficulty * 3f);
-        float nextHeightMin = 10f + ((float)difficulty * 3f);
+        float nextHeightMax = 8f + ((float)difficulty * 2f);
+        float nextHeightMin = 3f + ((float)difficulty * 2f);
 
         //Randomize next Positions
-        randHeight = new Vector3(0, Random.Range(nextHeightMin, nextHeightMax), 0);
-        randDist = new Vector3(Random.Range(10f, 11f), 0, 0);
+        randPos = new Vector3(10f,Random.Range(nextHeightMin, nextHeightMax), 0);
 
+        nextRingPosition = new Vector3(nextRingPosition.x, nextRingPosition.y, 0) + randPos;
 
-        nextRingHeight = nextRingHeight + randHeight + randDist;
-        nextRingDist = nextRingDist + randDist + randHeight;
+        GameObject centre;
+        centre = Instantiate(highIntensityRing, nextRingPosition, Quaternion.identity) as GameObject;
+
+        centre.transform.parent = this.transform;
+        centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+
+        centre.transform.localScale = new Vector3(5, 5, 1.25f);
     }
 
     public void LowIntensity()
     {
         lowIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.green;
 
+        randPos = new Vector3(10f, Random.Range(0f, 5f), 0);
+
+        if (ringCount > 2)
+        {
+            nextRingPosition = new Vector3(nextRingPosition.x, GameObject.FindGameObjectWithTag("Player").transform.position.y, 0) + randPos;
+        }
+        else
+        {
+            nextRingPosition = new Vector3(nextRingPosition.x, nextRingPosition.y, 0) + randPos;
+        }
+
         GameObject centre;
-        centre = Instantiate(lowIntensityRing, nextRingHeight, Quaternion.identity) as GameObject;
-        //Instantiate Top and Bottom Pipes
+        centre = Instantiate(lowIntensityRing, nextRingPosition, Quaternion.identity) as GameObject;
 
         centre.transform.parent = this.transform;
         centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
 
         centre.transform.localScale = new Vector3(5, 5, 1.25f);
-
-        //Reset height for randomization
-        nextRingHeight = nextRingHeight - randHeight;
-        nextRingDist = nextRingDist - randHeight;
-
-        //Randomize next Positions
-        randHeight = new Vector3(0, Random.Range(10f, 15f), 0);
-        randDist = new Vector3(Random.Range(10f, 11f), 0, 0);
-
-        nextRingHeight = nextRingHeight + randHeight + randDist;
-        nextRingDist = nextRingDist + randDist + randHeight;
     }
 }

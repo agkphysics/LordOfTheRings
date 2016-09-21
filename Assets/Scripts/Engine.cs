@@ -10,7 +10,8 @@ public class Engine : MonoBehaviour {
 	bool hasPipeCollider;
 
 	//GUI Bool Elements
-	bool isNotStarted = true;
+	public bool isNotStarted = true;
+    public bool isWarmingUp = true;
 	bool scoreTicker = false;
 	bool isDead = false;
 	int bestScore = 0;
@@ -54,6 +55,7 @@ public class Engine : MonoBehaviour {
 
 	public void StartGame(){
 		isNotStarted = false;
+        isWarmingUp = true;
 		scoreTicker = true;
     }
 	
@@ -103,6 +105,11 @@ public class Engine : MonoBehaviour {
         {
             // nameInputField = GUI.TextField(new Rect(10, 10, 200, 20), "Enter Age", 25);
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("First Person\nHIITCopter\nPress Space To Jump"));
+        }
+
+        if (isWarmingUp)
+        {
+            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Row To Start The CHOOOOOOOPER"));
         }
          
                
