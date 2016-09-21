@@ -44,10 +44,11 @@ public class pulse : MonoBehaviour
 			a= sliders.opacity;
 this.GetComponent<Renderer>().material.color = new Color(this.GetComponent<Renderer>().material.color.r,this.GetComponent<Renderer>().material.color.b,this.GetComponent<Renderer>().material.color.g,.65f*a);
 		}
-		pulse_ = 120f;
+		pulse_ =100f;
 		this.transform.Find("p_text").GetComponent<TextMesh>().text=pulse_.ToString();
-		delay = pulse_/ 4000f;
-		
+        delay = 1/pulse_;
+
+
         StartCoroutine("PlayLoop",delay);
 		
 		goMaterial.mainTexture = textures[frameCounter];
