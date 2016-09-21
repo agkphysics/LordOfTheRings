@@ -32,7 +32,6 @@ public class BirdController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		transform.position = startingPosition;
-		transform.RotateAround(transform.position,Vector3.forward,upAngle);
 		startingRotation = transform.rotation;
 
         GetComponent<Rigidbody>().useGravity = false;
@@ -60,9 +59,8 @@ public class BirdController : MonoBehaviour {
 
 				waitingForPlayerToStart = false;
 
-				GetComponent<Rigidbody>().freezeRotation = false;
+                //GetComponent<Rigidbody>().freezeRotation = false;
 				GetComponent<Rigidbody>().useGravity = true;
-				GetComponent<Rigidbody>().AddForce(Vector3.right*boost,ForceMode.Force);
 			}
 
 		}else{
@@ -118,14 +116,7 @@ public class BirdController : MonoBehaviour {
 					GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x,0,0);
 				}
                 GetComponent<Rigidbody>().AddForce(Vector3.up * GetComponent<RowingMachineController>().currentForce / forceDivider, ForceMode.Impulse);
-				//if(transform.rotation.eulerAngles.z<upAngle){
-				//	rotationAmount = upAngle - transform.rotation.eulerAngles.z;
-				//	transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
-				//}
-				//else if(transform.rotation.eulerAngles.z>180){
-				//	rotationAmount = 360 - (transform.rotation.eulerAngles.z - upAngle);
-				//	transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
-				//}
+
                 engine.AddToCurrentScore(50);
 				fallCount = 0;
                 
@@ -154,6 +145,7 @@ public class BirdController : MonoBehaviour {
         }
         else
         {
+            Debug.Log("LJSHBGDFLJSDBF");
             if (GetComponent<Rigidbody>().velocity.y < -3.0f)
             {
                 GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, -3.0f, 0);
@@ -176,38 +168,15 @@ public class BirdController : MonoBehaviour {
                 if (rowDistance > warmupDistance)
                 {
                     engine.isWarmingUp = false;
+                    GetComponent<Rigidbody>().AddForce(Vector3.right * boost, ForceMode.Force);
+
                 }
             }
 
             if (rowDistance > warmupDistance)
             {
                 transform.position += Vector3.right * Time.fixedDeltaTime * forwardMovement;
-                if (GetComponent<Rigidbody>().velocity.y < 0)
-                { //falling
-                    if (transform.rotation.eulerAngles.z > downAngle || transform.rotation.eulerAngles.z < 180)
-                    {
-                        if (fallCount < 10)
-                        {
-                            //Debug.Log ("small fall");
-                            transform.RotateAround(transform.position, Vector3.forward, -.5f);
-                        }
-                        else
-                        {
-                            //drop rotation until it's facing is almost down (-80 degrees?)
-                            //Debug.Log ("larger fall");
-                            transform.RotateAround(transform.position, Vector3.forward, -2);
-                        }
-                    }
-                    fallCount++;
-                }
-                else
-                {
-                    //increase rotation on Z until bird is facing in proper up direction
-                    if (transform.rotation.eulerAngles.z < upAngle)
-                    {
-                        transform.RotateAround(transform.position, Vector3.forward, 2);
-                    }
-                }
+               
             }
 		}
 	}
@@ -216,20 +185,11 @@ public class BirdController : MonoBehaviour {
 	    if (obj.gameObject.tag.Equals("ring"))
 	    {
 
-	       // engine.AddToCurrentScore(500);
             
 	    }
 	    else
 	    {
-            //Debug.Log("Game Over");
-            //GetComponent<Rigidbody>().useGravity = false;
-            //waitingForPlayerToStart = true;
-            //GetComponent<Rigidbody>().velocity = Vector3.zero;
-            //GetComponent<Rigidbody>().freezeRotation = true;
-            //Debug.Log("current rotation = " + transform.rotation);
-            //engine.Die();
-            //engine.CompareCurrentScoreToBest();
-            //scoreboard = true;
+
 	    }
 	}
 
