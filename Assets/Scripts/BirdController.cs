@@ -118,14 +118,14 @@ public class BirdController : MonoBehaviour {
 					GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x,0,0);
 				}
                 GetComponent<Rigidbody>().AddForce(Vector3.up * GetComponent<RowingMachineController>().currentForce / forceDivider, ForceMode.Impulse);
-				if(transform.rotation.eulerAngles.z<upAngle){
-					rotationAmount = upAngle - transform.rotation.eulerAngles.z;
-					transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
-				}
-				else if(transform.rotation.eulerAngles.z>180){
-					rotationAmount = 360 - (transform.rotation.eulerAngles.z - upAngle);
-					transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
-				}
+				//if(transform.rotation.eulerAngles.z<upAngle){
+				//	rotationAmount = upAngle - transform.rotation.eulerAngles.z;
+				//	transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
+				//}
+				//else if(transform.rotation.eulerAngles.z>180){
+				//	rotationAmount = 360 - (transform.rotation.eulerAngles.z - upAngle);
+				//	transform.RotateAround(transform.position,Vector3.forward,rotationAmount *.5f);
+				//}
                 engine.AddToCurrentScore(50);
 				fallCount = 0;
                 

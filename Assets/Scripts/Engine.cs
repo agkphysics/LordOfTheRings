@@ -27,7 +27,7 @@ public class Engine : MonoBehaviour {
 		Instantiate(light);
 		Instantiate(floor);
         //Instantiate(background);
-        Instantiate(bird);
+        //Instantiate(bird);
 		Instantiate(ringCreator);
 
 
