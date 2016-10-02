@@ -42,6 +42,11 @@ public class BirdController : MonoBehaviour {
 
 	void Update(){
 
+        if (Input.GetKey(KeyCode.F12))
+        {
+            UnityEngine.VR.InputTracking.Recenter();
+        }
+
         //if(scoreboard){
         //    if(Input.GetKeyDown(KeyCode.Space) && scoreShowingCount<1){
         //        scoreShowingCount++;
@@ -51,7 +56,7 @@ public class BirdController : MonoBehaviour {
         //        scoreboard = false;
         //    }
         //}else 
-        if(waitingForPlayerToStart){
+        if (waitingForPlayerToStart){
 			if(Input.GetKeyDown(KeyCode.Space)){
 				scoreShowingCount = 0;
 

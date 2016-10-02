@@ -11,8 +11,14 @@ public class HeartRateService : MonoBehaviour {
     private Double maxHeartRate = 0;
     public HeartStatus currentHeartStatus = HeartStatus.Resting;
 
+    public Config config;
+
+    public float timeBetweenAPICalls = 1.0f;
+    private float time;
+
     // Use this for initialization
     void Start () {
+        time = timeBetweenAPICalls;
         if (maxHeartRate == 0)
         {
             this.maxHeartRate = calculateMaxHeartRate();
@@ -21,11 +27,17 @@ public class HeartRateService : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        // string input = System.IO.File.ReadAllText(@"C:\Users\ofekw\AppData\Local\Packages\Microsoft.SDKSamples.BluetoothGattHeartRate.CS_8wekyb3d8bbwe\LocalState\heartrate.txt");
-        // txt.text = input;
-        // heartRate = int.Parse(input);
- 
-            StartCoroutine(WaitForRequest(new WWW("http://172.23.76.194:8080/api/heartrate")));
+
+        timeBetweenAPICalls -= Time.deltaTime;
+
+        string config = System.IO.File.ReadAllText(Application.dataPath + "/config.json");
+        this.config = JsonUtility.FromJson<Config>(config);
+
+        if (timeBetweenAPICalls <= 0)
+        {
+            StartCoroutine(WaitForRequest(new WWW(this.config.api)));
+            time = timeBetweenAPICalls;
+        }
 
 
         Debug.Log(currentHeartStatus);
@@ -68,7 +80,7 @@ public class HeartRateService : MonoBehaviour {
 
     private Double calculateMaxHeartRate()
     {
-        var age = 50;
+        var age = this.config.age;
         int maxHeartRate = 220 - age;
         return maxHeartRate;
     }
@@ -78,5 +90,12 @@ public class HeartRateService : MonoBehaviour {
     {
         public String time;
         public int heartrate;
+    }
+
+    [Serializable]
+    public class Config
+    {
+        public int age;
+        public string api;
     }
 }
