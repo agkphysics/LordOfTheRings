@@ -9,7 +9,7 @@ public class BirdController : MonoBehaviour {
 	public float boost = 20f;
 	public float forwardMovement = 2f;
 	public int upAngle=45, downAngle=280; //-80 degrees
-    public float forceDivider = 8.0f; // lower is faster
+    public float forceMultiplier = 10; // lower is faster
 
     public int workoutPhase = 0; //0 menu screen, 1 warmup, 2 intervals
 
@@ -25,6 +25,10 @@ public class BirdController : MonoBehaviour {
 	private float rotationAmount;
 
     public uint warmupDistance;
+    public uint warmupPowerSum = 0;
+    public int warmupCount = 0;
+    public float warmupAverage = 0;
+
 	
 	void Awake(){
 		engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
@@ -98,16 +102,23 @@ public class BirdController : MonoBehaviour {
             //else 
             if (engine.isWarmingUp)
             {
-                
+
 
                 //Show WarmUP progress here
 
+                // DELETE THIS
+                if (Input.GetKeyDown(KeyCode.Space)){ engine.isWarmingUp = false;}
+                // DELETE THIS
 
-                if (Input.GetKeyDown(KeyCode.Space) || gameObject.GetComponent<RowingMachineController>().waitingRow)
+
+                if (gameObject.GetComponent<RowingMachineController>().waitingRow)
                 {
+                    warmupPowerSum += GetComponent<RowingMachineController>().currentForce;
+                    warmupCount++;
+
                     gameObject.GetComponent<RowingMachineController>().waitingRow = false;
 
-                    GetComponent<Rigidbody>().AddForce(Vector3.up * GetComponent<RowingMachineController>().currentForce / (forceDivider), ForceMode.Impulse);
+                    GetComponent<Rigidbody>().AddForce(Vector3.up * (GetComponent<RowingMachineController>().currentForce / warmupAverage) * forceMultiplier, ForceMode.Impulse);
 
                     fallCount = 0;
                 }
@@ -121,7 +132,7 @@ public class BirdController : MonoBehaviour {
 				if(GetComponent<Rigidbody>().velocity.y<0){
 					GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x,0,0);
 				}
-                GetComponent<Rigidbody>().AddForce(Vector3.up * GetComponent<RowingMachineController>().currentForce / forceDivider, ForceMode.Impulse);
+                GetComponent<Rigidbody>().AddForce(Vector3.up * (GetComponent<RowingMachineController>().currentForce / warmupAverage) * forceMultiplier, ForceMode.Impulse);
 
                 engine.AddToCurrentScore(50);
 				fallCount = 0;
@@ -167,17 +178,15 @@ public class BirdController : MonoBehaviour {
 		if(!waitingForPlayerToStart){
             uint rowDistance = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<Rower>().rowDistance;
 
-            if (engine.isWarmingUp)
-            {
+            //if (engine.isWarmingUp)
+            //{
+                //if (rowDistance > warmupDistance)
+                //{
+                //    engine.isWarmingUp = false;
+                //    GetComponent<Rigidbody>().AddForce(Vector3.right * boost, ForceMode.Force);
 
-
-                if (rowDistance > warmupDistance)
-                {
-                    engine.isWarmingUp = false;
-                    GetComponent<Rigidbody>().AddForce(Vector3.right * boost, ForceMode.Force);
-
-                }
-            }
+                //}
+            //}
 
             if (rowDistance > warmupDistance)
             {

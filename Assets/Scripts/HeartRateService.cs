@@ -13,12 +13,11 @@ public class HeartRateService : MonoBehaviour {
 
     public Config config;
 
-    public float timeBetweenAPICalls = 1.0f;
     private float time;
 
     // Use this for initialization
     void Start () {
-        time = timeBetweenAPICalls;
+        time = Time.time;
         if (maxHeartRate == 0)
         {
             this.maxHeartRate = calculateMaxHeartRate();
@@ -28,16 +27,16 @@ public class HeartRateService : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        timeBetweenAPICalls -= Time.deltaTime;
-
         string config = System.IO.File.ReadAllText(Application.dataPath + "/config.json");
         this.config = JsonUtility.FromJson<Config>(config);
 
-        if (timeBetweenAPICalls <= 0)
+        if (time + 1.0f <= Time.time)
         {
             StartCoroutine(WaitForRequest(new WWW(this.config.api)));
-            time = timeBetweenAPICalls;
+            time = Time.time;
         }
+
+        this.currentHeartStatus = calculateHeartStatus();
 
 
         Debug.Log(currentHeartStatus);
@@ -65,6 +64,11 @@ public class HeartRateService : MonoBehaviour {
             this.heartRate = default_heart_rate;
         }
 
+        if (www.text.Length != 0)
+        {
+            var jsonHeartRate = JsonUtility.FromJson<HeartRate>(www.text);
+            this.heartRate = (jsonHeartRate.heartrate);
+        }
     }
 
     public HeartStatus calculateHeartStatus()
@@ -86,7 +90,7 @@ public class HeartRateService : MonoBehaviour {
     private Double calculateMaxHeartRate()
     {
         var age = this.config.age;
-        int maxHeartRate = 220 - age;
+        double maxHeartRate = (208 - (0.7*age));
         return maxHeartRate;
     }
 

@@ -23,6 +23,7 @@ GameObject:
   - 23: {fileID: 23000011087977432}
   - 65: {fileID: 65000011928183164}
   - 114: {fileID: 114000010370901486}
+  - 95: {fileID: 95000012143071604}
   m_Layer: 0
   m_Name: LowIntensityRing
   m_TagString: ring
@@ -91,6 +92,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.998426, y: 2, z: 0.01}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &95000012143071604
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012654075858}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8c5734e846bbd5749b521c728377cb7c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114000010370901486
 MonoBehaviour:
   m_ObjectHideFlags: 1
