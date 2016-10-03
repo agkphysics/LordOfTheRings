@@ -18,6 +18,7 @@ public class Engine : MonoBehaviour {
 	int bestScore = 0;
 	int score = 0;
     public int age = 20;
+    public float warmupTime = 30;
 
     public object InputFieldEventSystemManager { get; private set; }
 
@@ -57,7 +58,8 @@ public class Engine : MonoBehaviour {
 	public void StartGame(){
 		isNotStarted = false;
         isWarmingUp = true;
-		scoreTicker = true;
+        warmupTime += Time.time;
+        scoreTicker = true;
     }
 	
 	public void Die(){
@@ -78,29 +80,24 @@ public class Engine : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		//if(!hasPipeCollider){
-		//	GameObject go = GameObject.FindWithTag("ringCollider");
-		//	if(go!=null){
-  //              //ringCollider = GameObject.FindWithTag("ringCollider").GetComponent<RingCollider>();
-		//		hasPipeCollider = true;
-		//	}
-		//}
+        if(isWarmingUp)
+        {
 
+            if(Time.time > (warmupTime))
+            {
+                isWarmingUp = false;
+                BirdController birdController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
+                birdController.warmupAverage = birdController.warmupPowerSum / birdController.warmupCount;
+                Debug.LogError("Average power is: " + birdController.warmupAverage);
+                //GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().AddForce(Vector3.right * 20f, ForceMode.Force);
+            }
+        }
 
-		//		if(Input.GetKey(KeyCode.E)){
-		//			if(Input.GetKey(KeyCode.A)){
-		//				if(Input.GetKey(KeyCode.T)){
-		//					Debug.Log ("Cheat code entered");
-		//					Destroy(birdCamera);
-		//				}
-		//			}
-		//		}
-	
-	}
+    }
 
 
 
-	void OnGUI () {
+    void OnGUI () {
         GUI.skin = skin;
         if (isNotStarted)
         {

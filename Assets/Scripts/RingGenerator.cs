@@ -19,14 +19,9 @@ public class RingGenerator : MonoBehaviour {
     private Engine engine;
     bool hasInitialSpawned = false;
 
-    public enum Intensity
-    {
-        Low, Optimal, OverExertion
-    };
-
     //This is abut 36 seconds long.
     public int ringsPerInterval = 20;
-    public Intensity hrLvl = Intensity.Low;
+    public HeartRateService.HeartStatus hrLvl;
 
     //Vector3 randPipeSeparation;
 
@@ -59,18 +54,16 @@ public class RingGenerator : MonoBehaviour {
 
         uint rowDistance = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<Rower>().rowDistance;
 
-        if (rowDistance < 100)
+        if (!engine.isWarmingUp)
         {
-            // Do Nothing
-        } 
-        else
-        {
-            //TODO
-            //Implement the HR level check code here
+            hrLvl = GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().currentHeartStatus;
 
-            if (hrLvl == Intensity.OverExertion)
+            if (hrLvl == HeartRateService.HeartStatus.Overexerting)
             {
-                HandleOverExertion();
+                if (isHighIntensity == true)
+                {
+                    HandleOverExertion();
+                }
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
@@ -102,14 +95,14 @@ public class RingGenerator : MonoBehaviour {
     {
         ringCount = 0;
         //If heart rate is dangerously high, go to a low intensity interval.
-        if (hrLvl == Intensity.OverExertion)
+        if (hrLvl == HeartRateService.HeartStatus.Overexerting)
         {
             isHighIntensity = false;
             DecreaseDifficulty();
             return;
         } 
         // Case where in high intensity interval but low heart rate. Increase difficulty of next high intensity
-        else if (isHighIntensity && hrLvl == Intensity.Low)
+        else if (isHighIntensity && hrLvl == HeartRateService.HeartStatus.Resting)
         {
             IncreaseDifficulty();
             isHighIntensity = false;
@@ -122,8 +115,7 @@ public class RingGenerator : MonoBehaviour {
     // Called when user is overexerted 
     void HandleOverExertion()
     {
-        ringCount = 0;
-        isHighIntensity = false;
+        PhaseChange();
     }
 
     void DecreaseDifficulty()
@@ -199,7 +191,7 @@ public class RingGenerator : MonoBehaviour {
 
         randPos = new Vector3(10f, Random.Range(0f, 5f), 0);
 
-        if (ringCount > 2)
+        if (ringCount > 2 && GameObject.FindGameObjectWithTag("Player").transform.position.y < (nextRingPosition.y - 20.0f))
         {
             nextRingPosition = new Vector3(nextRingPosition.x, GameObject.FindGameObjectWithTag("Player").transform.position.y, 0) + randPos;
         }

@@ -266,6 +266,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
+      propertyPath: forceMultiplier
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
   m_IsPrefabParent: 0
@@ -507,6 +511,10 @@ Prefab:
     - target: {fileID: 4000013290318424, guid: 823d22d1a74ebc74587e0b4a3287960d, type: 2}
       propertyPath: m_RootOrder
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013359408488, guid: 823d22d1a74ebc74587e0b4a3287960d, type: 2}
+      propertyPath: m_TagString
+      value: HRMonitor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 823d22d1a74ebc74587e0b4a3287960d, type: 2}
@@ -810,6 +818,7 @@ MonoBehaviour:
   isNotStarted: 1
   isWarmingUp: 1
   age: 20
+  warmupTime: 10
 --- !u!4 &1172479738
 Transform:
   m_ObjectHideFlags: 0
