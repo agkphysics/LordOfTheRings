@@ -18,6 +18,7 @@ TagManager:
   - pipe
   - RowingMachine
   - HRMonitor
+  - Warp
   layers:
   - Default
   - TransparentFX

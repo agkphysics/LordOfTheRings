@@ -86,6 +86,7 @@ public class Engine : MonoBehaviour {
             if(Time.time > (warmupTime))
             {
                 isWarmingUp = false;
+                GameObject.FindGameObjectWithTag("Warp").GetComponent<WarpSpeed>().Disengage();
                 BirdController birdController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
                 birdController.warmupAverage = birdController.warmupPowerSum / birdController.warmupCount;
                 Debug.LogError("Average power is: " + birdController.warmupAverage);
