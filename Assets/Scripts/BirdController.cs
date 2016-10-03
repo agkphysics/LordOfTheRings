@@ -29,8 +29,11 @@ public class BirdController : MonoBehaviour {
     public int warmupCount = 0;
     public float warmupAverage = 0;
 
-	
-	void Awake(){
+    public float timeBetweenlogging = 1.0f;
+    private float time;
+
+
+    void Awake(){
 		engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
 	}
 
@@ -42,10 +45,18 @@ public class BirdController : MonoBehaviour {
         GetComponent<Rigidbody>().useGravity = false;
 		waitingForPlayerToStart = true;
         GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, 0, 0);
+        time = timeBetweenlogging;
 
-	}
+    }
 
-	void Update(){
+    void Update() {
+        time -= Time.deltaTime;
+
+        if (time <= 0)
+        { 
+            LogData();
+            time = timeBetweenlogging;
+        }
 
         if (Input.GetKey(KeyCode.F12))
         {
@@ -102,7 +113,6 @@ public class BirdController : MonoBehaviour {
             //else 
             if (engine.isWarmingUp)
             {
-
 
                 //Show WarmUP progress here
 
@@ -232,10 +242,14 @@ public class BirdController : MonoBehaviour {
     {
         Power force = new Power(Time.time.ToString(), GetComponent<RowingMachineController>().currentForce);
         Distance distance = new Distance(Time.time.ToString(), GetComponent<RowingMachineController>().distanceTravelled);
-        HeartRate heartRate = new HeartRate( Time.time.ToString(), GetComponent<HeartRateService>().heartRate);
+        HeartRate heartRate = new HeartRate( Time.time.ToString(), GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().heartRate);
 
         var logger = GetComponent<LoggerService>();
         logger.heartRate.Enqueue(heartRate);
+        logger.distance.Enqueue(distance);
+        logger.power.Enqueue(force);
+
+        logger.Log();
     }
 }
 
@@ -250,6 +264,11 @@ public class HeartRate
         this.time = time;
         this.heartrate = data;
     }
+
+    public override string ToString()
+    {
+        return this.time + "," + this.heartrate;
+    }
 }
 
 [Serializable]
@@ -263,6 +282,11 @@ public class Power
         this.time = time;
         this.power = data;
     }
+
+    public override string ToString()
+    {
+        return this.time + "," + this.power;
+    }
 }
 [Serializable]
 public class Distance
@@ -273,5 +297,10 @@ public class Distance
     {
         this.time = time;
         this.distance = data;
+    }
+
+    public override string ToString()
+    {
+        return this.time + "," + this.distance;
     }
 }
