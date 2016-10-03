@@ -46,7 +46,7 @@ public class RingGenerator : MonoBehaviour {
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    NewRing();
+                    firstRings();
                 }
                 hasInitialSpawned = true;
             }
@@ -208,4 +208,20 @@ public class RingGenerator : MonoBehaviour {
 
         centre.transform.localScale = new Vector3(5, 5, 1.25f);
     }
+
+    public void firstRings()
+    {
+        lowIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.green;
+
+        nextRingPosition = new Vector3(nextRingPosition.x, GameObject.FindGameObjectWithTag("Player").transform.position.y, 0);
+  
+        GameObject centre;
+        centre = Instantiate(lowIntensityRing, nextRingPosition, Quaternion.identity) as GameObject;
+
+        centre.transform.parent = this.transform;
+        centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+
+        centre.transform.localScale = new Vector3(5, 5, 1.25f);
+    }
+
 }

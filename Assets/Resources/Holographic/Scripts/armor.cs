@@ -54,7 +54,7 @@ public class armor : MonoBehaviour
 
         armor_ = rowerScript.rowPower;
         Debug.Log(armor_);		
-		frameCounter=(int)Mathf.Round((100f-armor_)/5.263f);
+		frameCounter=(int)Mathf.Round((300f - armor_) / 15.781f);
 		goMaterial.mainTexture = textures[frameCounter];
 
 	}

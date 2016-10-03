@@ -12,54 +12,51 @@ public class LoggerService : MonoBehaviour {
     public float timeBetweenlogging = 1.0f;
     private float time;
 
-    private static string LOGGER_PATH = Environment.SpecialFolder.MyDocuments + "LOGGER_" + DateTime.Now.ToString();
+    private static string LOGGER_PATH;
     private const string HEART_RATE = "_heart_rate";
     private const string POWER = "_power";
     private const string DISTANCE = "_distance";
 
     private Component birdController;
 
+    void Awake()
+    {
+        LOGGER_PATH = Application.persistentDataPath + "/LOGGER_" + DateTime.Now.Ticks.ToString();
+    }
     // Use this for initialization
     void Start () {
         birdController = GetComponent<BirdController>();
     }
 	
 	// Update is called once per frame
-	void Update () {
-        timeBetweenlogging -= Time.deltaTime;
+	public void Log()
+    {
+        // convert each queue to string,
 
-        if (timeBetweenlogging <= 0)
+        string heartRateJson = "";
+        while(heartRate.Count > 0)
         {
-            // convert each queue to string,
-
-            string heartRateJson = "";
-            while(heartRate.Count > 0)
-            {
-                HeartRate data = heartRate.Dequeue();
-                heartRateJson += JsonUtility.ToJson(data) +"\n";
-            }
-            
-            string powerJson = "";
-            while (power.Count > 0)
-            {
-                Power data = power.Dequeue();
-                powerJson += JsonUtility.ToJson(data) + "\n";
-            }
-
-            string distanceJson = "";
-            while (distance.Count > 0)
-            {
-                Distance data = distance.Dequeue();
-                distanceJson += JsonUtility.ToJson(data) + "\n";
-            }
-
-            // write each metric to files
-            File.AppendAllText(LOGGER_PATH + HEART_RATE, heartRateJson);
-            File.AppendAllText(LOGGER_PATH + POWER, powerJson);
-            File.AppendAllText(LOGGER_PATH + DISTANCE, distanceJson);
-
-            //reset timer
-            time = timeBetweenlogging;
+            HeartRate data = heartRate.Dequeue();
+            heartRateJson += data.ToString() + "\n";
         }
+            
+        string powerJson = "";
+        while (power.Count > 0)
+        {
+            Power data = power.Dequeue();
+            powerJson += data.ToString() + "\n";
+        }
+
+        string distanceJson = "";
+        while (distance.Count > 0)
+        {
+            Distance data = distance.Dequeue();
+            distanceJson += data.ToString() + "\n";
+        }
+
+        // write each metric to files
+        File.AppendAllText(LOGGER_PATH + HEART_RATE, heartRateJson);
+        File.AppendAllText(LOGGER_PATH + POWER, powerJson);
+        File.AppendAllText(LOGGER_PATH + DISTANCE, distanceJson);
     }
 }
