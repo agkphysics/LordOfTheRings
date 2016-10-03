@@ -6,7 +6,7 @@ public class BirdController : MonoBehaviour {
 
 	public GameObject ringCollider;
 
-	public float boost = 20f;
+	public float boost = 10f;
 	public float forwardMovement = 2f;
 	public int upAngle=45, downAngle=280; //-80 degrees
     public float forceMultiplier = 10; // lower is faster
@@ -128,7 +128,7 @@ public class BirdController : MonoBehaviour {
 
                     gameObject.GetComponent<RowingMachineController>().waitingRow = false;
 
-                    GetComponent<Rigidbody>().AddForce(Vector3.up * (GetComponent<RowingMachineController>().currentForce / warmupAverage) * forceMultiplier, ForceMode.Impulse);
+                    GetComponent<Rigidbody>().AddForce(Vector3.up * (GetComponent<RowingMachineController>().currentForce / boost) * forceMultiplier, ForceMode.Impulse);
 
                     fallCount = 0;
                 }
