@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class BirdController : MonoBehaviour {
 
@@ -217,4 +218,51 @@ public class BirdController : MonoBehaviour {
         engine.AddToCurrentScore(500);
 		Destroy (scorebox.gameObject);
 	}
+
+    void LogData()
+    {
+        Power force = new Power(Time.time.ToString(), GetComponent<RowingMachineController>().currentForce);
+        Distance distance = new Distance(Time.time.ToString(), GetComponent<RowingMachineController>().distanceTravelled);
+        HeartRate heartRate = new HeartRate( Time.time.ToString(), GetComponent<HeartRateService>().heartRate);
+
+        var logger = GetComponent<LoggerService>();
+        logger.heartRate.Enqueue(heartRate);
+    }
+}
+
+[Serializable]
+public class HeartRate
+{
+    public String time;
+    public double heartrate;
+
+    public HeartRate(String time, double data)
+    {
+        this.time = time;
+        this.heartrate = data;
+    }
+}
+
+[Serializable]
+public class Power
+{
+    public String time;
+    public double power;
+
+    public Power(String time, double data)
+    {
+        this.time = time;
+        this.power = data;
+    }
+}
+[Serializable]
+public class Distance
+{
+    public String time;
+    public double distance;
+    public Distance(String time, double data)
+    {
+        this.time = time;
+        this.distance = data;
+    }
 }

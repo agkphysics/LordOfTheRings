@@ -11,6 +11,7 @@ public class RowingMachineController : MonoBehaviour {
 
     public bool waitingRow = false;
     public uint waitingDistance;
+    public uint distanceTravelled; 
     public uint currentForce;
 
 
@@ -41,6 +42,7 @@ public class RowingMachineController : MonoBehaviour {
 
     void Row(uint distance, uint power, uint pace)
     {
+        distanceTravelled = distance;
         waitingDistance = distance - oldDistance;
         waitingRow = true;
 

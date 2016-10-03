@@ -6,7 +6,7 @@ using System;
 public class HeartRateService : MonoBehaviour {
 
     public enum HeartStatus { Resting, Optimal, Overexerting};
-
+    public const Double default_heart_rate = 70.0;
     public Double heartRate = 0;
     private Double maxHeartRate = 0;
     public HeartStatus currentHeartStatus = HeartStatus.Resting;
@@ -56,9 +56,14 @@ public class HeartRateService : MonoBehaviour {
         else {
             Debug.Log("WWW Error: " + www.error);
         }
-
-        var jsonHeartRate = JsonUtility.FromJson<HeartRate>(www.text);
-        this.heartRate = (jsonHeartRate.heartrate);
+        if (www.text != null && www.text.Length >0 )
+        {
+            var jsonHeartRate = JsonUtility.FromJson<HeartRate>(www.text);
+            this.heartRate = (jsonHeartRate.heartrate);
+        } else
+        {
+            this.heartRate = default_heart_rate;
+        }
 
     }
 
