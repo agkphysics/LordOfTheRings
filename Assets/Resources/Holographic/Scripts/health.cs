@@ -55,7 +55,7 @@ public class health : MonoBehaviour
 this.GetComponent<Renderer>().material.color = new Color(this.GetComponent<Renderer>().material.color.r,this.GetComponent<Renderer>().material.color.b,this.GetComponent<Renderer>().material.color.g,.65f*a);
 		}
         health_ = rowerScript.rowPower;
-		frameCounter=(int)Mathf.Round((100f-health_)/5.263f);
+		frameCounter=(int)Mathf.Round((300f-health_)/15.781f);
 		goMaterial.mainTexture = textures[frameCounter];
 
 	}
