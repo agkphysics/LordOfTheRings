@@ -37,14 +37,12 @@ public class Engine : MonoBehaviour {
 
 	public void AddToCurrentScore(int value)
 	{
-        Text scoreText = GameObject.Find("Score").GetComponent<Text>() as Text;
-	    //Text scoreText = GetComponent("Score") as Text;
-		score+= value;
-	    if (scoreText != null)
-	    {
-	        scoreText.text = score.ToString();
-	    }
-	}
+        String scoreText = GameObject.Find("Score").GetComponent<TextMesh>().text;
+        Debug.LogError("Before:"+scoreText);
+        int scoreValue = Int32.Parse(scoreText) + value;
+        GameObject.Find("Score").GetComponent<TextMesh>().text = scoreValue.ToString();
+
+    }
 
     private void GetComponent<T>(string v)
     {
