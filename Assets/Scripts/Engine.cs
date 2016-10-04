@@ -106,18 +106,8 @@ public class Engine : MonoBehaviour {
 
         if (isWarmingUp)
         {
-            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Row To Start The CHOOOOOOOPER"));
+            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Row To Start The CHOOOOOOOPER"));
         }
-
-        if (isWarmingUp)
-        {
-            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Row To Start The CHOOOOOOOPER"));
-        }
-         
-               
-
-        //if (scoreTicker)
-        //	GUI.Box (new Rect (Screen.width/2-25, 20, 50, 50), new GUIContent (""+score+""));		
 
         if (isDead) {
 			//show score screen gui
