@@ -38,7 +38,7 @@ public class Engine : MonoBehaviour {
 	public void AddToCurrentScore(int value)
 	{
         String scoreText = GameObject.Find("Score").GetComponent<TextMesh>().text;
-        Debug.LogError("Before:"+scoreText);
+        //Debug.LogError("Before:"+scoreText);
         int scoreValue = Int32.Parse(scoreText) + value;
         GameObject.Find("Score").GetComponent<TextMesh>().text = scoreValue.ToString();
 
@@ -106,7 +106,7 @@ public class Engine : MonoBehaviour {
 
         if (isWarmingUp)
         {
-            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Row To Start The CHOOOOOOOPER"));
+            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Row to escape from light warp"));
         }
 
         if (isDead) {

@@ -172,7 +172,7 @@ public class RingGenerator : MonoBehaviour {
         float nextHeightMin = 3f + ((float)difficulty * 2f);
 
         //Randomize next Positions
-        randPos = new Vector3(10f,Random.Range(nextHeightMin, nextHeightMax), 0);
+        randPos = new Vector3(15f,Random.Range(nextHeightMin, nextHeightMax), 0);
 
         nextRingPosition = new Vector3(nextRingPosition.x, nextRingPosition.y, 0) + randPos;
 
@@ -189,7 +189,7 @@ public class RingGenerator : MonoBehaviour {
     {
         lowIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.green;
 
-        randPos = new Vector3(10f, Random.Range(0f, 5f), 0);
+        randPos = new Vector3(15f, Random.Range(0f, 5f), 0);
 
         if (ringCount > 2 && GameObject.FindGameObjectWithTag("Player").transform.position.y < (nextRingPosition.y - 20.0f))
         {
