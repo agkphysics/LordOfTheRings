@@ -25,7 +25,7 @@ public class RingGenerator : MonoBehaviour {
 
     //Vector3 randPipeSeparation;
 
-    bool isHighIntensity = false;
+    public bool isHighIntensity = false;
 
     void Awake()
     {

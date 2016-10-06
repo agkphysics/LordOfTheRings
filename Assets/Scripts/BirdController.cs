@@ -122,6 +122,9 @@ public class BirdController : MonoBehaviour {
                     //GetComponent<Rigidbody>().AddForce(Vector3.up * (GetComponent<RowingMachineController>().currentForce / boost) * forceMultiplier, ForceMode.Impulse);
                     GetComponent<Rigidbody>().velocity = new Vector3(0, (GetComponent<RowingMachineController>().currentForce) * forceMultiplier);
                     fallCount = 0;
+                    Debug.Log(GetComponent<RowingMachineController>().currentForce);
+                    Debug.Log("warming up");
+
                 }
             }
             else if (Input.GetKeyDown(KeyCode.Space))
@@ -146,6 +149,8 @@ public class BirdController : MonoBehaviour {
                 }
                 GetComponent<Rigidbody>().AddForce(Vector3.up * (GetComponent<RowingMachineController>().currentForce / warmupAverage) * forceMultiplier, ForceMode.Impulse);
 
+                Debug.Log(GetComponent<RowingMachineController>().currentForce / warmupAverage);
+
                 engine.AddToCurrentScore(50);
                 fallCount = 0;
             }
@@ -157,7 +162,6 @@ public class BirdController : MonoBehaviour {
             if (GetComponent<Rigidbody>().velocity.y < 0)
             {
                 GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-                Debug.Log("Else clamp the y velocity");
 
             }
             else if (GetComponent<Rigidbody>().velocity.y > 3.0f)
@@ -167,19 +171,18 @@ public class BirdController : MonoBehaviour {
             else
             {
                 GetComponent<Rigidbody>().velocity = new Vector3(0, GetComponent<Rigidbody>().velocity.y, 0);
-                Debug.Log("Else reachedf");
 
             }
         }
         else
         {
-            Debug.Log("LJSHBGDFLJSDBF");
             if (GetComponent<Rigidbody>().velocity.y < -3.0f)
             {
                 GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, -3.0f, 0);
             }
             if (GetComponent<Rigidbody>().velocity.y > 10.0f)
             {
+                Debug.Log("Max y reached");
                 GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, 10.0f, 0);
             }
         }
@@ -241,7 +244,7 @@ public class BirdController : MonoBehaviour {
 
     void LogData()
     {
-        Power force = new Power(Time.time.ToString(), GetComponent<RowingMachineController>().currentForce);
+        Power force = new Power(Time.time.ToString(), GetComponent<RowingMachineController>().currentForce, GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().isHighIntensity);
         Distance distance = new Distance(Time.time.ToString(), GetComponent<RowingMachineController>().distanceTravelled);
         HeartRate heartRate = new HeartRate( Time.time.ToString(), GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().heartRate);
 
@@ -276,17 +279,19 @@ public class HeartRate
 public class Power
 {
     public String time;
+    public bool intervalType;
     public double power;
 
-    public Power(String time, double data)
+    public Power(String time, double data, bool interval)
     {
         this.time = time;
         this.power = data;
+        this.intervalType = interval;
     }
 
     public override string ToString()
     {
-        return this.time + "," + this.power;
+        return this.time + "," + this.power + "," + this.intervalType;
     }
 }
 [Serializable]

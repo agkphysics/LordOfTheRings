@@ -37,10 +37,6 @@ public class HeartRateService : MonoBehaviour {
         }
 
         this.currentHeartStatus = calculateHeartStatus();
-
-
-        Debug.Log(currentHeartStatus);
-
     }
 
     IEnumerator WaitForRequest(WWW www)
@@ -73,11 +69,11 @@ public class HeartRateService : MonoBehaviour {
 
     public HeartStatus calculateHeartStatus()
     {
-        if((this.heartRate  / this.maxHeartRate) > 0.85)
+        if((this.heartRate  / this.maxHeartRate) > 0.90)
         {
             return HeartStatus.Overexerting;
         }
-        else if ((this.heartRate / this.maxHeartRate) > 0.50)
+        else if ((this.heartRate / this.maxHeartRate) > 0.70)
         {
             return HeartStatus.Optimal;
         }
