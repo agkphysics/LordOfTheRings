@@ -1,4 +1,4 @@
-# HITT (High Intensity Interval Training) Copter
+# HIIT (High Intensity Interval Training) Copter
 
 Game demo can be seen here: https://www.youtube.com/watch?v=QqtGDxjESN0
 
