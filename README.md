@@ -1,5 +1,12 @@
 # HIIT (High Intensity Interval Training) Copter
 
+Research has shown that intense cardiovascular exercise has been proven to be an effective means to maintaining good health and improving fitness levels. This cardio is called High Intensity Interval Training. The concept of interval training is the transition from low-moderate intensity intervals to very high intensity intervals. However, this form of exercise is very demanding and can be tedious, which can lead to discouragement and a lack of motivation by the end user.
+
+This repo has a proof of concept, novel exergame which successfully and implicitly induces a HIIT workout; masking the tiresome nature of an explosive cardiovascular workout whilst attempting to mitigate overexertion. This is achieved through an immersive yet simple game environment that subtly and intuitively enforces periods of high intensity work. This is accomplished without explicitly instructing the player to perform high intensity work.  The game employs novel algorithms that creates a curated procedurally generated world, which intuitively forces the user into high intensity and low intensity exercise.
+
+Our user study demonstrates a statistically significant increase in exercise engagement and motivation when using the exergame when compared to a workout following pre-recorded instruction. By employing an exercise machine that directly translates real world actions into the game world and the inclusion of a virtual reality headset; players were left immersed and engaged. This led to levels of engagement that seemed to offset the deterrence and loss of enthusiasm associated with intense physical exertion. 
+
+
 Game demo can be seen here:
 
 [![HIIT Copter promo](http://img.youtube.com/vi/QqtGDxjESN0/0.jpg)](http://www.youtube.com/watch?v=QqtGDxjESN0)
