@@ -31,7 +31,7 @@ Patrick
 # How To setup and use heartrate service:
 * Clone this repo: https://github.com/Ofekw/hiitcopter-heartrate-service
 * Install Node.js
-* Open up the solution and run it in Visual Studio (you may need to install dependencies first such as the unviersal store SDK)
+* Open up the solution and run it in Visual Studio (you may need to install dependencies first such as the unviersal store SDK, Windows machine must be in developer mode)
 * Once the bluetooth software is running, pair any generic bluetooth heart rate sensor to the computer and select it within the software
 * Once a heart rate is shown visually,
 * Open up a console in the root directory of the repo and type: `npm install`
