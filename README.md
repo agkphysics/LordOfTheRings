@@ -1,6 +1,8 @@
-Oculus-Flappy
+# HITT (High Intensity Interval Training) Copter
 
-Work Contributions
+Game demo can be seen here: https://www.youtube.com/watch?v=QqtGDxjESN0
+
+##Work Contributions
 
 Jared
   * Ring spawning and generation
@@ -28,7 +30,7 @@ Patrick
 
 
 
-# How To setup and use heartrate service:
+## How To setup and use heartrate service:
 * Clone this repo: https://github.com/Ofekw/hiitcopter-heartrate-service
 * Install Node.js
 * Open up the solution and run it in Visual Studio (you may need to install dependencies first such as the unviersal store SDK, Windows machine must be in developer mode)
