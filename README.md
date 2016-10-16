@@ -1,6 +1,6 @@
 # HIIT (High Intensity Interval Training) Copter
 
-Game demo can be seen here: https://www.youtube.com/watch?v=QqtGDxjESN0
+Game demo can be seen here:[![HIIT Copter promo](http://img.youtube.com/vi/QqtGDxjESN0/0.jpg)](http://www.youtube.com/watch?v=QqtGDxjESN0)
 
 ##Work Contributions
 
