@@ -25,11 +25,8 @@ public class Engine : MonoBehaviour {
 
     // Use this for initialization
     void Awake () {
-		//Instantiate(camera);
 		Instantiate(light);
 		Instantiate(floor);
-        //Instantiate(background);
-        //  Instantiate(bird);
 		Instantiate(ringCreator);
 
 
@@ -38,15 +35,9 @@ public class Engine : MonoBehaviour {
 	public void AddToCurrentScore(int value)
 	{
         String scoreText = GameObject.Find("Score").GetComponent<TextMesh>().text;
-        //Debug.LogError("Before:"+scoreText);
         int scoreValue = Int32.Parse(scoreText) + value;
         GameObject.Find("Score").GetComponent<TextMesh>().text = scoreValue.ToString();
 
-    }
-
-    private void GetComponent<T>(string v)
-    {
-        throw new NotImplementedException();
     }
 
     public void CompareCurrentScoreToBest(){
@@ -73,7 +64,6 @@ public class Engine : MonoBehaviour {
 		if(go==null) Debug.Log ("ringCreator null");
 		DestroyImmediate (go);
 		Instantiate(ringCreator);
-		//ringCollider.UpdatePipeGenReference();
 	}
 
 	// Update is called once per frame
@@ -83,12 +73,11 @@ public class Engine : MonoBehaviour {
 
             if(Time.time > (warmupTime))
             {
+                //If player is finished warmup, set warmup power average to be used for controlling player height gain on row.
                 isWarmingUp = false;
                 GameObject.FindGameObjectWithTag("Warp").GetComponent<WarpSpeed>().Disengage();
                 BirdController birdController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
                 birdController.warmupAverage = birdController.warmupPowerSum / birdController.warmupCount;
-                Debug.LogError("Average power is: " + birdController.warmupAverage);
-                //GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().AddForce(Vector3.right * 20f, ForceMode.Force);
             }
         }
 
@@ -100,7 +89,6 @@ public class Engine : MonoBehaviour {
         GUI.skin = skin;
         if (isNotStarted)
         {
-            // nameInputField = GUI.TextField(new Rect(10, 10, 200, 20), "Enter Age", 25);
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Welcome to HIITCopter!\n Start rowing to begin!"));
         }
 

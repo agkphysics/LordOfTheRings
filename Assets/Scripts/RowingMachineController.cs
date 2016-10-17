@@ -22,6 +22,7 @@ public class RowingMachineController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        //Check if user has performed a row.
         uint distance = rowingMachine.GetComponent<Rower>().rowDistance;
         uint pace = rowingMachine.GetComponent<Rower>().rowPace;
         uint power = rowingMachine.GetComponent<Rower>().rowPower;
@@ -32,10 +33,11 @@ public class RowingMachineController : MonoBehaviour {
         }
 
         currentForce = power;
-
+        //Compare users previous pace and power to their new pace and power to check for difference
+        //Currently no way of just getting if the user has rowed so detection done by looking for differences
         if(oldPace != pace || oldPower != power)
         {
-
+            
             Row(distance, power, pace);
         }
 	}

@@ -49,6 +49,7 @@ public class BirdController : MonoBehaviour {
     }
 
     void Update() {
+        //track time for polling logs every second
         time -= Time.deltaTime;
 
         if (time <= 0)
@@ -56,22 +57,14 @@ public class BirdController : MonoBehaviour {
             LogData();
             time = timeBetweenlogging;
         }
-
+        //Recenter oculus when F12 pressed
         if (Input.GetKey(KeyCode.F12))
         {
             UnityEngine.VR.InputTracking.Recenter();
         }
 
-        //if(scoreboard){
-        //    if(Input.GetKeyDown(KeyCode.Space) && scoreShowingCount<1){
-        //        scoreShowingCount++;
-        //    }else if(Input.GetKeyDown(KeyCode.Space)){
-        //        engine.Reset();
-        //        BirdReset();
-        //        scoreboard = false;
-        //    }
-        //}else 
         if (waitingForPlayerToStart){
+            //Reset game variables when space pressed at start of game
 			if(Input.GetKeyDown(KeyCode.Space)){
 				scoreShowingCount = 0;
 
@@ -112,6 +105,7 @@ public class BirdController : MonoBehaviour {
             //else 
             if (engine.isWarmingUp)
             {
+                //Warmup period, time configured witin the GameObjectSpawner
                 if (gameObject.GetComponent<RowingMachineController>().waitingRow)
                 {
                     warmupPowerSum += GetComponent<RowingMachineController>().currentForce;
@@ -119,7 +113,7 @@ public class BirdController : MonoBehaviour {
 
                     gameObject.GetComponent<RowingMachineController>().waitingRow = false;
 
-                    //GetComponent<Rigidbody>().AddForce(Vector3.up * (GetComponent<RowingMachineController>().currentForce / boost) * forceMultiplier, ForceMode.Impulse);
+                    //Adjust height based on rowing machine force
                     GetComponent<Rigidbody>().velocity = new Vector3(0, (GetComponent<RowingMachineController>().currentForce) * forceMultiplier);
                     fallCount = 0;
                     Debug.Log(GetComponent<RowingMachineController>().currentForce);
@@ -189,18 +183,9 @@ public class BirdController : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
+        //move player foward at constant rate
 		if(!waitingForPlayerToStart){
             uint rowDistance = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<Rower>().rowDistance;
-
-            //if (engine.isWarmingUp)
-            //{
-                //if (rowDistance > warmupDistance)
-                //{
-                //    engine.isWarmingUp = false;
-                //    GetComponent<Rigidbody>().AddForce(Vector3.right * boost, ForceMode.Force);
-
-                //}
-            //}
 
             if (rowDistance > warmupDistance)
             {
@@ -210,23 +195,6 @@ public class BirdController : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter(Collision obj){
-	    if (obj.gameObject.tag.Equals("ring"))
-	    {
-
-            
-	    }
-	    else
-	    {
-
-	    }
-	}
-
-    void StartWorkout()
-    {
-
-    }
-
 	void BirdReset(){
 		GetComponent<Rigidbody>().velocity=Vector3.zero;
 		transform.position = startingPosition;
@@ -235,7 +203,7 @@ public class BirdController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider scorebox){
-		Debug.Log ("Score Increased");
+        //On collision with ring, create new ring and increment score by 500, remove ring
         GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().NewRing();
 
         engine.AddToCurrentScore(500);
@@ -244,6 +212,7 @@ public class BirdController : MonoBehaviour {
 
     void LogData()
     {
+        //Logging system for force, distance and heartrate.
         Power force = new Power(Time.time.ToString(), GetComponent<RowingMachineController>().currentForce, GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().isHighIntensity);
         Distance distance = new Distance(Time.time.ToString(), GetComponent<RowingMachineController>().distanceTravelled);
         HeartRate heartRate = new HeartRate( Time.time.ToString(), GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().heartRate);

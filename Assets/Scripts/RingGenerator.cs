@@ -23,7 +23,6 @@ public class RingGenerator : MonoBehaviour {
     public int ringsPerInterval = 20;
     public HeartRateService.HeartStatus hrLvl;
 
-    //Vector3 randPipeSeparation;
 
     public bool isHighIntensity = false;
 
@@ -44,6 +43,7 @@ public class RingGenerator : MonoBehaviour {
         {
             if(!engine.isWarmingUp && !engine.isNotStarted)
             {
+                //generate initial rings after warmup complete
                 for (int i = 0; i < 3; i++)
                 {
                     firstRings();
@@ -57,7 +57,7 @@ public class RingGenerator : MonoBehaviour {
         if (!engine.isWarmingUp)
         {
             hrLvl = GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().currentHeartStatus;
-
+            //check if user is overexerting, if they are perform overexertion handling
             if (hrLvl == HeartRateService.HeartStatus.Overexerting)
             {
                 if (isHighIntensity == true)
@@ -139,32 +139,7 @@ public class RingGenerator : MonoBehaviour {
 
     public void HighIntensity()
     {
-        //highIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
-        //GameObject centre;
-        //centre = Instantiate(highIntensityRing, nextRingPosition, Quaternion.identity) as GameObject;
-        ////Instantiate Top and Bottom Pipes
 
-        //centre.transform.parent = this.transform;
-        //centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-
-        //centre.transform.localScale = new Vector3(5,5,1.25f);
-
-
-        //Reset height for randomization
-      //  nextRingHeight = nextRingHeight;
-        //nextRingDist = nextRingDist - randHeight;
-
-        //// Calculation for adjusting difficulty
-        //float nextHeightMax = 8f + ((float)difficulty * 2f);
-        //float nextHeightMin = 3f + ((float)difficulty * 2f);
-
-        ////Randomize next Positions
-        //randHeight = new Vector3(0, Random.Range(nextHeightMin, nextHeightMax), 0);
-        //randDist = new Vector3(10f, 0, 0);
-
-
-        //nextRingPosition = new Vector3(0, GameObject.FindGameObjectWithTag("Player").transform.position.y, 0) + randHeight + randDist;
-        //nextRingDist = nextRingDist + randDist + randHeight;
         highIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
 
         // Calculation for adjusting difficulty

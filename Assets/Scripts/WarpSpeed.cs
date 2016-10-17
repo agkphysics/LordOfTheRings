@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//Warp speed partical effect. Engage starts warp speed, disengage stops it.
 public class WarpSpeed : MonoBehaviour
 {
     public float WarpDistortion;

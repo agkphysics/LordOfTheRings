@@ -34,12 +34,11 @@ public class Rower : MonoBehaviour {
 	// Update is called once per frame
     void Update()
     {
+        //if player has rowed inbetween updates, log row data
         if (numRowers > 0)
         {
             RowData rowData = new RowData();
             GetRowData(ref rowData);
-            //Debug.Log(string.Format("Power: {0}, Pace: {1}, Distance: {2}", rowData.Power, rowData.Pace, rowData.Horizontal));
-            
 
             rowPace = rowData.Pace;
             rowPower = rowData.Power;

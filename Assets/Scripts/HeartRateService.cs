@@ -32,6 +32,7 @@ public class HeartRateService : MonoBehaviour {
 
         if (time + 1.0f <= Time.time)
         {
+            //poll heart rate from node server using ip in config file
             StartCoroutine(WaitForRequest(new WWW(this.config.api)));
             time = Time.time;
         }
@@ -69,6 +70,8 @@ public class HeartRateService : MonoBehaviour {
 
     public HeartStatus calculateHeartStatus()
     {
+        //calculate what heart rate zone the user is in based on their max heart rate.
+        //>90% = overexerting, 90%> hr > 70% = optimal
         if((this.heartRate  / this.maxHeartRate) > 0.90)
         {
             return HeartStatus.Overexerting;
