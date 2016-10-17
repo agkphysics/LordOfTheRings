@@ -35,9 +35,14 @@ Alex
   * 
   
 Patrick
-  * 
+  * Oculus support
+  * Initial UI
+  * Scoring
+  * Visuals (Rings, Warp Speed and Skybox)
 
-
+## Development Requirements
+  * Oculus DK2 or Commercial tested/supported
+  * Unity 5.4.1
 
 ## How To setup and use heartrate service:
 * Clone this repo: https://github.com/Ofekw/hiitcopter-heartrate-service
@@ -49,4 +54,11 @@ Patrick
 * After node module dependencies are installed: `npm start`
 * If the game is running on a different machine, open up a new console and find the current device's ip (`ipconfig`)
 * Go to the assets folder of the game, open the config.js file; if the server is running on the same computer simply type in `localhost:8080`, otherwise place the afermentioned ip of the device running the bluetooth server with the `8080` port, ie: `1.1.1.10:8080`
+
+## Oculus Support
+
+If the oculus is not operating correctly when launching the project, perform the following steps:
+ * Edit > Project Settings > Player > Other Settings. Check VR SDK is set to Oculus, Check Graphics API for Windows is set to Direct3D11
+ * Check safety warning on oculus is accepted
+ * With commercial oculus, player must be wearing oculus before starting game
 
