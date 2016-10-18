@@ -21,7 +21,13 @@ Jared
   * Rowing power to movement balancing
 
 Harry
-  * 
+  * Camera calibration
+  * Ring spawning and generation
+  * Initial dynamic difficulty adaptation via heart rate during high intensity periods 
+  * User Interface and heads up display
+  * Visuals
+  * Heart rate service interface with game
+  * User study statistical analysis and evaluation
   
 Ofek
   * Base architecture (including controllers, physics, procedural generation etc)
