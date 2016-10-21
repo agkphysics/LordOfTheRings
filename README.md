@@ -38,7 +38,13 @@ Ofek
   * Config system
   
 Alex
-  * 
+  * System to convert rowing machine data to in game rows
+  * Ring spawning and generation
+  * Interval intensity handling, and interval switching
+  * Asset creation (Rings)
+  * Warmup Period
+  * Dynamic difficulty based on warmup
+  * Dynamic difficulty based on heart rate
   
 Patrick
   * Oculus support
