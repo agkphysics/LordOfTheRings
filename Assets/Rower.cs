@@ -21,28 +21,57 @@ public class Rower : MonoBehaviour {
 
     public int numRowers = 0;
 
-    public uint rowPace;
-    public uint rowPower;
-    public uint rowDistance;
+    public uint rowPace = 0;
+    public uint rowPower = 0;
+    public uint rowDistance = 0;
+    public bool DEBUG;
+
 
 
 	// Use this for initialization
 	void Start () {
         numRowers = InitRower();
+        switch (numRowers)
+        {
+            case -1:
+                Debug.LogWarning("Rower init failed. Switching to manual mode.");
+                DEBUG = true;
+                break;
+            case -2:
+                Debug.LogWarning("No connected rower. Switching to manual mode.");
+                DEBUG = true;
+                break;
+            default:
+                Debug.Log("Number of rowers: " + numRowers);
+                break;
+        }
 	}
 	
 	// Update is called once per frame
     void Update()
     {
-        //if player has rowed inbetween updates, log row data
-        if (numRowers > 0)
+        if (DEBUG)
         {
-            RowData rowData = new RowData();
-            GetRowData(ref rowData);
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                rowPace = (uint)Random.Range(30, 40);
+                rowPower = (uint)Random.Range(50, 70);
+                rowDistance += (uint)Random.Range(2, 4);
+            }
+            return;
+        }
+        else
+        {
+            //if player has rowed inbetween updates, log row data
+            if (numRowers > 0)
+            {
+                RowData rowData = new RowData();
+                GetRowData(ref rowData);
 
-            rowPace = rowData.Pace;
-            rowPower = rowData.Power;
-            rowDistance = rowData.Horizontal;
+                rowPace = rowData.Pace;
+                rowPower = rowData.Power;
+                rowDistance = rowData.Horizontal;
+            }
         }
     }
 

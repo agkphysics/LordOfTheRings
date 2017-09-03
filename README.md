@@ -1,4 +1,11 @@
-# HIIT (High Intensity Interval Training) Copter
+# Lord Of the Rings
+## An HIIT exergame
+
+This game is based off [HIIT-Copter](https://github.com/Ofekw/HIIT-Copter) described below.
+
+---
+
+## HIIT (High Intensity Interval Training) Copter
 
 Research has shown that intense cardiovascular exercise has been proven to be an effective means to maintaining good health and improving fitness levels. This cardio is called High Intensity Interval Training. The concept of interval training is the transition from low-moderate intensity intervals to very high intensity intervals. However, this form of exercise is very demanding and can be tedious, which can lead to discouragement and a lack of motivation by the end user.
 
@@ -11,7 +18,7 @@ Game demo can be seen here:
 
 [![HIIT Copter promo](http://img.youtube.com/vi/QqtGDxjESN0/0.jpg)](http://www.youtube.com/watch?v=QqtGDxjESN0)
 
-##Work Contributions
+## Work Contributions
 
 Jared
   * Ring spawning and generation

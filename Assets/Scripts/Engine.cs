@@ -12,7 +12,7 @@ public class Engine : MonoBehaviour {
 
 	//GUI Bool Elements
 	public bool isNotStarted = true;
-    public bool isWarmingUp = true;
+    public bool isWarmingUp = false;
 	bool scoreTicker = false;
 	bool isDead = false;
 	int bestScore = 0;
@@ -20,16 +20,13 @@ public class Engine : MonoBehaviour {
     public int age = 20;
     public float warmupTime = 30;
 
-    public object InputFieldEventSystemManager { get; private set; }
-
-
     // Use this for initialization
     void Awake () {
 		Instantiate(light);
 		Instantiate(floor);
 		Instantiate(ringCreator);
-
-
+        isWarmingUp = false;
+        isNotStarted = true;
     }
 
 	public void AddToCurrentScore(int value)
@@ -37,11 +34,10 @@ public class Engine : MonoBehaviour {
         String scoreText = GameObject.Find("Score").GetComponent<TextMesh>().text;
         int scoreValue = Int32.Parse(scoreText) + value;
         GameObject.Find("Score").GetComponent<TextMesh>().text = scoreValue.ToString();
-
     }
 
     public void CompareCurrentScoreToBest(){
-		if(score>bestScore) bestScore = score;
+		if(score > bestScore) bestScore = score;
 	}
 
 	public void StartGame(){
@@ -57,20 +53,19 @@ public class Engine : MonoBehaviour {
 	}
 	
 	public void Reset(){
-		isDead = false;
-		isNotStarted = true;
+        isDead = false;
+        isNotStarted = true;
         AddToCurrentScore(score * -1);
-		GameObject go = GameObject.FindWithTag("ringCreator");
-		if(go==null) Debug.Log ("ringCreator null");
-		DestroyImmediate (go);
-		Instantiate(ringCreator);
-	}
+        GameObject go = GameObject.FindWithTag("ringCreator");
+        if (go==null) Debug.Log("ringCreator null");
+        DestroyImmediate(go);
+        Instantiate(ringCreator);
+    }
 
 	// Update is called once per frame
 	void Update () {
         if(isWarmingUp)
         {
-
             if(Time.time > (warmupTime))
             {
                 //If player is finished warmup, set warmup power average to be used for controlling player height gain on row.
@@ -82,8 +77,6 @@ public class Engine : MonoBehaviour {
         }
 
     }
-
-
 
     void OnGUI () {
         GUI.skin = skin;

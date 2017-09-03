@@ -6,11 +6,10 @@ public class RingGenerator : MonoBehaviour {
     public GameObject lowIntensityRing;
     public GameObject highIntensityRing;
 
-	Vector3 ringOrigin = Vector3.zero;
-
-    Vector3 nextRingPosition = new Vector3(0, 10f, 0);
-
-    Vector3 randPos;
+    public GameObject ring;
+    
+    Vector3 currentPos = Vector3.zero;
+    Vector3 randOffset;
 
     public int difficulty = 1;
 
@@ -26,33 +25,32 @@ public class RingGenerator : MonoBehaviour {
 
     public bool isHighIntensity = false;
 
+    public float TargetRPM { get; private set; }
+
     void Awake()
     {
-        engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
+        TargetRPM = 50;
     }
 
 	void Start()
     {
-
-	}
+        engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
+    }
 
     void Update()
     {
-
         if(!hasInitialSpawned)
         {
-            if(!engine.isWarmingUp && !engine.isNotStarted)
+            if(!engine.isNotStarted)
             {
                 //generate initial rings after warmup complete
                 for (int i = 0; i < 3; i++)
                 {
-                    firstRings();
+                    NewRing();
                 }
                 hasInitialSpawned = true;
             }
         }
-
-        uint rowDistance = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<Rower>().rowDistance;
 
         if (!engine.isWarmingUp)
         {
@@ -75,14 +73,23 @@ public class RingGenerator : MonoBehaviour {
 
     public void NewRing()
     {
+        Vector3 randOffset;
         if(isHighIntensity)
         {
-            HighIntensity();
+            // Calculation for adjusting difficulty
+            float nextDistMax = 18f + (difficulty * 2f);
+            float nextDistMin = 24f + (difficulty * 2f);
+            randOffset = new Vector3(Random.Range(nextDistMin, nextDistMax), 0, 0);
         }
         else
         {
-            LowIntensity();
+            randOffset = new Vector3(Random.Range(13f, 16f), 0, 0);
         }
+        currentPos += randOffset;
+        GameObject centre = Instantiate(ring, currentPos, Quaternion.identity);
+        centre.transform.parent = transform;
+        centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+        centre.transform.localScale = new Vector3(5, 5, 1.25f);
 
         ringCount++;
         if(ringCount >= ringsPerInterval)
@@ -97,19 +104,20 @@ public class RingGenerator : MonoBehaviour {
         //If heart rate is dangerously high, go to a low intensity interval.
         if (hrLvl == HeartRateService.HeartStatus.Overexerting)
         {
-            isHighIntensity = false;
             DecreaseDifficulty();
-            return;
+            isHighIntensity = false;
         } 
         // Case where in high intensity interval but low heart rate. Increase difficulty of next high intensity
         else if (isHighIntensity && hrLvl == HeartRateService.HeartStatus.Resting)
         {
             IncreaseDifficulty();
             isHighIntensity = false;
-            return;
         }
-
-        isHighIntensity = (isHighIntensity ? false : true);
+        else
+        {
+            isHighIntensity = !isHighIntensity;
+        }
+        TargetRPM = isHighIntensity ? 80 : 50;
     }
 
     // Called when user is overexerted 
@@ -137,66 +145,32 @@ public class RingGenerator : MonoBehaviour {
         HighIntensity();
     }
 
-    public void HighIntensity()
+    public Vector3 HighIntensity()
     {
-
-        highIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
-
         // Calculation for adjusting difficulty
-        float nextHeightMax = 8f + ((float)difficulty * 2f);
-        float nextHeightMin = 3f + ((float)difficulty * 2f);
+        float nextDistMax = 15f + (difficulty*2f);
+        float nextDistMin = 20f + (difficulty*2f);
 
         //Randomize next Positions
-        randPos = new Vector3(15f,Random.Range(nextHeightMin, nextHeightMax), 0);
-
-        nextRingPosition = new Vector3(nextRingPosition.x, nextRingPosition.y, 0) + randPos;
-
-        GameObject centre;
-        centre = Instantiate(highIntensityRing, nextRingPosition, Quaternion.identity) as GameObject;
-
-        centre.transform.parent = this.transform;
-        centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-
-        centre.transform.localScale = new Vector3(5, 5, 1.25f);
+        randOffset = new Vector3(Random.Range(nextDistMin, nextDistMax), 0, 0);
+        return randOffset;
     }
 
-    public void LowIntensity()
+    public Vector3 LowIntensity()
     {
-        lowIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.green;
-
-        randPos = new Vector3(15f, Random.Range(0f, 5f), 0);
-
-        if (ringCount > 2 && GameObject.FindGameObjectWithTag("Player").transform.position.y < (nextRingPosition.y - 20.0f))
-        {
-            nextRingPosition = new Vector3(nextRingPosition.x, GameObject.FindGameObjectWithTag("Player").transform.position.y, 0) + randPos;
-        }
-        else
-        {
-            nextRingPosition = new Vector3(nextRingPosition.x, nextRingPosition.y, 0) + randPos;
-        }
-
-        GameObject centre;
-        centre = Instantiate(lowIntensityRing, nextRingPosition, Quaternion.identity) as GameObject;
-
-        centre.transform.parent = this.transform;
-        centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-
-        centre.transform.localScale = new Vector3(5, 5, 1.25f);
+        randOffset = new Vector3(Random.Range(13f, 16f), 0, 0);
+        return randOffset;
     }
 
-    public void firstRings()
+    public void FirstRings()
     {
         lowIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.green;
-
-        nextRingPosition = new Vector3(nextRingPosition.x, GameObject.FindGameObjectWithTag("Player").transform.position.y, 0);
+        
+        currentPos.y = GameObject.FindGameObjectWithTag("Player").transform.position.y;
   
-        GameObject centre;
-        centre = Instantiate(lowIntensityRing, nextRingPosition, Quaternion.identity) as GameObject;
-
-        centre.transform.parent = this.transform;
+        GameObject centre = Instantiate(lowIntensityRing, currentPos, Quaternion.identity);
+        centre.transform.parent = transform;
         centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-
         centre.transform.localScale = new Vector3(5, 5, 1.25f);
     }
-
 }
