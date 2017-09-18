@@ -45,6 +45,7 @@ public class Engine : MonoBehaviour {
         isWarmingUp = true;
         warmupTime += Time.time;
         scoreTicker = true;
+        GameObject.Find("Music").GetComponent<AudioSource>();
     }
 	
 	public void Die(){
