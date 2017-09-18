@@ -3,8 +3,16 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 
+/// <summary>
+/// Main game controller.
+/// </summary>
 public class Engine : MonoBehaviour {
-	public GameObject camera,light,bird,floor,background,ringCreator, birdCamera, thumb;
+
+    public enum Interval { LOW_INTENSITY, HIGH_INTENSITY };
+
+    public GameObject worldlight, floorPrefab, ringCreator;
+
+    private GameObject floor;
 
     public GUISkin skin;
 	//private RingCollider ringCollider;
@@ -13,6 +21,7 @@ public class Engine : MonoBehaviour {
 	//GUI Bool Elements
 	public bool isNotStarted = true;
     public bool isWarmingUp = false;
+
 	bool scoreTicker = false;
 	bool isDead = false;
 	int bestScore = 0;
@@ -21,9 +30,10 @@ public class Engine : MonoBehaviour {
     public float warmupTime = 30;
 
     // Use this for initialization
-    void Awake () {
-		Instantiate(light);
-		Instantiate(floor);
+    void Awake ()
+    {
+		Instantiate(worldlight);
+		floor = Instantiate(floorPrefab);
 		Instantiate(ringCreator);
         isWarmingUp = false;
         isNotStarted = true;
@@ -36,11 +46,13 @@ public class Engine : MonoBehaviour {
         GameObject.Find("Score").GetComponent<TextMesh>().text = scoreValue.ToString();
     }
 
-    public void CompareCurrentScoreToBest(){
+    public void CompareCurrentScoreToBest()
+    {
 		if(score > bestScore) bestScore = score;
 	}
 
-	public void StartGame(){
+	public void StartGame()
+    {
 		isNotStarted = false;
         isWarmingUp = true;
         warmupTime += Time.time;
@@ -48,12 +60,14 @@ public class Engine : MonoBehaviour {
         GameObject.Find("Music").GetComponent<AudioSource>();
     }
 	
-	public void Die(){
+	public void Die()
+    {
 		isDead = true;
 		scoreTicker = false;
 	}
 	
-	public void Reset(){
+	public void Reset()
+    {
         isDead = false;
         isNotStarted = true;
         AddToCurrentScore(score * -1);
@@ -64,7 +78,8 @@ public class Engine : MonoBehaviour {
     }
 
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         if(isWarmingUp)
         {
             if(Time.time > (warmupTime))
@@ -76,7 +91,10 @@ public class Engine : MonoBehaviour {
                 birdController.warmupAverage = birdController.warmupPowerSum / birdController.warmupCount;
             }
         }
-
+        if (floor.transform.position.x < GameObject.FindGameObjectWithTag("Player").transform.position.x - floor.transform.localScale.x/2)
+        {
+            floor.transform.position += new Vector3(floor.transform.localScale.x/2, 0, 0);
+        }
     }
 
     void OnGUI () {

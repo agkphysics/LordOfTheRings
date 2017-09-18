@@ -1,10 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
+/// <summary>
+/// Wrapper class for AudioAnalysis library.
+/// </summary>
 public class AudioAnalysis
 {
-// Public interface
+    // Public interface
 	public static void InitTrackers(int baseNote, int numNotes, float decayRate, int sampleRate, int numChannels)
 	{
 		AA_InitTrackers(baseNote, numNotes, decayRate, sampleRate, numChannels);
@@ -40,14 +41,14 @@ public class AudioAnalysis
 		return AA_GetDisharmonyFactor(drumNoteLower, drumNoteUpper, drumNoteSpread);
 	}
 	
-// Extra functions
-	public static float getNoteFrequency(int noteNum)
+    // Extra functions
+	public static float GetNoteFrequency(int noteNum)
 	{
 		return 27.5f * (float)System.Math.Pow(2.0f, (noteNum - 9) / 12.0f);
 	}
 	
 	// Very rough approximation based on eyeballing an equal-loudness curve
-	public static float getHearingAbility(int noteNum)
+	public static float GetHearingAbility(int noteNum)
 	{
 		float logValue  = 0.0f;
 		int[]   centres = new int[]   { -67,   67,   72,   75,  111,  112,  113};
@@ -101,7 +102,7 @@ public class AudioAnalysis
 		
 		public void update()
 		{
-			AudioAnalysis.GetResonance(allNotes, numNotes);
+			GetResonance(allNotes, numNotes);
 			for (int i = 0; i < numNotes; ++i)
 			{
 				int noteNum = minNote + (i / numChannels);
@@ -152,8 +153,7 @@ public class AudioAnalysis
 		}
 	}
 
-
-// Library interactions
+    // Library interactions
 	[DllImport ("AudioAnalysis")]
 	private static extern void AA_InitTrackers(int baseNote, int numNotes, float decayRate, int sampleRate, int numChannels);
 	
