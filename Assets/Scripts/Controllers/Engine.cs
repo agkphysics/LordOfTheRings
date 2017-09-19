@@ -41,9 +41,8 @@ public class Engine : MonoBehaviour {
 
 	public void AddToCurrentScore(int value)
 	{
-        String scoreText = GameObject.Find("Score").GetComponent<TextMesh>().text;
-        int scoreValue = Int32.Parse(scoreText) + value;
-        GameObject.Find("Score").GetComponent<TextMesh>().text = scoreValue.ToString();
+        score += value;
+        GameObject.Find("Score").GetComponent<TextMesh>().text = score.ToString();
     }
 
     public void CompareCurrentScoreToBest()
@@ -57,7 +56,7 @@ public class Engine : MonoBehaviour {
         isWarmingUp = true;
         warmupTime += Time.time;
         scoreTicker = true;
-        GameObject.Find("Music").GetComponent<AudioSource>();
+        GameObject.Find("Music").GetComponent<MusicController>().PlaySong();
     }
 	
 	public void Die()
@@ -66,15 +65,13 @@ public class Engine : MonoBehaviour {
 		scoreTicker = false;
 	}
 	
+    // Only called in editor
 	public void Reset()
     {
         isDead = false;
         isNotStarted = true;
-        AddToCurrentScore(score * -1);
-        GameObject go = GameObject.FindWithTag("ringCreator");
-        if (go==null) Debug.Log("ringCreator null");
-        DestroyImmediate(go);
-        Instantiate(ringCreator);
+        score = 0;
+        AddToCurrentScore(0);
     }
 
 	// Update is called once per frame
@@ -97,7 +94,8 @@ public class Engine : MonoBehaviour {
         }
     }
 
-    void OnGUI () {
+    void OnGUI ()
+    {
         GUI.skin = skin;
         if (isNotStarted)
         {

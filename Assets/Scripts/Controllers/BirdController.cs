@@ -23,22 +23,25 @@ public class BirdController : MonoBehaviour {
 
     private bool waitingForPlayerToStart;
     private Engine engine;
-    private int scoreShowingCount = 0;
     private float time;
     private Rigidbody rb;
     
-    public Engine.Interval playerSection = Engine.Interval.LOW_INTENSITY;
+    public Engine.Interval Section { get; set; }
+
+    private RowingMachineController rowingMachine;
 
     void Awake()
     {
 		engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
         rb = GetComponent<Rigidbody>();
+        rowingMachine = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<RowingMachineController>();
 	}
 
 	// Use this for initialization
 	void Start ()
     {
-		transform.position = startingPosition;
+        Section = Engine.Interval.LOW_INTENSITY;
+        transform.position = startingPosition;
 		startingRotation = transform.rotation;
 
         rb.useGravity = false;
@@ -68,8 +71,8 @@ public class BirdController : MonoBehaviour {
         if (waitingForPlayerToStart)
         {
             //Reset game variables when space pressed at start of game
-			if(Input.GetKeyDown(KeyCode.Space)){
-				scoreShowingCount = 0;
+			if (Input.GetKeyDown(KeyCode.Space) || rowingMachine.waitingRow)
+            {
                 engine.StartGame();
 				waitingForPlayerToStart = false;
 
@@ -82,29 +85,29 @@ public class BirdController : MonoBehaviour {
             if (engine.isWarmingUp)
             {
                 //Warmup period, time configured witin the GameObjectSpawner
-                if (gameObject.GetComponent<RowingMachineController>().waitingRow)
+                if (rowingMachine.waitingRow)
                 {
-                    warmupPowerSum += GetComponent<RowingMachineController>().currentForce;
+                    warmupPowerSum += rowingMachine.currentForce;
                     warmupCount++;
 
-                    gameObject.GetComponent<RowingMachineController>().waitingRow = false;
+                    rowingMachine.waitingRow = false;
                     
-                    rb.velocity = new Vector3(GetComponent<RowingMachineController>().currentForce*forceMultiplier, 0);
-                    Debug.Log("Current Force: " + GetComponent<RowingMachineController>().currentForce);
+                    rb.velocity = new Vector3(rowingMachine.currentForce*forceMultiplier, 0);
+                    Debug.Log("Current Force: " + rowingMachine.currentForce);
                     Debug.Log("Warming up period.");
                 }
             }
-            else if (gameObject.GetComponent<RowingMachineController>().waitingRow)
+            else if (rowingMachine.waitingRow)
             {
-                gameObject.GetComponent<RowingMachineController>().waitingRow = false;
+                rowingMachine.waitingRow = false;
 
                 if (rb.velocity.y < 0)
                 {
                     rb.velocity = new Vector3(rb.velocity.x, 0, 0);
                 }
-                rb.AddForce(Vector3.right*GetComponent<RowingMachineController>().currentForce/warmupAverage*forceMultiplier, ForceMode.Impulse);
+                rb.AddForce(Vector3.right*rowingMachine.currentForce/warmupAverage*forceMultiplier, ForceMode.Impulse);
 
-                Debug.Log("Current proportionate force: " + GetComponent<RowingMachineController>().currentForce/warmupAverage);
+                Debug.Log("Current proportionate force: " + rowingMachine.currentForce/warmupAverage);
 
                 engine.AddToCurrentScore(50);
             }
@@ -151,20 +154,20 @@ public class BirdController : MonoBehaviour {
 		rb.freezeRotation = true;
 	}
 
-	void OnTriggerEnter(Collider scorebox)
+	void OnTriggerEnter(Collider trigger)
     {
         //On collision with ring, create new ring and increment score by 500, remove ring
         GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().NewRing();
 
         engine.AddToCurrentScore(500);
-		Destroy(scorebox.gameObject);
+		Destroy(trigger.gameObject);
 	}
 
     void LogData()
     {
         //Logging system for force, distance and heartrate.
-        Power force = new Power(Time.time.ToString(), GetComponent<RowingMachineController>().currentForce, GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().isHighIntensity);
-        Distance distance = new Distance(Time.time.ToString(), GetComponent<RowingMachineController>().distanceTravelled);
+        Power force = new Power(Time.time.ToString(), rowingMachine.currentForce, GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().isHighIntensity);
+        Distance distance = new Distance(Time.time.ToString(), rowingMachine.distanceTravelled);
         HeartRate heartRate = new HeartRate( Time.time.ToString(), GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().heartRate);
 
         var logger = GetComponent<LoggerService>();

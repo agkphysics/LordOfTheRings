@@ -180,6 +180,7 @@ QualitySettings:
     FlashPlayer: 3
     GLES Emulation: 3
     PS3: 3
+    Samsung TV: 0
     Standalone: 3
     Tizen: 2
     WP8: 3
@@ -189,3 +190,4 @@ QualitySettings:
     Windows Store Apps: 3
     XBOX360: 3
     iPhone: 2
+    tvOS: 0

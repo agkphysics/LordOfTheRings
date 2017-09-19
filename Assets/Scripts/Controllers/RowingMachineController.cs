@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Controller for detecting rows.
+/// </summary>
 public class RowingMachineController : MonoBehaviour {
 
     public bool waitingRow = false;
@@ -41,7 +44,7 @@ public class RowingMachineController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        rower = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<Rower>();
+        rower = GetComponent<Rower>();
     }
 	
 	// Update is called once per frame
@@ -93,7 +96,8 @@ public class RowingMachineController : MonoBehaviour {
         oldPower = power;
         oldPace = pace;
         lastRowTime = Time.time;
+        Debug.Log("Row detected: distance = " + distance + ", power = " + power + ", pace = " + pace);
         Debug.Log("Mean RPM: " + MeanRPM);
-        GameObject.FindGameObjectWithTag("RPMText").GetComponent<TextMesh>().text = Mathf.RoundToInt(MeanRPM) + "RPM";
+        GameObject.Find("RPM").GetComponent<TextMesh>().text = Mathf.RoundToInt(MeanRPM) + "RPM";
     }
 }

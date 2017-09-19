@@ -1,31 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Script which generates rings.
+/// </summary>
 public class RingGenerator : MonoBehaviour {
 
-    public GameObject lowIntensityRing;
-    public GameObject highIntensityRing;
-
     public GameObject ring;
-    
+
+    public int difficulty = 1;
+    public bool isHighIntensity = false;
+
+    public float TargetRPM { get; private set; }
+
+    private Engine engine;
     Vector3 currentPos = Vector3.zero;
     Vector3 randOffset;
 
-    public int difficulty = 1;
-
-    int ringCount = 0;
-
-    private Engine engine;
-    bool hasInitialSpawned = false;
+    private bool hasInitialSpawned = false;
+    private int ringCount = 0;
 
     //This is abut 36 seconds long.
     public int ringsPerInterval = 20;
     public HeartRateService.HeartStatus hrLvl;
-
-
-    public bool isHighIntensity = false;
-
-    public float TargetRPM { get; private set; }
 
     void Awake()
     {
@@ -43,8 +40,8 @@ public class RingGenerator : MonoBehaviour {
         {
             if(!engine.isNotStarted)
             {
-                //generate initial rings after warmup complete
-                for (int i = 0; i < 3; i++)
+                // Generate initial rings after warmup complete
+                for (int i = 0; i < 5; i++)
                 {
                     NewRing();
                 }
@@ -65,7 +62,6 @@ public class RingGenerator : MonoBehaviour {
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
-                //RingCreator();
                 NewRing();
             }
         }
@@ -86,10 +82,11 @@ public class RingGenerator : MonoBehaviour {
             randOffset = new Vector3(Random.Range(13f, 16f), 0, 0);
         }
         currentPos += randOffset;
-        GameObject centre = Instantiate(ring, currentPos, Quaternion.identity);
-        centre.transform.parent = transform;
-        centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-        centre.transform.localScale = new Vector3(5, 5, 1.25f);
+        GameObject generatedRing = Instantiate(ring, currentPos, Quaternion.identity);
+        generatedRing.GetComponent<RingController>().Section = isHighIntensity ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY;
+        generatedRing.transform.parent = transform;
+        generatedRing.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+        generatedRing.transform.localScale = new Vector3(5, 5, 1.25f);
 
         ringCount++;
         if(ringCount >= ringsPerInterval)
@@ -137,40 +134,5 @@ public class RingGenerator : MonoBehaviour {
     void IncreaseDifficulty()
     {
         difficulty++;
-    }
-
-
-	public void RingCreator()
-    {
-        HighIntensity();
-    }
-
-    public Vector3 HighIntensity()
-    {
-        // Calculation for adjusting difficulty
-        float nextDistMax = 15f + (difficulty*2f);
-        float nextDistMin = 20f + (difficulty*2f);
-
-        //Randomize next Positions
-        randOffset = new Vector3(Random.Range(nextDistMin, nextDistMax), 0, 0);
-        return randOffset;
-    }
-
-    public Vector3 LowIntensity()
-    {
-        randOffset = new Vector3(Random.Range(13f, 16f), 0, 0);
-        return randOffset;
-    }
-
-    public void FirstRings()
-    {
-        lowIntensityRing.GetComponent<MeshRenderer>().sharedMaterial.color = Color.green;
-        
-        currentPos.y = GameObject.FindGameObjectWithTag("Player").transform.position.y;
-  
-        GameObject centre = Instantiate(lowIntensityRing, currentPos, Quaternion.identity);
-        centre.transform.parent = transform;
-        centre.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-        centre.transform.localScale = new Vector3(5, 5, 1.25f);
     }
 }

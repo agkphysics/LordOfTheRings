@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Runtime.InteropServices;
 
+/// <summary>
+/// Interface to the rowing machine API.
+/// </summary>
 public class Rower : MonoBehaviour {
 
     public struct RowData
@@ -25,8 +28,6 @@ public class Rower : MonoBehaviour {
     public uint rowPower = 0;
     public uint rowDistance = 0;
     public bool DEBUG;
-
-
 
 	// Use this for initialization
 	void Start () {
@@ -60,18 +61,15 @@ public class Rower : MonoBehaviour {
             }
             return;
         }
-        else
+        else if (numRowers > 0)
         {
             //if player has rowed inbetween updates, log row data
-            if (numRowers > 0)
-            {
-                RowData rowData = new RowData();
-                GetRowData(ref rowData);
+            RowData rowData = new RowData();
+            GetRowData(ref rowData);
 
-                rowPace = rowData.Pace;
-                rowPower = rowData.Power;
-                rowDistance = rowData.Horizontal;
-            }
+            rowPace = rowData.Pace;
+            rowPower = rowData.Power;
+            rowDistance = rowData.Horizontal;
         }
     }
 

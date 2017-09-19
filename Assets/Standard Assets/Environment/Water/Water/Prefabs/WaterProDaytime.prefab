@@ -95,7 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waterMode: 2
   disablePixelLights: 1
-  textureSize: 128
+  textureSize: 512
   clipPlaneOffset: 0.07
   reflectLayers:
     serializedVersion: 2

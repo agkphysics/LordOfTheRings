@@ -108,14 +108,16 @@ public class MusicController : MonoBehaviour
     private void Awake()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
+    }
+
+    private void Start()
+    {
         currAudioClip = audioClips[0];
+        audioSource.clip = currAudioClip;
         ReInitialise();
         CalculateTo(currAudioClip.length);
         CalculateThresholds();
-        
         OutputIntensityData();
-        audioSource.clip = currAudioClip;
-        audioSource.Play();
     }
 
     private void CalculateThresholds()
