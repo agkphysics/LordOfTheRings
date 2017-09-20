@@ -11,23 +11,17 @@ public class RingGenerator : MonoBehaviour {
     public int difficulty = 1;
     public bool isHighIntensity = false;
 
-    public float TargetRPM { get; private set; }
-
     private Engine engine;
     Vector3 currentPos = Vector3.zero;
     Vector3 randOffset;
 
     private bool hasInitialSpawned = false;
     private int ringCount = 0;
+    private GameObject lastRing;
 
     //This is abut 36 seconds long.
     public int ringsPerInterval = 20;
     public HeartRateService.HeartStatus hrLvl;
-
-    void Awake()
-    {
-        TargetRPM = 50;
-    }
 
 	void Start()
     {
@@ -84,6 +78,8 @@ public class RingGenerator : MonoBehaviour {
         currentPos += randOffset;
         GameObject generatedRing = Instantiate(ring, currentPos, Quaternion.identity);
         generatedRing.GetComponent<RingController>().Section = isHighIntensity ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY;
+        if (lastRing != null) lastRing.GetComponent<RingController>().NextRing = generatedRing;
+        lastRing = generatedRing;
         generatedRing.transform.parent = transform;
         generatedRing.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
         generatedRing.transform.localScale = new Vector3(5, 5, 1.25f);
@@ -114,7 +110,6 @@ public class RingGenerator : MonoBehaviour {
         {
             isHighIntensity = !isHighIntensity;
         }
-        TargetRPM = isHighIntensity ? 80 : 50;
     }
 
     // Called when user is overexerted 
