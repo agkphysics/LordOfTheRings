@@ -15,14 +15,11 @@ public class Engine : MonoBehaviour {
     private GameObject floor;
 
     public GUISkin skin;
-	//private RingCollider ringCollider;
-	bool hasPipeCollider;
 
 	//GUI Bool Elements
 	public bool isNotStarted = true;
     public bool isWarmingUp = false;
-
-	bool scoreTicker = false;
+    
 	bool isDead = false;
 	int bestScore = 0;
 	int score = 0;
@@ -55,14 +52,12 @@ public class Engine : MonoBehaviour {
 		isNotStarted = false;
         isWarmingUp = true;
         warmupTime += Time.time;
-        scoreTicker = true;
         GameObject.Find("Music").GetComponent<MusicController>().PlaySong();
     }
 	
 	public void Die()
     {
 		isDead = true;
-		scoreTicker = false;
 	}
 	
     // Only called in editor
@@ -83,7 +78,6 @@ public class Engine : MonoBehaviour {
             {
                 //If player is finished warmup, set warmup power average to be used for controlling player height gain on row.
                 isWarmingUp = false;
-                GameObject.FindGameObjectWithTag("Warp").GetComponent<WarpSpeed>().Disengage();
                 BirdController birdController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
                 birdController.warmupAverage = birdController.warmupPowerSum / birdController.warmupCount;
             }

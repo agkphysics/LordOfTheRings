@@ -51,7 +51,7 @@ public class Rower : MonoBehaviour {
 	// Update is called once per frame
     void Update()
     {
-        if (DEBUG)
+        if (DEBUG || numRowers == 0)
         {
             if (Input.GetKeyDown(KeyCode.W))
             {
