@@ -77,7 +77,7 @@ public class RingGenerator : MonoBehaviour {
         {
             randOffset = new Vector3(Random.Range(13f, 16f), 0, 0);
         }
-        currentPos += randOffset;
+        currentPos = currentPos + randOffset;
         GameObject generatedRing = Instantiate(ring, currentPos, Quaternion.identity);
         generatedRing.GetComponent<RingController>().Section = IsHighIntensity ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY;
         if (lastRing != null) lastRing.GetComponent<RingController>().NextRing = generatedRing;
