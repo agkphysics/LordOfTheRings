@@ -9,15 +9,16 @@ public class RingGenerator : MonoBehaviour {
     public GameObject ring;
 
     public int difficulty = 1;
-    public bool isHighIntensity = false;
+    public bool IsHighIntensity { get; set; }
+    public float highRingSeparation = 22f;
 
     private Engine engine;
     Vector3 currentPos = Vector3.zero;
-    Vector3 randOffset;
 
     private bool hasInitialSpawned = false;
     private int ringCount = 0;
     private GameObject lastRing;
+    public GameObject LastGeneratedRing { get { return lastRing; } }
 
     //This is abut 36 seconds long.
     public int ringsPerInterval = 20;
@@ -25,6 +26,7 @@ public class RingGenerator : MonoBehaviour {
 
 	void Start()
     {
+        IsHighIntensity = false;
         engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
     }
 
@@ -32,7 +34,7 @@ public class RingGenerator : MonoBehaviour {
     {
         if(!hasInitialSpawned)
         {
-            if(!engine.isNotStarted)
+            if(engine.isStarted)
             {
                 // Generate initial rings after warmup complete
                 for (int i = 0; i < 5; i++)
@@ -49,7 +51,7 @@ public class RingGenerator : MonoBehaviour {
             //check if user is overexerting, if they are perform overexertion handling
             if (hrLvl == HeartRateService.HeartStatus.Overexerting)
             {
-                if (isHighIntensity == true)
+                if (IsHighIntensity == true)
                 {
                     HandleOverExertion();
                 }
@@ -64,11 +66,11 @@ public class RingGenerator : MonoBehaviour {
     public void NewRing()
     {
         Vector3 randOffset;
-        if(isHighIntensity)
+        if(IsHighIntensity)
         {
             // Calculation for adjusting difficulty
-            float nextDistMax = 18f + (difficulty * 2f);
-            float nextDistMin = 24f + (difficulty * 2f);
+            float nextDistMax = highRingSeparation * 0.8f + (difficulty * 2f);
+            float nextDistMin = highRingSeparation * 1.2f + (difficulty * 2f);
             randOffset = new Vector3(Random.Range(nextDistMin, nextDistMax), 0, 0);
         }
         else
@@ -77,7 +79,7 @@ public class RingGenerator : MonoBehaviour {
         }
         currentPos += randOffset;
         GameObject generatedRing = Instantiate(ring, currentPos, Quaternion.identity);
-        generatedRing.GetComponent<RingController>().Section = isHighIntensity ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY;
+        generatedRing.GetComponent<RingController>().Section = IsHighIntensity ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY;
         if (lastRing != null) lastRing.GetComponent<RingController>().NextRing = generatedRing;
         lastRing = generatedRing;
         generatedRing.transform.parent = transform;
@@ -85,30 +87,30 @@ public class RingGenerator : MonoBehaviour {
         generatedRing.transform.localScale = new Vector3(5, 5, 1.25f);
 
         ringCount++;
-        if(ringCount >= ringsPerInterval)
-        {
-            PhaseChange();
-        }
+        //if(ringCount >= ringsPerInterval)
+        //{
+        //    PhaseChange();
+        //}
     }
 
-    void PhaseChange()
+    public void PhaseChange()
     {
         ringCount = 0;
         //If heart rate is dangerously high, go to a low intensity interval.
         if (hrLvl == HeartRateService.HeartStatus.Overexerting)
         {
             DecreaseDifficulty();
-            isHighIntensity = false;
+            IsHighIntensity = false;
         } 
         // Case where in high intensity interval but low heart rate. Increase difficulty of next high intensity
-        else if (isHighIntensity && hrLvl == HeartRateService.HeartStatus.Resting)
+        else if (IsHighIntensity && hrLvl == HeartRateService.HeartStatus.Resting)
         {
             IncreaseDifficulty();
-            isHighIntensity = false;
+            IsHighIntensity = false;
         }
         else
         {
-            isHighIntensity = !isHighIntensity;
+            IsHighIntensity = !IsHighIntensity;
         }
     }
 

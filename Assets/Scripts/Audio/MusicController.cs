@@ -40,6 +40,10 @@ public class MusicController : MonoBehaviour
     private float lowThreshold;
     private float highThreshold;
 
+    private Engine engine;
+    private GameObject playerController;
+    private RingGenerator ringGenerator;
+
     public int BaseNote
     {
         get
@@ -108,16 +112,37 @@ public class MusicController : MonoBehaviour
     private void Awake()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
+        engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
+        playerController = GameObject.FindGameObjectWithTag("Player");
+
+        audioClips.Clear();
+        string[] oggFiles = Directory.GetFiles(Path.Combine(Application.dataPath, "Audio"), "*.ogg");
+        WWW www = new WWW("file://" + oggFiles[0]);
+        while (!www.isDone) { }
+        AudioClip clip = www.GetAudioClip(false, false);
+        clip.name = Path.GetFileName(oggFiles[0]);
+        audioClips.Add(clip);
+        Debug.Log("Loaded audio clip from " + oggFiles[0]);
+        for (int i = 1; i < oggFiles.Length; i++)
+        {
+            string filename = oggFiles[i];
+            www = new WWW("file://" + filename);
+            clip = www.GetAudioClip(false, false);
+            clip.name = Path.GetFileName(filename);
+            audioClips.Add(clip);
+            Debug.Log("Loaded audio clip from " + filename);
+        }
     }
 
     private void Start()
     {
+        ringGenerator = GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>();
         currAudioClip = audioClips[0];
         audioSource.clip = currAudioClip;
         ReInitialise();
         CalculateTo(currAudioClip.length);
         CalculateThresholds();
-        OutputIntensityData();
+        //OutputIntensityData();
     }
 
     private void CalculateThresholds()
@@ -138,62 +163,96 @@ public class MusicController : MonoBehaviour
             if (intensity < minIntensity) minIntensity = intensity;
         }
 
-        int numBins = 30;
-        int[] hist = new int[numBins*2/3];
+        int numBins = 20;
+        int[] hist = new int[numBins];
         float binWidth = (maxIntensity - minIntensity)/numBins;
         foreach (float intensity in intensities)
         {
-            for (int i = numBins/3; i < numBins; i++)
+            for (int i = 1; i <= numBins; i++)
             {
                 if (intensity < i*binWidth + minIntensity)
                 {
-                    hist[i - numBins/3] += 1;
+                    hist[i - 1] += 1;
                     break;
                 }
             }
-            hist[numBins*2/3 - 1] += 1;
         }
-        numBins = numBins*2/3;
 
         // Uses the balanced histogram thresholding algorithm from https://en.wikipedia.org/wiki/Balanced_histogram_thresholding
-        int iStart = 0, iEnd = numBins - 1, iMid = (iStart + iEnd)/2;
-        int wLeft = 0, wRight = 0;
-        for (int i = 0; i < iMid + 1; i++) wLeft += hist[i];
-        for (int i = iMid + 1; i < iEnd; i++) wRight += hist[i];
-        while (iStart < iEnd)
+        //int iStart = 0, iEnd = numBins - 1, iMid = (iStart + iEnd)/2;
+        //int wLeft = 0, wRight = 0;
+        //for (int i = 0; i < iMid + 1; i++) wLeft += hist[i];
+        //for (int i = iMid + 1; i < iEnd; i++) wRight += hist[i];
+        //while (iStart < iEnd)
+        //{
+        //    if (wRight > wLeft)
+        //    {
+        //        wRight -= hist[iEnd--];
+        //        if ((iStart + iEnd)/2 < iMid)
+        //        {
+        //            wRight += hist[iMid];
+        //            wLeft -= hist[iMid--];
+        //        }
+        //    }
+        //    else
+        //    {
+        //        wLeft -= hist[iStart++];
+        //        if ((iStart + iEnd)/2 >= iMid)
+        //        {
+        //            wLeft += hist[iMid + 1];
+        //            wRight -= hist[iMid + 1];
+        //            iMid++;
+        //        }
+        //    }
+        //}
+
+        // Adaptive thresholding algorithm
+        int total = 0, totalWeight = 0;
+        for (int i = 0; i <= numBins - 1; i++)
         {
-            if (wRight > wLeft)
-            {
-                wRight -= hist[iEnd--];
-                if ((iStart + iEnd)/2 < iMid)
-                {
-                    wRight += hist[iMid];
-                    wLeft -= hist[iMid--];
-                }
-            }
-            else
-            {
-                wLeft -= hist[iStart++];
-                if ((iStart + iEnd)/2 >= iMid)
-                {
-                    wLeft += hist[iMid + 1];
-                    wRight -= hist[iMid + 1];
-                    iMid++;
-                }
-            }
+            total += hist[i];
+            totalWeight += i * hist[i];
         }
+        int iMid = totalWeight / total;
+        int iMidPrev = 0;
+
+        while (iMid != iMidPrev)
+        {
+            int totalLeft = 0, totalRight = 0, totalWeightLeft = 0, totalWeightRight = 0;
+            for (int i = 0; i <= iMid; i++)
+            {
+                totalLeft += hist[i];
+                totalWeightLeft += i * hist[i];
+            }
+            for (int i = iMid + 1; i <= numBins - 1; i++)
+            {
+                totalRight += hist[i];
+                totalWeightRight += i * hist[i];
+            }
+            iMidPrev = iMid;
+            iMid = (totalWeightRight / totalRight + totalWeightLeft / totalLeft) / 2;
+        }
+
         float threshold = binWidth*iMid + minIntensity;
-        lowThreshold = threshold - binWidth;
-        highThreshold = threshold + binWidth;
+        lowThreshold = threshold - (maxIntensity - minIntensity)/10;
+        highThreshold = threshold + (maxIntensity - minIntensity)/10;
         Debug.Log("Calculated thresholds low = " + lowThreshold + ", high = " + highThreshold);
     }
 
     private void Update()
     {
-        float intensity = GetIntensityAt(audioSource.time);
-        if (intensity > highThreshold) GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().isHighIntensity = true;
-        else if (intensity < lowThreshold) GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().isHighIntensity = false;
-        //Debug.Log("Intensity: " + intensity);
+        if (engine.isStarted && !engine.isWarmingUp)
+        {
+            float playerVelocity = playerController.GetComponent<Rigidbody>().velocity.x + 0.1f;
+            float timeToLastRing = Mathf.Abs(ringGenerator.LastGeneratedRing.transform.position.x - playerController.transform.position.x) / playerVelocity;
+            if (timeToLastRing > currAudioClip.length - audioSource.time) timeToLastRing = currAudioClip.length - audioSource.time;
+            float intensity = GetIntensityAt(audioSource.time + timeToLastRing);
+            if ((intensity > highThreshold && !ringGenerator.IsHighIntensity) || (intensity < lowThreshold && ringGenerator.IsHighIntensity))
+            {
+                ringGenerator.PhaseChange();
+                Debug.Log("Music intensity: " + (ringGenerator.IsHighIntensity ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY));
+            }
+        }
     }
 
     public void StopSong()
@@ -222,7 +281,7 @@ public class MusicController : MonoBehaviour
 		
 		// (notes + intensity) for each channel
 		stepBlockSize = (NumNotes + 1) * numChannels;
-		stepBlockSamples = (int)(clipSampleRate / StepsPerSec + 0.5f);
+		stepBlockSamples = Mathf.CeilToInt(clipSampleRate / StepsPerSec);
 		numStepBlocks = (currAudioClip.samples + stepBlockSamples - 1) / stepBlockSamples; // = audioClip.samples / stepBlockSamples, but rounded up
 		
 		cachedData = new float[numStepBlocks * stepBlockSize];
@@ -351,15 +410,26 @@ public class MusicController : MonoBehaviour
         Debug.Log("Outputting intensity data to file " + logPath + " ...");
         for (int i = 0; i < numStepBlocks; i++)
         {
+            //float intensity = 0;
+            //for (int channelNum = 0; channelNum < numChannels; ++channelNum)
+            //{
+            //    intensity += cachedData[i*stepBlockSize + numChannels*numNotes + channelNum];
+            //}
+            //intensity /= numChannels;
+            //dataStr += intensity.ToString() + "\n";
+
             float intensity = 0;
-            for (int channelNum = 0; channelNum < numChannels; ++channelNum)
+            for (int j = 0; j < NumNotes + 1; j++)
             {
-                intensity += cachedData[i*stepBlockSize + numChannels*numNotes + channelNum];
+                if (j == NumNotes) continue;
+                for (int channelNum = 0; channelNum < numChannels; ++channelNum)
+                {
+                    intensity += cachedData[i * stepBlockSize + j * numChannels + channelNum];
+                }
             }
-            intensity /= numChannels;
-            dataStr += intensity.ToString() + "\n";
+            intensity /= (numChannels * NumNotes);
+            dataStr += intensity + "\n";
         }
-        File.AppendAllText(logPath, dataStr);
-        Debug.Log("Done.");
+        File.WriteAllText(logPath, dataStr);
     }
 }

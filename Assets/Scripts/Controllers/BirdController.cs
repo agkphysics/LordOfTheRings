@@ -169,7 +169,7 @@ public class BirdController : MonoBehaviour {
     void LogData()
     {
         //Logging system for force, distance and heartrate.
-        Power force = new Power(Time.time.ToString(), rowingMachine.currentForce, GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().isHighIntensity);
+        Power force = new Power(Time.time.ToString(), rowingMachine.currentForce, GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().IsHighIntensity);
         Distance distance = new Distance(Time.time.ToString(), rowingMachine.distanceTravelled);
         HeartRate heartRate = new HeartRate( Time.time.ToString(), GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().heartRate);
 

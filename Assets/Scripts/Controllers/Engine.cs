@@ -17,7 +17,7 @@ public class Engine : MonoBehaviour {
     public GUISkin skin;
 
 	//GUI Bool Elements
-	public bool isNotStarted = true;
+	public bool isStarted = false;
     public bool isWarmingUp = false;
     
 	bool isDead = false;
@@ -33,7 +33,7 @@ public class Engine : MonoBehaviour {
 		floor = Instantiate(floorPrefab);
 		Instantiate(ringCreator);
         isWarmingUp = false;
-        isNotStarted = true;
+        isStarted = false;
     }
 
 	public void AddToCurrentScore(int value)
@@ -49,7 +49,7 @@ public class Engine : MonoBehaviour {
 
 	public void StartGame()
     {
-		isNotStarted = false;
+		isStarted = true;
         isWarmingUp = true;
         warmupTime += Time.time;
         GameObject.Find("Music").GetComponent<MusicController>().PlaySong();
@@ -64,7 +64,7 @@ public class Engine : MonoBehaviour {
 	public void Reset()
     {
         isDead = false;
-        isNotStarted = true;
+        isStarted = false;
         score = 0;
         AddToCurrentScore(0);
     }
@@ -91,7 +91,7 @@ public class Engine : MonoBehaviour {
     void OnGUI ()
     {
         GUI.skin = skin;
-        if (isNotStarted)
+        if (!isStarted)
         {
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Welcome to HIITCopter!\n Start rowing to begin!"));
         }

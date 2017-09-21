@@ -9,30 +9,26 @@ public class LoggerService : MonoBehaviour {
     public Queue<Distance> distance = new Queue<Distance>();
     public Queue<Power> power = new Queue<Power>();
 
-    public float timeBetweenlogging = 1.0f;
-    private float time;
-
     private static string LOGGER_PATH;
     private const string HEART_RATE = "_heart_rate";
     private const string POWER = "_power";
     private const string DISTANCE = "_distance";
 
-    private Component birdController;
-
     void Awake()
     {
         LOGGER_PATH = Application.persistentDataPath + "/LOGGER_" + DateTime.Now.Ticks.ToString();
     }
+
     // Use this for initialization
-    void Start () {
-        birdController = GetComponent<BirdController>();
+    void Start ()
+    {
+
     }
 	
 	// Update is called once per frame
 	public void Log()
     {
         // convert each queue to string,
-
         string heartRateJson = "";
         while(heartRate.Count > 0)
         {
