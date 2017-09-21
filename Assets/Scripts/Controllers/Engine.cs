@@ -19,6 +19,7 @@ public class Engine : MonoBehaviour {
 	//GUI Bool Elements
 	public bool isNotStarted = true;
     public bool isWarmingUp = false;
+    public bool gameOver = false;
     
 	bool isDead = false;
 	int bestScore = 0;
@@ -86,6 +87,15 @@ public class Engine : MonoBehaviour {
         {
             floor.transform.position += new Vector3(floor.transform.localScale.x/2, 0, 0);
         }
+
+        //Trigger gameOver GUI when score reaches 10,000 points
+        //Hides the game UI and rings as well
+        if (score > 10000)
+        {
+            gameOver = true;
+            GameObject.Find("GUI Camera 1").SetActive(false);
+            GameObject.FindGameObjectWithTag("pipecreator").SetActive(false);
+        }
     }
 
     void OnGUI ()
@@ -107,5 +117,12 @@ public class Engine : MonoBehaviour {
 			GUI.Box (new Rect ((Screen.width / 3), (Screen.height / 8 * 2), (Screen.width / 3), (Screen.height / 8)), new GUIContent ("Score" + "\t\t\t\t\t\t\t\t\t"+ "Best" + "\n" + 
 			                                                                                                                          score + "\t\t\t\t\t\t\t\t\t\t" + bestScore+"\nPress 'Space' Twice..."));
 		}
+        if (gameOver)
+        {
+            //show score screen gui
+            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Game Over"));
+            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8 * 2), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Score" + "\t\t\t\t\t\t\t\t\t" + "Best" + "\n" +
+                                                                                                                                      score + "\t\t\t\t\t\t\t\t\t\t" + bestScore + "\nPress 'Space' Twice..."));
+        }
 	}
 }
