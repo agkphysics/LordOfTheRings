@@ -9,23 +9,33 @@ public class RingController : MonoBehaviour {
     private BirdController playerController;
     private RingGenerator ringGenerator;
     private RowingMachineController rowingMachine;
+    private MusicController musicController;
 
     public GameObject NextRing { get; set; }
     public Engine.Interval Section { get; set; }
 
 	// Use this for initialization
-	void Start () {
+	private void Awake ()
+    {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
-        ringGenerator = GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>();
         rowingMachine = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<RowingMachineController>();
+        musicController = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicController>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    private void Start()
+    {
+        ringGenerator = GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>();
+    }
+
+    // Update is called once per frame
+    void Update ()
+    {
         //float val = Mathf.Exp(-0.1f*Mathf.Abs(gameObject.transform.position.x - player.transform.position.x));
-        float meanRPM = rowingMachine.MeanRPM;
-        float rpmDiff = Mathf.Abs(meanRPM - playerController.TargetRPM);
+
+        float rpmDiff = Mathf.Abs(rowingMachine.MeanRPM - playerController.TargetRPM);
         float val = Mathf.Exp(-0.06f*rpmDiff);
+
+        //float val = Mathf.Exp(-0.5f*Mathf.Abs(ringGenerator.LastGeneratedRing.transform.position.x/playerController.GetComponent<Rigidbody>().velocity.x - musicController.NextBeat));
 
         gameObject.GetComponent<MeshRenderer>().material.color = Color.Lerp(Color.red, Color.green, val);
 

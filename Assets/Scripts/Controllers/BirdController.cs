@@ -28,7 +28,7 @@ public class BirdController : MonoBehaviour {
     private RowingMachineController rowingMachine;
 
     public Engine.Interval Section { get; set; }
-    public float TargetRPM { get; private set; }
+    public float TargetRPM { get; set; }
 
     void Awake()
     {
@@ -41,7 +41,6 @@ public class BirdController : MonoBehaviour {
 	void Start ()
     {
         Section = Engine.Interval.LOW_INTENSITY;
-        TargetRPM = 60;
         transform.position = startingPosition;
 		startingRotation = transform.rotation;
 
@@ -159,7 +158,6 @@ public class BirdController : MonoBehaviour {
         //On collision with ring, create new ring and increment score by 500, remove ring
         GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().NewRing();
         Section = trigger.gameObject.GetComponent<RingController>().NextRing.GetComponent<RingController>().Section;
-        TargetRPM = Section == Engine.Interval.HIGH_INTENSITY ? 80 : 60;
         Debug.Log("Entering section " + Section);
 
         engine.AddToCurrentScore(500);
