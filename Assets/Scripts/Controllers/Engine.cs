@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
+using ProgressBar;
 
 /// <summary>
 /// Main game controller.
@@ -16,8 +17,11 @@ public class Engine : MonoBehaviour {
 
     public GUISkin skin;
 
-	//GUI Bool Elements
-	public bool isStarted = false;
+    private ProgressBarBehaviour progressBarBehaviour;
+
+
+    //GUI Bool Elements
+    public bool isStarted = false;
     public bool isWarmingUp = false;
     public bool gameOver = false;
     
@@ -25,7 +29,7 @@ public class Engine : MonoBehaviour {
 	int bestScore = 0;
 	int score = 0;
     public int age = 20;
-    public float warmupTime = 30;
+    public float warmupTime = 5;
 
     // Use this for initialization
     void Awake ()
@@ -35,12 +39,19 @@ public class Engine : MonoBehaviour {
 		Instantiate(ringCreator);
         isWarmingUp = false;
         isStarted = false;
+        //Instantiate(progressBarBehaviour);
     }
 
 	public void AddToCurrentScore(int value)
 	{
         score += value;
         GameObject.Find("Score").GetComponent<TextMesh>().text = score.ToString();
+    }
+
+    public void AddToCurrentProgress(int value)
+    {
+        //progressBarBehaviour.IncrementValue(value);
+        //GameObject.Find("Progress").GetComponent<TextMesh>().text = score.ToString();
     }
 
     public void CompareCurrentScoreToBest()

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using ProgressBar;
 
 /// <summary>
 /// Script which controls the player, called 'bird' due to being a Flappy Bird VR derivative.
@@ -82,6 +83,7 @@ public class BirdController : MonoBehaviour {
 		}
         else
         {
+            engine.AddToCurrentProgress(1);//WIP
             if (engine.isWarmingUp)
             {
                 //Warmup period, time configured witin the GameObjectSpawner
