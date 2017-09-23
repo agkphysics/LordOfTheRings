@@ -1,4 +1,5 @@
-﻿using ProgressBar.Utils;
+﻿using System;
+using ProgressBar.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,7 +25,7 @@ namespace ProgressBar
             get
             {
                 if (m_FillerInfo == null)
-                    m_FillerInfo = new FillerProperty(0, m_FillRect.rect.width);
+                    m_FillerInfo = new FillerProperty(0, Math.Abs(m_FillRect.rect.width));
                 return m_FillerInfo;
             }
         }
@@ -95,7 +96,7 @@ namespace ProgressBar
         /// By default the Filler is centered horizontally in its container panel.
         /// This value is needed for the SetInsetAndSizeFromParentEdge method.
         /// </summary>
-        private float m_XOffset = float.NaN;
+        private float m_XOffset = 3;
 
         public float XOffset
         {
@@ -199,7 +200,7 @@ namespace ProgressBar
         /// <param name="inc">percents</param>
         public void IncrementValue(float inc)
         {
-            Value += 5;
+            Value += inc;
 
             if (Value > 100) Value = 100;
         }

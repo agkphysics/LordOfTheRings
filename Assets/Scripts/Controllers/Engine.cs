@@ -19,6 +19,7 @@ public class Engine : MonoBehaviour {
 
     private ProgressBarBehaviour progressBarBehaviour;
 
+    private ProgressBarBehaviour testBar;
 
     //GUI Bool Elements
     public bool isStarted = false;
@@ -30,6 +31,7 @@ public class Engine : MonoBehaviour {
 	int score = 0;
     public int age = 20;
     public float warmupTime = 5;
+    const int targetScore = 10000;
 
     // Use this for initialization
     void Awake ()
@@ -39,19 +41,19 @@ public class Engine : MonoBehaviour {
 		Instantiate(ringCreator);
         isWarmingUp = false;
         isStarted = false;
-        //Instantiate(progressBarBehaviour);
+        progressBarBehaviour = GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>();
     }
 
-	public void AddToCurrentScore(int value)
+    public void AddToCurrentProgress()
+    {
+        progressBarBehaviour.IncrementValue(5);
+        Debug.Log("Current percentage" + progressBarBehaviour.Value);
+    }
+
+    public void AddToCurrentScore(int value)
 	{
         score += value;
         GameObject.Find("Score").GetComponent<TextMesh>().text = score.ToString();
-    }
-
-    public void AddToCurrentProgress(int value)
-    {
-        //progressBarBehaviour.IncrementValue(value);
-        //GameObject.Find("Progress").GetComponent<TextMesh>().text = score.ToString();
     }
 
     public void CompareCurrentScoreToBest()
@@ -101,7 +103,7 @@ public class Engine : MonoBehaviour {
 
         //Trigger gameOver GUI when score reaches 10,000 points
         //Hides the game UI and rings as well
-        if (score > 10000)
+        if (score > targetScore)
         {
             gameOver = true;
             GameObject.Find("GUI Camera 1").SetActive(false);

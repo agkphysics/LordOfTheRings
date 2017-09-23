@@ -83,7 +83,7 @@ public class BirdController : MonoBehaviour {
 		}
         else
         {
-            engine.AddToCurrentProgress(1);//WIP
+            
             if (engine.isWarmingUp)
             {
                 //Warmup period, time configured witin the GameObjectSpawner
@@ -111,6 +111,7 @@ public class BirdController : MonoBehaviour {
 
                 Debug.Log("Current proportionate force: " + rowingMachine.currentForce/warmupAverage);
 
+                engine.AddToCurrentProgress();//WIP
                 engine.AddToCurrentScore(50);
             }
             
