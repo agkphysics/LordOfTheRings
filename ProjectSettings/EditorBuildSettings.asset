@@ -8,6 +8,21 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Scene_1.unity
     guid: fee9b282928f3e24e965c725aed2d695
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Scene_2.unity
     guid: 6288c48aa2f18f1499a74deeb6c8672f
+  - enabled: 1
+    path: Assets/Test/Main Menu.unity
+    guid: de57b9015b844cd48810dea6e6693417
+  - enabled: 1
+    path: Assets/Test/Ocean.unity
+    guid: 2cd4a2cf371f9bb4899d853f6bf36185
+  - enabled: 1
+    path: Assets/Test/Grass Tile.unity
+    guid: debfcf1c3a6119945afe60d8f319d5ea
+  - enabled: 1
+    path: Assets/Test/Road Tile.unity
+    guid: edd8c09739e721f47b60191cda45ba40
+  - enabled: 1
+    path: Assets/Test/Space.unity
+    guid: 905e8a1d397e83047826a93193dd69f9

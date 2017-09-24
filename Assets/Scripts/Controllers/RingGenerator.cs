@@ -13,7 +13,7 @@ public class RingGenerator : MonoBehaviour {
     public float highRingSeparation = 22f;
 
     private Engine engine;
-    Vector3 currentPos = Vector3.zero;
+    public Vector3 currentPos = Vector3.zero;
 
     private bool hasInitialSpawned = false;
     private int ringCount = 0;
