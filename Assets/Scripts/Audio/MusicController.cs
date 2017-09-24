@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System;
+using System.Threading;
+using System.Collections;
 
 /// <summary>
 /// This class analyses the music to determine intensities.
@@ -11,8 +13,6 @@ using System;
 /// </summary>
 public class MusicController : MonoBehaviour
 {
-    private List<Song> songs;
-
     public static int BaseNote { get; set; }
     public static int NumNotes { get; set; }
     public static float DecayRate { get; set; }
@@ -20,7 +20,8 @@ public class MusicController : MonoBehaviour
     public static float IntensityFadeFactor { get; set; }
     
     public float[] BeatTimes { get { return currSong.BeatTimes; } }
-    public float NextBeat { get { return currSong.BeatTimes[beatIdx]; } }
+    public float NextBeat { get { return BeatTimes[beatIdx]; } }
+    public float NextBeatDelta { get { return NextBeat - audioSource.time; } }
 
     static MusicController()
     {
@@ -31,14 +32,15 @@ public class MusicController : MonoBehaviour
         IntensityFadeFactor = 0.02f;
     }
 
+    private List<Song> songs;
     private Song currSong;
     private AudioSource audioSource;
     private int idx = 0;
+    private int beatIdx = 0;
 
     private Engine engine;
     private BirdController playerController;
     private RingGenerator ringGenerator;
-    private int beatIdx = 0;
 
     private void Awake()
     {
@@ -48,17 +50,12 @@ public class MusicController : MonoBehaviour
 
         songs = new List<Song>();
         string[] oggFiles = Directory.GetFiles(Path.Combine(Application.dataPath, "Audio"), "*.ogg");
-        WWW www = new WWW("file://" + oggFiles[0]);
-        while (!www.isDone) { }
-        AudioClip clip = www.GetAudioClip(false, false);
-        clip.name = Path.GetFileName(oggFiles[0]);
-        songs.Add(new Song(clip));
-        Debug.Log("Loaded audio clip from " + oggFiles[0]);
-        for (int i = 1; i < oggFiles.Length; i++)
+        for (int i = 0; i < oggFiles.Length; i++)
         {
             string filename = oggFiles[i];
-            www = new WWW("file://" + filename);
-            clip = www.GetAudioClip(false, false);
+            WWW www = new WWW("file://" + filename);
+            while (!www.isDone) { }
+            AudioClip clip = www.GetAudioClip(false, false);
             clip.name = Path.GetFileName(filename);
             songs.Add(new Song(clip));
             Debug.Log("Loaded audio clip from " + filename);
@@ -68,36 +65,61 @@ public class MusicController : MonoBehaviour
     private void Start()
     {
         ringGenerator = GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>();
-        ChangeSong();
+        currSong = songs[idx++];
+        audioSource.clip = currSong.Clip;
+        new Thread(new ThreadStart(() => { foreach (Song song in songs) song.Initialise(); })).Start();
     }
 
     private void Update()
     {
-        if (engine.isStarted && !engine.isWarmingUp)
+        if (currSong.IsFinishedInitialising)
         {
-            float playerVelocity = playerController.GetComponent<Rigidbody>().velocity.x + 0.1f;
-            float timeToLastRing = Mathf.Abs(ringGenerator.LastGeneratedRing.transform.position.x - playerController.transform.position.x) / playerVelocity;
-            if (timeToLastRing > currSong.Length - audioSource.time) timeToLastRing = currSong.Length - audioSource.time;
-            float intensity = currSong.GetIntensityAt(audioSource.time + timeToLastRing);
-            if ((intensity > currSong.HighThreshold && !ringGenerator.IsHighIntensity) || (intensity < currSong.LowThreshold && ringGenerator.IsHighIntensity))
+            if (engine.isStarted && !engine.isWarmingUp)
             {
-                ringGenerator.PhaseChange();
-                Debug.Log("Music intensity: " + (ringGenerator.IsHighIntensity ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY));
+                float playerVelocity = playerController.GetComponent<Rigidbody>().velocity.x + 1f;
+                float timeToLastRing = Mathf.Abs(ringGenerator.LastGeneratedRing.transform.position.x - playerController.transform.position.x) / playerVelocity;
+                if (timeToLastRing > currSong.Length - audioSource.time) timeToLastRing = currSong.Length - audioSource.time;
+                float intensity = currSong.GetIntensityAt(audioSource.time + timeToLastRing);
+                if ((intensity > currSong.HighThreshold && !ringGenerator.IsHighIntensity) || (intensity < currSong.LowThreshold && ringGenerator.IsHighIntensity))
+                {
+                    ringGenerator.PhaseChange();
+                    Debug.Log("Time until last ring: " + timeToLastRing + ", music intensity: " + intensity + ", " + (ringGenerator.IsHighIntensity ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY));
+                }
             }
+            if (audioSource.isPlaying)
+            {
+                if (BeatTimes[beatIdx] < audioSource.time) beatIdx++;
+            }
+            playerController.TargetRPM = currSong.BPM;
         }
-        if (audioSource.isPlaying)
+        if (Input.GetKeyDown(KeyCode.N))
         {
-            if (BeatTimes[beatIdx] < audioSource.time) beatIdx++;
+            ChangeSong();
+            PlaySong();
         }
     }
 
     public void StopSong()
     {
         audioSource.Stop();
+        StopCoroutine("_PlaySong");
     }
 
     public void PlaySong()
     {
+        if (currSong.IsFinishedInitialising)
+        {
+            audioSource.Play();
+        }
+        else
+        {
+            StartCoroutine("_PlaySong");
+        }
+    }
+
+    private IEnumerator _PlaySong()
+    {
+        while (!currSong.IsFinishedInitialising) yield return null;
         audioSource.Play();
     }
 
@@ -106,13 +128,13 @@ public class MusicController : MonoBehaviour
         StopSong();
         currSong = songs[idx++];
         audioSource.clip = currSong.Clip;
-        currSong.Initialise();
-        
+        //new Thread(new ThreadStart(() => {
+        //    currSong.Initialise();
+        //    playerController.TargetRPM = currSong.BPM;
+        //    Debug.Log("Current BPM of song is " + currSong.BPM);
+        //})).Start();
         //currSong.OutputIntensityData();
-        currSong.CalculateBPM();
         //currSong.OutputBeatData();
-        playerController.TargetRPM = currSong.BPM;
-        Debug.Log("Current BPM of song is " + currSong.BPM);
     }
 
     /// <summary>
@@ -121,11 +143,12 @@ public class MusicController : MonoBehaviour
     class Song
     {
         public AudioClip Clip { get; private set; }
-        public float Length { get { return Clip.length; } }
+        public float Length { get; private set; }
         public float LowThreshold { get; private set; }
         public float HighThreshold { get; private set; }
         public int BPM { get; private set; }
         public float[] BeatTimes { get; private set; }
+        public bool IsFinishedInitialising { get; private set; }
 
         // Values derived from configuration constants
         private int numStepBlocks;
@@ -134,9 +157,11 @@ public class MusicController : MonoBehaviour
 
         // Changing state
         private int numChannels;
+        private int numSamples;
         private int clipSampleRate;
         private int audioProgStepBlocks;
         private float[] cachedData;
+        private float[] clipData;
 
         // Buffers with temporary contents
         private float[] stepBlockBuffer;
@@ -146,29 +171,43 @@ public class MusicController : MonoBehaviour
         {
             Clip = clip;
             BPM = -1;
+            IsFinishedInitialising = false;
+            numChannels = Clip.channels;
+            clipSampleRate = Clip.frequency;
+            numSamples = Clip.samples;
+            clipData = new float[numSamples*numChannels];
+            Length = Clip.length;
+            Clip.GetData(clipData, 0);
         }
 
         public void Initialise()
         {
-            numChannels = Clip.channels;
-            clipSampleRate = Clip.frequency;
+            if (!IsFinishedInitialising)
+            {
+                // (notes + intensity) for each channel
+                stepBlockSize = (NumNotes + 1) * numChannels;
+                stepBlockSamples = Mathf.CeilToInt(clipSampleRate / StepsPerSec);
+                numStepBlocks = (numSamples + stepBlockSamples - 1) / stepBlockSamples; // = Clip.samples / stepBlockSamples, but rounded up
 
-            // (notes + intensity) for each channel
-            stepBlockSize = (NumNotes + 1) * numChannels;
-            stepBlockSamples = Mathf.CeilToInt(clipSampleRate / StepsPerSec);
-            numStepBlocks = (Clip.samples + stepBlockSamples - 1) / stepBlockSamples; // = audioClip.samples / stepBlockSamples, but rounded up
+                cachedData = new float[numStepBlocks * stepBlockSize];
+                audioProgStepBlocks = -1;
 
-            cachedData = new float[numStepBlocks * stepBlockSize];
-            audioProgStepBlocks = -1;
+                AudioAnalysis.InitTrackers(BaseNote, NumNotes, DecayRate, clipSampleRate, numChannels);
 
-            AudioAnalysis.InitTrackers(BaseNote, NumNotes, DecayRate, clipSampleRate, numChannels);
+                // Initialise buffers
+                stepBlockBuffer = new float[stepBlockSamples * numChannels];
+                resonanceBuffer = new float[NumNotes * numChannels];
 
-            // Initialise buffers
-            stepBlockBuffer = new float[stepBlockSamples * numChannels];
-            resonanceBuffer = new float[NumNotes * numChannels];
+                CalculateTo(Length);
+                CalculateThresholds();
+                CalculateBPM();
+                IsFinishedInitialising = true;
+            }
+        }
 
-            CalculateTo(Length);
-            CalculateThresholds();
+        private void GetData(float[] buf, int offset)
+        {
+            for (int i = 0; i < buf.Length; i++) buf[i] = clipData[(offset*numChannels + i) % clipData.Length];
         }
 
         private int CalculateBlockNum(float timeSeconds)
@@ -220,7 +259,7 @@ public class MusicController : MonoBehaviour
                 int timeSamplesSize = stepBlockSamples * numChannels;
 
                 // Send audio data to the tracker
-                Clip.GetData(stepBlockBuffer, timeSamplesBase);
+                GetData(stepBlockBuffer, timeSamplesBase);
                 AudioAnalysis.AddSamples(stepBlockBuffer, timeSamplesSize);
 
                 // Get resonance back from the tracker
@@ -240,6 +279,10 @@ public class MusicController : MonoBehaviour
                         float oldIntensity = cachedData[intensityOffset + channelNum - stepBlockSize];
                         cachedData[intensityOffset + channelNum] = oldIntensity + (rawIntensity - oldIntensity) * IntensityFadeFactor;
                     }
+                }
+                if (audioProgStepBlocks == timeStepBlocks - 2)
+                {
+
                 }
             }
         }
@@ -378,25 +421,38 @@ public class MusicController : MonoBehaviour
             Debug.Log("Calculated thresholds low = " + LowThreshold + ", high = " + HighThreshold);
         }
 
-        public void CalculateBPM()
+        private void CalculateBPM()
         {
             if (BPM == -1)
             {
-                int[] beatDiffArray = new int[numStepBlocks];
-                int[] beatArray = new int[numStepBlocks];
-                int idx = 0, prevBeat = 0;
+                float[] beatIntensities = new float[numStepBlocks];
+                int[] noteRange = { 47, 51 };
                 for (int i = 0; i < numStepBlocks; i++)
                 {
                     float intensity = 0;
-                    for (int j = 47; j <= 51; j++)
+                    for (int j = noteRange[0]; j <= noteRange[1]; j++)
                     {
                         for (int channelNum = 0; channelNum < numChannels; ++channelNum)
                         {
                             intensity += cachedData[i * stepBlockSize + j * numChannels + channelNum];
                         }
                     }
-                    intensity /= (5*numChannels);
-                    if (intensity > 0.015)
+                    intensity /= ((noteRange[1] - noteRange[0] + 1)*numChannels);
+                    beatIntensities[i] = intensity;
+                }
+                List<float> beatIntensitiesSorted = new List<float>(beatIntensities);
+                
+                beatIntensitiesSorted.Sort();
+                // Use 90th percentile to use as cutoff for beat detection
+                float percentile95 = beatIntensitiesSorted[(int)(beatIntensitiesSorted.Count*0.95)];
+                
+                int[] beatDiffArray = new int[numStepBlocks];
+                int[] beatArray = new int[numStepBlocks];
+                int idx = 0, prevBeat = 0;
+                for (int i = 0; i < numStepBlocks; i++)
+                {
+                    float intensity = beatIntensities[i];
+                    if (intensity > percentile95)
                     {
                         if (idx == 0) beatDiffArray[0] = i;
                         else beatDiffArray[idx] = i - prevBeat;
@@ -406,11 +462,14 @@ public class MusicController : MonoBehaviour
                     }
                 }
 
-                int[] beatHist = new int[120];
+                int[] beatHist = new int[100];
                 for (int i = 1; i < idx; i++)
                 {
-                    beatHist[beatDiffArray[i]] += 1;
+                    int beatDiff = beatDiffArray[i];
+                    // Ignore time differences too small or large. We expect BPM multiples to be between 20 and 200.
+                    if (beatDiff >= 9 && beatDiff <= 90) beatHist[beatDiff] += 1;
                 }
+                // Sort by frequency and obtain value which occurs most frequently.
                 Dictionary<int, int> sortedArray = new Dictionary<int, int>(beatHist.Length);
                 for (int i = 1; i < beatHist.Length; i++)
                 {
@@ -424,10 +483,10 @@ public class MusicController : MonoBehaviour
                 float a = mode1/(float)mode2;
                 float b = mode2/(float)mode1;
                 int mode;
-                if (Mathf.Abs(Mathf.Round(a) - a) < 0.1 || Mathf.Abs(Mathf.Round(b) - b) < 0.1)
+                if (a - 1 > 0.5 && b - 1 > 0.5 && Mathf.Abs(Mathf.Round(a) - a) < 0.1 || Mathf.Abs(Mathf.Round(b) - b) < 0.1)
                 {
-                    // The two most common beat differences are multiples of each other, use the larger
-                    // to give smaller BPM.
+                    // The two most common beat differences are multiples of each other but not equal,
+                    // use the larger to give smaller BPM.
                     mode = Math.Max(mode1, mode2);
                 }
                 else
@@ -451,26 +510,6 @@ public class MusicController : MonoBehaviour
             for (int i = 0; i < numStepBlocks; i++)
             {
                 dataStr.Append(i/StepsPerSec).Append("\t");
-
-                //float resonance = 0;
-                //for (int channelNum = 0; channelNum < numChannels; ++channelNum)
-                //{
-                //    resonance += cachedData[i*stepBlockSize + numChannels*NumNotes + channelNum];
-                //}
-                //resonance /= numChannels;
-                //dataStr.Append(resonance.ToString()).Append("\t");
-
-                //float intensity = 0;
-                //for (int j = 0; j < NumNotes; j++)
-                //{
-                //    for (int channelNum = 0; channelNum < numChannels; ++channelNum)
-                //    {
-                //        intensity += cachedData[i * stepBlockSize + j * numChannels + channelNum];
-                //    }
-                //}
-                //intensity /= (numChannels * NumNotes);
-                //dataStr.Append(intensity).Append("\n");
-                
                 for (int j = 0; j < NumNotes + 1; j++)
                 {
                     float intensity = 0;
