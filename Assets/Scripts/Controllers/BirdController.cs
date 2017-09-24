@@ -92,7 +92,10 @@ public class BirdController : MonoBehaviour {
                     rowingMachine.waitingRow = false;
                     
                     rb.velocity = new Vector3(rowingMachine.currentForce*forceMultiplier, 0);
-                    Debug.Log("Current Force: " + rowingMachine.currentForce);
+                    if (!rowingMachine.DEBUG)
+                    {
+                        Debug.Log("Current Force: " + rowingMachine.currentForce);
+                    }
                     Debug.Log("Warming up period.");
                 }
             }
@@ -106,8 +109,10 @@ public class BirdController : MonoBehaviour {
                 }
                 rb.AddForce(Vector3.right*rowingMachine.currentForce/warmupAverage*forceMultiplier, ForceMode.Impulse);
 
-                Debug.Log("Current proportionate force: " + rowingMachine.currentForce/warmupAverage);
-
+                if (!rowingMachine.DEBUG)
+                {
+                    Debug.Log("Current proportionate force: " + rowingMachine.currentForce/warmupAverage);
+                }
                 engine.AddToCurrentScore(50);
             }
             

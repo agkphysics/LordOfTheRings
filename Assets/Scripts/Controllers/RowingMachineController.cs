@@ -11,6 +11,8 @@ public class RowingMachineController : MonoBehaviour {
     public uint distanceTravelled; 
     public uint currentForce;
 
+    public bool DEBUG { get { return rower.DEBUG; } }
+
     Rower rower;
 
     uint oldDistance;
@@ -26,24 +28,16 @@ public class RowingMachineController : MonoBehaviour {
     /// The current mean row time delta in seconds, i.e. the mean time between rows.
     /// Averaged over a number of periods.
     /// </summary>
-    public float MeanRowTime
-    {
-        get; private set;
-    }
+    public float MeanRowTime { get; private set; }
 
     /// <summary>
     /// The mean rows per minute. Equal to 60/MeanRowTime.
     /// </summary>
-    public float MeanRPM
-    {
-        get
-        {
-            return 60/MeanRowTime;
-        }
-    }
+    public float MeanRPM { get { return 60/MeanRowTime; } }
 
     // Use this for initialization
-    void Start () {
+    void Awake ()
+    {
         rower = GetComponent<Rower>();
     }
 	
@@ -96,8 +90,10 @@ public class RowingMachineController : MonoBehaviour {
         oldPower = power;
         oldPace = pace;
         lastRowTime = Time.time;
-        Debug.Log("Row detected: distance = " + distance + ", power = " + power + ", pace = " + pace);
-        Debug.Log("Mean RPM: " + MeanRPM);
+        if (!rower.DEBUG)
+        {
+            Debug.Log("Row detected: distance = " + distance + ", power = " + power + ", pace = " + pace);
+        }
         GameObject.Find("RPM").GetComponent<TextMesh>().text = Mathf.RoundToInt(MeanRPM) + "RPM";
     }
 }
