@@ -27,6 +27,8 @@ public class Engine : MonoBehaviour {
 
     private GameObject floor;
 
+    GameObject warp;
+
     // Use this for initialization
     void Awake ()
     {
@@ -35,6 +37,7 @@ public class Engine : MonoBehaviour {
 		Instantiate(ringCreator);
         isWarmingUp = false;
         isStarted = false;
+        warp = GameObject.Find("warp");
     }
 
 	public void AddToCurrentScore(int value)
@@ -82,6 +85,17 @@ public class Engine : MonoBehaviour {
         {
             floor.transform.position += new Vector3(floor.transform.localScale.x/2, 0, 0);
         }
+
+        //Turns off and on warp effect. Temporarily using score to trigger.
+        if (score > 10000)
+        {
+            warp.SetActive(true);
+        }
+        if (score < 10000)
+        {
+            warp.SetActive(false);
+        }
+
 
         //Trigger gameOver GUI when score reaches 10,000 points
         //Hides the game UI and rings as well
