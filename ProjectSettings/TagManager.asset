@@ -21,6 +21,7 @@ TagManager:
   - Warp
   - RPMText
   - Music
+  - particle
   layers:
   - Default
   - TransparentFX
