@@ -927,7 +927,7 @@ Behaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013203478668}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!212 &212000013198825164
 SpriteRenderer:
   m_ObjectHideFlags: 1

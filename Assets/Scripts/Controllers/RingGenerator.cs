@@ -8,26 +8,31 @@ public class RingGenerator : MonoBehaviour {
 
     public GameObject ring;
 
+    public GameObject LastGeneratedRing { get { return lastRing; } }
+
     public int difficulty = 1;
     public bool IsHighIntensity { get; set; }
     public float highRingSeparation = 22f;
+    public int ringsPerInterval = 20;
+    public HeartRateService.HeartStatus hrLvl;
 
     private Engine engine;
-    Vector3 currentPos = Vector3.zero;
+    private Vector3 currentPos;
 
     private bool hasInitialSpawned = false;
     private int ringCount = 0;
     private GameObject lastRing;
-    public GameObject LastGeneratedRing { get { return lastRing; } }
 
-    //This is abut 36 seconds long.
-    public int ringsPerInterval = 20;
-    public HeartRateService.HeartStatus hrLvl;
+    private void Awake()
+    {
+        engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
+    }
 
-	void Start()
+    void Start()
     {
         IsHighIntensity = false;
-        engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
+        BirdController playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
+        currentPos = new Vector3(0, playerController.transform.position.y, 0);
     }
 
     void Update()

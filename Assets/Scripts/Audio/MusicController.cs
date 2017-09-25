@@ -99,6 +99,12 @@ public class MusicController : MonoBehaviour
         }
     }
 
+    private void OnGUI()
+    {
+        GUI.skin = engine.skin;
+        if (!currSong.IsFinishedInitialising) GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 12)), new GUIContent("Loading song..."));
+    }
+
     public void StopSong()
     {
         audioSource.Stop();

@@ -88,7 +88,7 @@ public class Engine : MonoBehaviour {
         if (score > highScore)
         {
             gameOver = true;
-            GameObject.Find("GUI Camera 1").SetActive(false);
+            GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);
             GameObject.FindGameObjectWithTag("pipecreator").SetActive(false);
         }
     }
