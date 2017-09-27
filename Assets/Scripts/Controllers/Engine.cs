@@ -19,6 +19,8 @@ public class Engine : MonoBehaviour {
 
     private ProgressBarBehaviour progressBarBehaviour;
 
+    private SpeedIndicator speedIndicator;
+
     private ProgressBarBehaviour testBar;
 
     //GUI Bool Elements
@@ -42,6 +44,12 @@ public class Engine : MonoBehaviour {
         isWarmingUp = false;
         isStarted = false;
         progressBarBehaviour = GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>();
+        speedIndicator = GameObject.Find("SpeedIndicator").GetComponent<SpeedIndicator>();
+    }
+
+    public void UpdateSpeedIndicatorPosition(float value)
+    {
+        speedIndicator.UpdatePosition(value);
     }
 
     public void AddToCurrentProgress()

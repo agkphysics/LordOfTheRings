@@ -9,6 +9,7 @@ public class RingController : MonoBehaviour {
     private BirdController playerController;
     private RingGenerator ringGenerator;
     private RowingMachineController rowingMachine;
+    private SpeedIndicator speedIndicator;
 
     public GameObject NextRing { get; set; }
     public Engine.Interval Section { get; set; }
@@ -18,6 +19,7 @@ public class RingController : MonoBehaviour {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
         ringGenerator = GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>();
         rowingMachine = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<RowingMachineController>();
+        speedIndicator = GameObject.Find("SpeedIndicator").GetComponent<SpeedIndicator>();
     }
 	
 	// Update is called once per frame
@@ -26,6 +28,9 @@ public class RingController : MonoBehaviour {
         float meanRPM = rowingMachine.MeanRPM;
         float rpmDiff = Mathf.Abs(meanRPM - playerController.TargetRPM);
         float val = Mathf.Exp(-0.06f*rpmDiff);
+
+        speedIndicator.UpdateRPM(meanRPM);
+	    speedIndicator.targetRPM = playerController.TargetRPM;
 
         gameObject.GetComponent<MeshRenderer>().material.color = Color.Lerp(Color.red, Color.green, val);
 

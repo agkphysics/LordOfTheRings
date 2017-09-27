@@ -22,6 +22,7 @@ public class RowingMachineController : MonoBehaviour {
     int currIdx = 0;
     int rowCount = 0;
 
+
     /// <summary>
     /// The current mean row time delta in seconds, i.e. the mean time between rows.
     /// Averaged over a number of periods.
@@ -96,6 +97,7 @@ public class RowingMachineController : MonoBehaviour {
         oldPower = power;
         oldPace = pace;
         lastRowTime = Time.time;
+
         Debug.Log("Row detected: distance = " + distance + ", power = " + power + ", pace = " + pace);
         Debug.Log("Mean RPM: " + MeanRPM);
         GameObject.Find("RPM").GetComponent<TextMesh>().text = Mathf.RoundToInt(MeanRPM) + "RPM";
