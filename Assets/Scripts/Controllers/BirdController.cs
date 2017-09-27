@@ -29,7 +29,7 @@ public class BirdController : MonoBehaviour {
     private RowingMachineController rowingMachine;
 
     public Engine.Interval Section { get; set; }
-    public float TargetRPM { get; private set; }
+    public float TargetRPM { get; set; }
 
     void Awake()
     {
@@ -95,7 +95,10 @@ public class BirdController : MonoBehaviour {
                     rowingMachine.waitingRow = false;
                     
                     rb.velocity = new Vector3(rowingMachine.currentForce*forceMultiplier, 0);
+                    if (!rowingMachine.DEBUG)
+                    {
                     Debug.Log("Current Force: " + rowingMachine.currentForce);
+                    }
                     Debug.Log("Warming up period.");
                 }
             }
@@ -109,8 +112,10 @@ public class BirdController : MonoBehaviour {
                 }
                 rb.AddForce(Vector3.right*rowingMachine.currentForce/warmupAverage*forceMultiplier, ForceMode.Impulse);
 
+                if (!rowingMachine.DEBUG)
+                {
                 Debug.Log("Current proportionate force: " + rowingMachine.currentForce/warmupAverage);
-
+                }
                 engine.AddToCurrentProgress(2f);
                 engine.AddToCurrentScore(50);
             }
@@ -162,7 +167,6 @@ public class BirdController : MonoBehaviour {
         //On collision with ring, create new ring and increment score by 500, remove ring
         GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().NewRing();
         Section = trigger.gameObject.GetComponent<RingController>().NextRing.GetComponent<RingController>().Section;
-        TargetRPM = Section == Engine.Interval.HIGH_INTENSITY ? 80 : 60;
         Debug.Log("Entering section " + Section);
 
         engine.AddToCurrentScore(500);

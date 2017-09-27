@@ -12,9 +12,6 @@ public class Engine : MonoBehaviour {
     public enum Interval { LOW_INTENSITY, HIGH_INTENSITY };
 
     public GameObject worldlight, floorPrefab, ringCreator;
-
-    private GameObject floor;
-
     public GUISkin skin;
 
     private ProgressBarBehaviour progressBarBehaviour;
@@ -23,17 +20,20 @@ public class Engine : MonoBehaviour {
 
     private ProgressBarBehaviour testBar;
 
-    //GUI Bool Elements
-    public bool isStarted = false;
+	//GUI Bool Elements
+	public bool isStarted = false;
     public bool isWarmingUp = false;
     public bool gameOver = false;
     
-	bool isDead = false;
 	int bestScore = 0;
 	int score = 0;
     public int age = 20;
     public float warmupTime = 5;
     const int targetScore = 10000;
+
+    private GameObject floor;
+
+    GameObject warp;
 
     // Use this for initialization
     void Awake ()
@@ -53,7 +53,7 @@ public class Engine : MonoBehaviour {
         Debug.Log("Current percentage" + progressBarBehaviour.Value);
     }
 
-    public void AddToCurrentScore(int value)
+	public void AddToCurrentScore(int value)
 	{
         score += value;
         GameObject.Find("Score").GetComponent<TextMesh>().text = score.ToString();
@@ -72,15 +72,10 @@ public class Engine : MonoBehaviour {
         GameObject.Find("Music").GetComponent<MusicController>().PlaySong();
     }
 	
-	public void Die()
-    {
-		isDead = true;
-	}
-	
     // Only called in editor
 	public void Reset()
     {
-        isDead = false;
+        gameOver = false;
         isStarted = false;
         score = 0;
         AddToCurrentScore(0);
@@ -105,12 +100,23 @@ public class Engine : MonoBehaviour {
             floor.transform.position += new Vector3(floor.transform.localScale.x/2, 0, 0);
         }
 
+        //Turns off and on warp effect. Temporarily using score to trigger.
+        if (score > 10000)
+        {
+            warp.SetActive(true);
+        }
+        if (score < 10000)
+        {
+            warp.SetActive(false);
+        }
+
+
         //Trigger gameOver GUI when score reaches 10,000 points
         //Hides the game UI and rings as well
         if (score > targetScore)
         {
             gameOver = true;
-            GameObject.Find("GUI Camera 1").SetActive(false);
+            GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);
             GameObject.FindGameObjectWithTag("pipecreator").SetActive(false);
         }
     }
@@ -128,12 +134,6 @@ public class Engine : MonoBehaviour {
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Row to escape from light warp"));
         }
 
-        if (isDead) {
-			//show score screen gui
-			GUI.Box (new Rect ((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent ("Game Over"));
-			GUI.Box (new Rect ((Screen.width / 3), (Screen.height / 8 * 2), (Screen.width / 3), (Screen.height / 8)), new GUIContent ("Score" + "\t\t\t\t\t\t\t\t\t"+ "Best" + "\n" + 
-			                                                                                                                          score + "\t\t\t\t\t\t\t\t\t\t" + bestScore+"\nPress 'Space' Twice..."));
-		}
         if (gameOver)
         {
             //show score screen gui

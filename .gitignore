@@ -67,3 +67,7 @@ sysinfo.txt
 *.unitypackage
 
 .vs/
+
+/_power
+/_heart_rate
+/_distance
