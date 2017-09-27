@@ -22,6 +22,7 @@ public class MusicController : MonoBehaviour
     public float[] BeatTimes { get { return currSong.BeatTimes; } }
     public float NextBeat { get { return BeatTimes[beatIdx]; } }
     public float NextBeatDelta { get { return NextBeat - audioSource.time; } }
+    public Boolean IsEnded { get; set; }
 
     static MusicController()
     {
@@ -35,6 +36,7 @@ public class MusicController : MonoBehaviour
     private List<Song> songs;
     private Song currSong;
     private AudioSource audioSource;
+    private float sessionLen;
     private int idx = 0;
     private int beatIdx = 0;
 
@@ -47,9 +49,11 @@ public class MusicController : MonoBehaviour
         audioSource = gameObject.GetComponent<AudioSource>();
         engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
+        IsEnded = false;
 
         songs = new List<Song>();
         string[] oggFiles = Directory.GetFiles(Path.Combine(Application.dataPath, "Audio"), "*.ogg");
+
         for (int i = 0; i < oggFiles.Length; i++)
         {
             string filename = oggFiles[i];
@@ -58,8 +62,11 @@ public class MusicController : MonoBehaviour
             AudioClip clip = www.GetAudioClip(false, false);
             clip.name = Path.GetFileName(filename);
             songs.Add(new Song(clip));
+            
             Debug.Log("Loaded audio clip from " + filename);
         }
+
+        sessionLen += songs[0].Clip.length;
     }
 
     private void Start()
@@ -80,18 +87,22 @@ public class MusicController : MonoBehaviour
                 float timeToLastRing = Mathf.Abs(ringGenerator.LastGeneratedRing.transform.position.x - playerController.transform.position.x) / playerVelocity;
                 if (timeToLastRing > currSong.Length - audioSource.time) timeToLastRing = currSong.Length - audioSource.time;
                 float intensity = currSong.GetIntensityAt(audioSource.time + timeToLastRing);
+
                 if ((intensity > currSong.HighThreshold && !ringGenerator.IsHighIntensity) || (intensity < currSong.LowThreshold && ringGenerator.IsHighIntensity))
                 {
                     ringGenerator.PhaseChange();
                     Debug.Log("Time until last ring: " + timeToLastRing + ", music intensity: " + intensity + ", " + (ringGenerator.IsHighIntensity ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY));
                 }
             }
+
             if (audioSource.isPlaying)
             {
                 if (BeatTimes[beatIdx] < audioSource.time) beatIdx++;
             }
+
             playerController.TargetRPM = currSong.BPM;
         }
+
         if (Input.GetKeyDown(KeyCode.N))
         {
             ChangeSong();
@@ -116,6 +127,7 @@ public class MusicController : MonoBehaviour
         if (currSong.IsFinishedInitialising)
         {
             audioSource.Play();
+            Invoke("EndSession", sessionLen);
         }
         else
         {
@@ -134,6 +146,7 @@ public class MusicController : MonoBehaviour
         StopSong();
         currSong = songs[idx++];
         audioSource.clip = currSong.Clip;
+        sessionLen = currSong.Clip.length;
         //new Thread(new ThreadStart(() => {
         //    currSong.Initialise();
         //    playerController.TargetRPM = currSong.BPM;
@@ -141,6 +154,11 @@ public class MusicController : MonoBehaviour
         //})).Start();
         //currSong.OutputIntensityData();
         //currSong.OutputBeatData();
+    }
+
+    private void EndSession()
+    {
+        IsEnded = true;
     }
 
     /// <summary>

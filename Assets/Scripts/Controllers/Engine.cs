@@ -32,8 +32,8 @@ public class Engine : MonoBehaviour {
     const int targetScore = 10000;
 
     private GameObject floor;
-
-    GameObject warp;
+    private GameObject warp;
+    private MusicController musicController;
 
     // Use this for initialization
     void Awake ()
@@ -43,6 +43,9 @@ public class Engine : MonoBehaviour {
 		Instantiate(ringCreator);
         isWarmingUp = false;
         isStarted = false;
+
+        warp = GameObject.Find("warp");
+        musicController = GameObject.Find("Music").GetComponent<MusicController>();
         progressBarBehaviour = GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>();
         speedIndicator = GameObject.Find("SpeedIndicator").GetComponent<SpeedIndicator>();
     }
@@ -69,7 +72,7 @@ public class Engine : MonoBehaviour {
 		isStarted = true;
         isWarmingUp = true;
         warmupTime += Time.time;
-        GameObject.Find("Music").GetComponent<MusicController>().PlaySong();
+        musicController.PlaySong();
     }
 	
     // Only called in editor
@@ -95,25 +98,25 @@ public class Engine : MonoBehaviour {
                 birdController.warmupAverage = birdController.warmupPowerSum / birdController.warmupCount;
             }
         }
+
         if (floor.transform.position.x < GameObject.FindGameObjectWithTag("Player").transform.position.x - floor.transform.localScale.x/2)
         {
             floor.transform.position += new Vector3(floor.transform.localScale.x/2, 0, 0);
         }
 
         //Turns off and on warp effect. Temporarily using score to trigger.
-        if (score > 10000)
+        if (score > targetScore)
         {
             warp.SetActive(true);
         }
-        if (score < 10000)
+        else
         {
             warp.SetActive(false);
         }
 
 
-        //Trigger gameOver GUI when score reaches 10,000 points
-        //Hides the game UI and rings as well
-        if (score > targetScore)
+        // End of HIIT routine
+        if (musicController.IsEnded)
         {
             gameOver = true;
             GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);
