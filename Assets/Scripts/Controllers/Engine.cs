@@ -29,7 +29,7 @@ public class Engine : MonoBehaviour {
 	int score = 0;
     public int age = 20;
     public float warmupTime = 5;
-    const int targetScore = 10000;
+    const int targetScore = 100000;
 
     private GameObject floor;
 
@@ -45,6 +45,7 @@ public class Engine : MonoBehaviour {
         isStarted = false;
         progressBarBehaviour = GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>();
         speedIndicator = GameObject.Find("SpeedIndicator").GetComponent<SpeedIndicator>();
+        warp = GameObject.Find("warp");
     }
 
     public void AddToCurrentProgress(float value)
@@ -66,7 +67,7 @@ public class Engine : MonoBehaviour {
 
 	public void StartGame()
     {
-		isStarted = true;
+        isStarted = true;
         isWarmingUp = true;
         warmupTime += Time.time;
         GameObject.Find("Music").GetComponent<MusicController>().PlaySong();
