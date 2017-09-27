@@ -47,14 +47,9 @@ public class Engine : MonoBehaviour {
         speedIndicator = GameObject.Find("SpeedIndicator").GetComponent<SpeedIndicator>();
     }
 
-    public void UpdateSpeedIndicatorPosition(float value)
+    public void AddToCurrentProgress(float value)
     {
-        speedIndicator.UpdatePosition(value);
-    }
-
-    public void AddToCurrentProgress()
-    {
-        progressBarBehaviour.IncrementValue(5);
+        progressBarBehaviour.IncrementValue(value);
         Debug.Log("Current percentage" + progressBarBehaviour.Value);
     }
 
@@ -100,6 +95,7 @@ public class Engine : MonoBehaviour {
             {
                 //If player is finished warmup, set warmup power average to be used for controlling player height gain on row.
                 isWarmingUp = false;
+                speedIndicator.WarmUpFinished();
                 BirdController birdController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
                 birdController.warmupAverage = birdController.warmupPowerSum / birdController.warmupCount;
             }

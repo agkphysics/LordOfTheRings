@@ -111,7 +111,7 @@ public class BirdController : MonoBehaviour {
 
                 Debug.Log("Current proportionate force: " + rowingMachine.currentForce/warmupAverage);
 
-                engine.AddToCurrentProgress();
+                engine.AddToCurrentProgress(2f);
                 engine.AddToCurrentScore(50);
             }
             
