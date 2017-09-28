@@ -29,7 +29,7 @@ public class armor : MonoBehaviour
 	{
         rowingMachine= GameObject.Find("RowingMachine");
         rowerScript= rowingMachine.GetComponent<Rower>();
-        armor_ = rowerScript.rowPower;
+        armor_ = rowerScript.RowPower;
         Debug.Log(armor_);
         print(this.GetComponent<Renderer>().material.color);
 		//Load all textures found on the Sequence folder, that is placed inside the resources folder
@@ -52,7 +52,7 @@ public class armor : MonoBehaviour
 	void Update ()
 	{
 
-        armor_ = rowerScript.rowPower;
+        armor_ = rowerScript.RowPower;
         Debug.Log(armor_);		
 		frameCounter=(int)Mathf.Round((300f - armor_) / 15.781f);
 		goMaterial.mainTexture = textures[frameCounter];

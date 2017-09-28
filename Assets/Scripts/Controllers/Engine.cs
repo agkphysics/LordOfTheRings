@@ -98,7 +98,6 @@ public class Engine : MonoBehaviour {
             {
                 //If player is finished warmup, set warmup power average to be used for controlling player height gain on row.
                 isWarmingUp = false;
-                speedIndicator.WarmUpFinished();
                 BirdController birdController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
                 birdController.warmupAverage = birdController.warmupPowerSum / birdController.warmupCount;
             }

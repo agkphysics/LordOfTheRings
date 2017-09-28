@@ -25,7 +25,7 @@ public class RingGenerator : MonoBehaviour {
 
     private void Awake()
     {
-        engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
+        engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
     }
 
     void Start()

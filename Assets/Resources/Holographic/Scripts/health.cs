@@ -28,7 +28,7 @@ public class health : MonoBehaviour
 	{
         rowingMachine = GameObject.Find("RowingMachine");
         rowerScript = rowingMachine.GetComponent<Rower>();
-        health_ = rowerScript.rowPower;
+        health_ = rowerScript.RowPower;
 
         //Load all textures found on the Sequence folder, that is placed inside the resources folder
         this.objects = Resources.LoadAll("Holographic/output/main/health", typeof(Texture));
@@ -54,7 +54,7 @@ public class health : MonoBehaviour
 				a= sliders.opacity;
 this.GetComponent<Renderer>().material.color = new Color(this.GetComponent<Renderer>().material.color.r,this.GetComponent<Renderer>().material.color.b,this.GetComponent<Renderer>().material.color.g,.65f*a);
 		}
-        health_ = rowerScript.rowPower;
+        health_ = rowerScript.RowPower;
 		frameCounter=(int)Mathf.Round((300f-health_)/15.781f);
 		goMaterial.mainTexture = textures[frameCounter];
 

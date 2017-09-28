@@ -22,15 +22,20 @@ public class Rower : MonoBehaviour {
     [DllImport("C2API", EntryPoint = "CloseRower")]
     public static extern int CloseRower();
 
-    public int numRowers = 0;
+    public uint RowPace { get; private set; }
+    public uint RowPower { get; private set; }
+    public uint RowDistance { get; private set; }
 
-    public uint rowPace = 0;
-    public uint rowPower = 0;
-    public uint rowDistance = 0;
     public bool DEBUG;
 
-	// Use this for initialization
-	void Start () {
+    private int numRowers;
+
+    // Use this for initialization
+    void Start ()
+    {
+        RowPace = 0;
+        RowPower = 0;
+        RowDistance = 0;
         numRowers = InitRower();
         switch (numRowers)
         {
@@ -39,6 +44,7 @@ public class Rower : MonoBehaviour {
                 DEBUG = true;
                 break;
             case -2:
+            case 0:
                 Debug.LogWarning("No connected rower. Switching to manual mode.");
                 DEBUG = true;
                 break;
@@ -51,13 +57,13 @@ public class Rower : MonoBehaviour {
 	// Update is called once per frame
     void Update()
     {
-        if (DEBUG || numRowers == 0)
+        if (DEBUG)
         {
             if (Input.GetKeyDown(KeyCode.W))
             {
-                rowPace = (uint)Random.Range(30, 40);
-                rowPower = (uint)Random.Range(50, 70);
-                rowDistance += (uint)Random.Range(2, 4);
+                RowPace = (uint)Random.Range(30, 40);
+                RowPower = (uint)Random.Range(50, 70);
+                RowDistance += (uint)Random.Range(2, 4);
             }
             return;
         }
@@ -67,9 +73,9 @@ public class Rower : MonoBehaviour {
             RowData rowData = new RowData();
             GetRowData(ref rowData);
 
-            rowPace = rowData.Pace;
-            rowPower = rowData.Power;
-            rowDistance = rowData.Horizontal;
+            RowPace = rowData.Pace;
+            RowPower = rowData.Power;
+            RowDistance = rowData.Horizontal;
         }
     }
 

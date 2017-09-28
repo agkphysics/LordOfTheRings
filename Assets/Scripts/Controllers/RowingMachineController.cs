@@ -6,24 +6,10 @@ using System.Collections;
 /// </summary>
 public class RowingMachineController : MonoBehaviour {
 
-    public bool waitingRow = false;
-    public uint waitingDistance;
-    public uint distanceTravelled; 
-    public uint currentForce;
-
+    public bool WaitingRow { get; set; }
+    public uint DistanceTravelled { get; private set; } 
+    public uint CurrentForce { get; private set; }
     public bool DEBUG { get { return rower.DEBUG; } }
-
-    Rower rower;
-
-    uint oldDistance;
-    uint oldPower;
-    uint oldPace;
-
-    float[] rowTimes = new float[6];
-    float lastRowTime;
-    int currIdx = 0;
-    int rowCount = 0;
-
 
     /// <summary>
     /// The current mean row time delta in seconds, i.e. the mean time between rows.
@@ -34,32 +20,50 @@ public class RowingMachineController : MonoBehaviour {
     /// <summary>
     /// The mean rows per minute. Equal to 60/MeanRowTime.
     /// </summary>
-    public float MeanRPM { get { return 60/MeanRowTime; } }
+    public float MeanRPM { get { return 60 / MeanRowTime; } }
+
+    private Rower rower;
+    private Engine engine;
+
+    private uint oldDistance;
+    private uint oldPower;
+    private uint oldPace;
+
+    private float[] rowTimes = new float[6];
+    private float lastRowTime;
+    private int currIdx = 0;
+    private int rowCount = 0;
 
     // Use this for initialization
     void Awake ()
     {
+        WaitingRow = false;
         rower = GetComponent<Rower>();
+        engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
     }
 	
 	// Update is called once per frame
-	void FixedUpdate () {
-        //Check if user has performed a row.
-        uint distance = rower.rowDistance;
-        uint pace = rower.rowPace;
-        uint power = rower.rowPower;
-
-        if(distance == 0 || pace == 0 || power == 0)
+	void FixedUpdate ()
+    {
+        if (engine.isStarted)
         {
-            return;
-        }
+            //Check if user has performed a row.
+            uint distance = rower.RowDistance;
+            uint pace = rower.RowPace;
+            uint power = rower.RowPower;
 
-        currentForce = power;
-        //Compare users previous pace and power to their new pace and power to check for difference
-        //Currently no way of just getting if the user has rowed so detection done by looking for differences
-        if(oldPace != pace || oldPower != power)
-        {
-            Row(distance, power, pace);
+            if (distance == 0 || pace == 0 || power == 0)
+            {
+                return;
+            }
+
+            CurrentForce = power;
+            //Compare users previous pace and power to their new pace and power to check for difference
+            //Currently no way of just getting if the user has rowed so detection done by looking for differences
+            if (oldPace != pace || oldPower != power)
+            {
+                Row(distance, power, pace);
+            }
         }
 	}
 
@@ -83,9 +87,8 @@ public class RowingMachineController : MonoBehaviour {
         }
         rowTimes[currIdx] = deltaT;
         currIdx = (currIdx + 1) % rowTimes.Length;
-        distanceTravelled = distance;
-        waitingDistance = distance - oldDistance;
-        waitingRow = true;
+        DistanceTravelled = distance;
+        WaitingRow = true;
 
         oldDistance = distance;
         oldPower = power;

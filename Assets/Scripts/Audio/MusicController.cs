@@ -45,7 +45,7 @@ public class MusicController : MonoBehaviour
     private void Awake()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
-        engine = GameObject.Find("GameObjectSpawner").GetComponent<Engine>();
+        engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
 
         songs = new List<Song>();
