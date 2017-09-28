@@ -1,4 +1,4 @@
 { 
   "age": "22", 
-  "api": "http://172.23.123.89:8080/api/heartrate" 
+  "api": "http://localhost:8080/api/heartrate" 
 }
