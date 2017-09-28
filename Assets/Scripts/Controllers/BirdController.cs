@@ -170,6 +170,7 @@ public class BirdController : MonoBehaviour {
         Debug.Log("Entering section " + Section);
 
         engine.AddToCurrentScore(500);
+        engine.AddToCurrentCombo(1);
 		Destroy(trigger.gameObject);
 	}
 
