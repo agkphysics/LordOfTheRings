@@ -27,6 +27,7 @@ public class Engine : MonoBehaviour {
     
 	int bestScore = 0;
 	int score = 0;
+    int combo = 0;
     public int age = 20;
     public float warmupTime = 5;
     const int targetScore = 100000;
@@ -58,6 +59,12 @@ public class Engine : MonoBehaviour {
 	{
         score += value;
         GameObject.Find("Score").GetComponent<TextMesh>().text = score.ToString();
+    }
+
+    public void AddToCurrentCombo(int value)
+    {
+        combo += value;
+        GameObject.Find("Combo").GetComponent<TextMesh>().text = "COMBO " + combo.ToString();
     }
 
     public void CompareCurrentScoreToBest()
@@ -101,12 +108,12 @@ public class Engine : MonoBehaviour {
             floor.transform.position += new Vector3(floor.transform.localScale.x/2, 0, 0);
         }
 
-        //Turns off and on warp effect. Temporarily using score to trigger.
-        if (score > 10000)
+        //Turns off and on warp effect. Activates when combo is 20 or higher.
+        if (combo > 20)
         {
             warp.SetActive(true);
         }
-        if (score < 10000)
+        if (combo < 20)
         {
             warp.SetActive(false);
         }
