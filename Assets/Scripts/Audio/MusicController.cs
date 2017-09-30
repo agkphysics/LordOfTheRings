@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using System.Threading;
 using System.Collections;
+using ProgressBar;
 
 /// <summary>
 /// This class analyses the music to determine intensities.
@@ -74,7 +75,7 @@ public class MusicController : MonoBehaviour
     {
         if (currSong.IsFinishedInitialising)
         {
-            if (engine.isStarted && !engine.isWarmingUp)
+            if (engine.IsStarted && !engine.IsWarmingUp)
             {
                 float playerVelocity = playerController.GetComponent<Rigidbody>().velocity.x + 1f;
                 float timeToLastRing = Mathf.Abs(ringGenerator.LastGeneratedRing.transform.position.x - playerController.transform.position.x) / playerVelocity;
@@ -96,6 +97,46 @@ public class MusicController : MonoBehaviour
         {
             ChangeSong();
             PlaySong();
+        }
+        if (audioSource.isPlaying)
+        {
+            GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>().Value = 100f*audioSource.time/currSong.Clip.length;
+            if (Input.GetKeyDown(KeyCode.RightBracket))
+            {
+                IncreasePitch();
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftBracket))
+            {
+                DecreasePitch();
+            }
+        }
+    }
+
+    public void IncreasePitch()
+    {
+        StartCoroutine("_IncreasePitch");
+    }
+
+    public void DecreasePitch()
+    {
+        StartCoroutine("_DecreasePitch");
+    }
+
+    private IEnumerator _IncreasePitch()
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            audioSource.pitch += 0.01f;
+            yield return new WaitForSeconds(1f/20f);
+        }
+    }
+
+    private IEnumerator _DecreasePitch()
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            audioSource.pitch -= 0.01f;
+            yield return new WaitForSeconds(1f/20f);
         }
     }
 

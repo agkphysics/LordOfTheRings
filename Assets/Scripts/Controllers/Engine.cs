@@ -10,42 +10,33 @@ using ProgressBar;
 public class Engine : MonoBehaviour {
 
     public enum Interval { LOW_INTENSITY, HIGH_INTENSITY };
-
-    public GameObject worldlight, floorPrefab, ringCreator;
+    
     public GUISkin skin;
 
     private ProgressBarBehaviour progressBarBehaviour;
 
-    private SpeedIndicator speedIndicator;
-
-    private ProgressBarBehaviour testBar;
-
-	//GUI Bool Elements
-	public bool isStarted = false;
-    public bool isWarmingUp = false;
-    public bool gameOver = false;
+    //GUI Bool Elements
+    public bool IsStarted { get; private set; }
+    public bool IsWarmingUp { get; private set; }
+    public bool GameOver { get; private set; }
     
-	int bestScore = 0;
-	int score = 0;
+    int bestScore = 0;
+    int score = 0;
     int combo = 0;
     public int age = 20;
     public float warmupTime = 5;
     const int targetScore = 100000;
 
     private GameObject floor;
+    private GameObject warp;
 
-    GameObject warp;
-
-    // Use this for initialization
     void Awake ()
     {
-		Instantiate(worldlight);
-		floor = Instantiate(floorPrefab);
-		Instantiate(ringCreator);
-        isWarmingUp = false;
-        isStarted = false;
+        IsWarmingUp = false;
+        IsStarted = false;
+        GameOver = false;
+        floor = GameObject.FindGameObjectWithTag("floor");
         progressBarBehaviour = GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>();
-        speedIndicator = GameObject.Find("SpeedIndicator").GetComponent<SpeedIndicator>();
         warp = GameObject.Find("warp");
     }
 
@@ -55,8 +46,8 @@ public class Engine : MonoBehaviour {
         Debug.Log("Current percentage" + progressBarBehaviour.Value);
     }
 
-	public void AddToCurrentScore(int value)
-	{
+    public void AddToCurrentScore(int value)
+    {
         score += value;
         GameObject.Find("Score").GetComponent<TextMesh>().text = score.ToString();
     }
@@ -69,35 +60,34 @@ public class Engine : MonoBehaviour {
 
     public void CompareCurrentScoreToBest()
     {
-		if(score > bestScore) bestScore = score;
-	}
+        if(score > bestScore) bestScore = score;
+    }
 
-	public void StartGame()
+    public void StartGame()
     {
-        isStarted = true;
-        isWarmingUp = true;
+        IsStarted = true;
+        IsWarmingUp = true;
         warmupTime += Time.time;
         GameObject.Find("Music").GetComponent<MusicController>().PlaySong();
     }
-	
+    
     // Only called in editor
-	public void Reset()
+    public void Reset()
     {
-        gameOver = false;
-        isStarted = false;
+        GameOver = false;
+        IsStarted = false;
         score = 0;
         AddToCurrentScore(0);
     }
 
-	// Update is called once per frame
-	void Update ()
+    void Update ()
     {
-        if(isWarmingUp)
+        if(IsWarmingUp)
         {
             if(Time.time > (warmupTime))
             {
                 //If player is finished warmup, set warmup power average to be used for controlling player height gain on row.
-                isWarmingUp = false;
+                IsWarmingUp = false;
                 BirdController birdController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
                 birdController.warmupAverage = birdController.warmupPowerSum / birdController.warmupCount;
             }
@@ -122,7 +112,7 @@ public class Engine : MonoBehaviour {
         //Hides the game UI and rings as well
         if (score > targetScore)
         {
-            gameOver = true;
+            GameOver = true;
             GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);
             GameObject.FindGameObjectWithTag("pipecreator").SetActive(false);
         }
@@ -131,22 +121,22 @@ public class Engine : MonoBehaviour {
     void OnGUI ()
     {
         GUI.skin = skin;
-        if (!isStarted)
+        if (!IsStarted)
         {
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Welcome to HIITCopter!\n Start rowing to begin!"));
         }
 
-        if (isWarmingUp)
+        if (IsWarmingUp)
         {
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Row to escape from light warp"));
         }
 
-        if (gameOver)
+        if (GameOver)
         {
             //show score screen gui
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Game Over"));
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8 * 2), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Score" + "\t\t\t\t\t\t\t\t\t" + "Best" + "\n" +
                                                                                                                                       score + "\t\t\t\t\t\t\t\t\t\t" + bestScore + "\nPress 'Space' Twice..."));
         }
-	}
+    }
 }

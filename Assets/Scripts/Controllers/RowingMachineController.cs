@@ -29,7 +29,7 @@ public class RowingMachineController : MonoBehaviour {
     private uint oldPower;
     private uint oldPace;
 
-    private float[] rowTimes = new float[6];
+    private float[] rowTimes = new float[3];
     private float lastRowTime;
     private int currIdx = 0;
     private int rowCount = 0;
@@ -45,7 +45,7 @@ public class RowingMachineController : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        if (engine.isStarted)
+        if (engine.IsStarted)
         {
             //Check if user has performed a row.
             uint distance = rower.RowDistance;

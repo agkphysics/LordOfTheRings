@@ -9,16 +9,16 @@ public class RingGenerator : MonoBehaviour {
     public GameObject ring;
 
     public GameObject LastGeneratedRing { get { return lastRing; } }
+    public bool IsHighIntensity { get; set; }
 
     public int difficulty = 1;
-    public bool IsHighIntensity { get; set; }
     public float highRingSeparation = 22f;
     public int ringsPerInterval = 20;
-    public HeartRateService.HeartStatus hrLvl;
 
     private Engine engine;
     private Vector3 currentPos;
 
+    private HeartRateService.HeartStatus hrLvl;
     private bool hasInitialSpawned = false;
     private int ringCount = 0;
     private GameObject lastRing;
@@ -31,15 +31,16 @@ public class RingGenerator : MonoBehaviour {
     void Start()
     {
         IsHighIntensity = false;
-        BirdController playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
-        currentPos = new Vector3(0, playerController.transform.position.y, 0);
+        GameObject playerController = GameObject.FindGameObjectWithTag("Player");
+        currentPos = Vector3.zero;
+        transform.position = new Vector3(0, playerController.transform.position.y, 0);
     }
 
     void Update()
     {
         if(!hasInitialSpawned)
         {
-            if(engine.isStarted)
+            if(engine.IsStarted)
             {
                 // Generate initial rings after warmup complete
                 for (int i = 0; i < 5; i++)
@@ -50,7 +51,7 @@ public class RingGenerator : MonoBehaviour {
             }
         }
 
-        if (!engine.isWarmingUp)
+        if (!engine.IsWarmingUp)
         {
             hrLvl = GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().currentHeartStatus;
             //check if user is overexerting, if they are perform overexertion handling
@@ -82,14 +83,14 @@ public class RingGenerator : MonoBehaviour {
         {
             randOffset = new Vector3(Random.Range(13f, 16f), 0, 0);
         }
-        currentPos = currentPos + randOffset;
-        GameObject generatedRing = Instantiate(ring, currentPos, Quaternion.identity);
+        currentPos += randOffset;
+        GameObject generatedRing = Instantiate(ring, transform, false);
+        generatedRing.transform.localRotation = Quaternion.Euler(new Vector3(0, 90, 0));
+        generatedRing.transform.localPosition = currentPos;
+        generatedRing.transform.localScale = new Vector3(5, 5, 1.25f);
         generatedRing.GetComponent<RingController>().Section = IsHighIntensity ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY;
         if (lastRing != null) lastRing.GetComponent<RingController>().NextRing = generatedRing;
         lastRing = generatedRing;
-        generatedRing.transform.parent = transform;
-        generatedRing.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-        generatedRing.transform.localScale = new Vector3(5, 5, 1.25f);
 
         ringCount++;
         //if(ringCount >= ringsPerInterval)

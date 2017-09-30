@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -59,7 +60,7 @@ public class SpeedIndicator : MonoBehaviour
         TargetRPM = playerController.TargetRPM;
         
         // Speed indicator is inappropriate for warmup time.
-        if (engine.isStarted && !engine.isWarmingUp)
+        if (engine.IsStarted && !engine.IsWarmingUp)
         {
             //if (currentMeanRPM < TargetRPM - 20 && GetCurrentXLocation() > GetCurrentLeftBorderXLocation() - BorderMargin)
             //{
@@ -70,7 +71,8 @@ public class SpeedIndicator : MonoBehaviour
             //    transform.Translate(0.01f * Time.deltaTime, 0, 0);
             //}
 
-            transform.localPosition = origPosition + new Vector3(0.01f*(currentMeanRPM - TargetRPM), 0, 0);
+            float targetX = origPosition.x + 0.7f*(float)Math.Tanh((currentMeanRPM - TargetRPM)/20f);
+            transform.Translate(new Vector3(Time.deltaTime*(targetX - transform.localPosition.x), 0, 0), Space.Self);
         }
     }
 }

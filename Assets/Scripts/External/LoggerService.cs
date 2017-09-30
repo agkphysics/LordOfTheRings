@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-public class LoggerService : MonoBehaviour {
+public class LoggerService {
     public Queue<HeartRate> heartRate = new Queue<HeartRate>();
     public Queue<Distance> distance = new Queue<Distance>();
     public Queue<Power> power = new Queue<Power>();
@@ -14,15 +14,9 @@ public class LoggerService : MonoBehaviour {
     private const string POWER = "_power";
     private const string DISTANCE = "_distance";
 
-    void Awake()
+    public LoggerService()
     {
         LOGGER_PATH = Application.persistentDataPath + "/LOGGER_" + DateTime.Now.Ticks.ToString();
-    }
-
-    // Use this for initialization
-    void Start ()
-    {
-
     }
 	
 	// Update is called once per frame

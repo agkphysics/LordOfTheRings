@@ -8,46 +8,48 @@ using ProgressBar;
 /// </summary>
 public class BirdController : MonoBehaviour {
 
-	public float forwardMovement = 2f;
-    public float forceMultiplier = 10f;
+    public Engine.Interval Section { get; set; }
+    public float TargetRPM { get; set; }
+    public uint warmupPowerSum { get; private set; }
+    public int warmupCount { get; private set; }
+    public float warmupAverage { get; set; }
+
+    public float forwardMovement;
+    public float forceMultiplier;
     public float dragForce;
+    public float timeBetweenlogging;
 
-	public Vector3 startingPosition;
-	public Quaternion startingRotation;
-
-    public uint warmupDistance;
-    public uint warmupPowerSum = 0;
-    public int warmupCount = 0;
-    public float warmupAverage = 0;
-
-    public float timeBetweenlogging = 1.0f;
-
-    private bool waitingForPlayerToStart;
-    private Engine engine;
+    private Vector3 startingPosition;
+    private Quaternion startingRotation;
     private float time;
+
+    private Engine engine;
     private Rigidbody rb;
     private RowingMachineController rowingMachine;
 
-    public Engine.Interval Section { get; set; }
-    public float TargetRPM { get; set; }
+    private static LoggerService logger;
 
     void Awake()
     {
 		engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
         rb = GetComponent<Rigidbody>();
         rowingMachine = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<RowingMachineController>();
-	}
+        logger = new LoggerService();
+    }
 
 	// Use this for initialization
 	void Start ()
     {
         Section = Engine.Interval.LOW_INTENSITY;
         TargetRPM = 60;
-        transform.position = startingPosition;
+        warmupPowerSum = 0;
+        warmupAverage = 0;
+        warmupCount = 0;
+        startingPosition = transform.position;
+        //transform.position = startingPosition;
 		startingRotation = transform.rotation;
 
         rb.useGravity = false;
-		waitingForPlayerToStart = true;
         rb.velocity = new Vector3(rb.velocity.x, 0, 0);
         time = timeBetweenlogging;
     }
@@ -69,13 +71,12 @@ public class BirdController : MonoBehaviour {
             UnityEngine.VR.InputTracking.Recenter();
         }
 
-        if (waitingForPlayerToStart)
+        if (!engine.IsStarted)
         {
             //Reset game variables when space pressed at start of game
-			if (Input.GetKeyDown(KeyCode.Space) || rowingMachine.WaitingRow)
+			if (Input.GetKeyDown(KeyCode.Space))
             {
                 engine.StartGame();
-				waitingForPlayerToStart = false;
 
                 //rb.freezeRotation = false;
 				rb.useGravity = false;
@@ -84,7 +85,7 @@ public class BirdController : MonoBehaviour {
         else
         {
             
-            if (engine.isWarmingUp)
+            if (engine.IsWarmingUp)
             {
                 //Warmup period, time configured witin the GameController
                 if (rowingMachine.WaitingRow)
@@ -116,23 +117,13 @@ public class BirdController : MonoBehaviour {
                 {
                 Debug.Log("Current proportionate force: " + rowingMachine.CurrentForce/warmupAverage);
                 }
-                engine.AddToCurrentProgress(2f);
                 engine.AddToCurrentScore(50);
             }
-            
-            //if (Input.GetKey(KeyCode.W))
-            //{
-            //    rb.AddForce(Vector3.right*10f, ForceMode.Acceleration);
-            //}
-            //else
-            //{
-            //    rb.AddForce(Vector3.left*2f, ForceMode.Acceleration);
-            //}
 
             // Don't move backwards
             if (rb.velocity.x <= 0) rb.velocity = new Vector3(0, rb.velocity.y);
 
-            if (engine.isWarmingUp)
+            if (engine.IsWarmingUp)
             {
                 rb.velocity = Vector3.zero;
             }
@@ -143,15 +134,7 @@ public class BirdController : MonoBehaviour {
 
 	void FixedUpdate()
     {
-  //      //move player foward at constant rate
-		//if(!waitingForPlayerToStart){
-  //          uint rowDistance = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<Rower>().rowDistance;
 
-  //          if (rowDistance > warmupDistance)
-  //          {
-  //              transform.position += Vector3.right*Time.fixedDeltaTime*forwardMovement;
-  //          }
-		//}
 	}
 
 	void PlayerReset()
@@ -181,7 +164,7 @@ public class BirdController : MonoBehaviour {
         Distance distance = new Distance(Time.time.ToString(), rowingMachine.DistanceTravelled);
         HeartRate heartRate = new HeartRate( Time.time.ToString(), GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().heartRate);
 
-        var logger = GetComponent<LoggerService>();
+        
         logger.heartRate.Enqueue(heartRate);
         logger.distance.Enqueue(distance);
         logger.power.Enqueue(force);
