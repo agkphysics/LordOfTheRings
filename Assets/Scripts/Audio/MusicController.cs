@@ -6,6 +6,7 @@ using System;
 using System.Threading;
 using System.Collections;
 using ProgressBar;
+using UnityEngine.Audio;
 
 /// <summary>
 /// This class analyses the music to determine intensities.
@@ -42,12 +43,14 @@ public class MusicController : MonoBehaviour
     private Engine engine;
     private BirdController playerController;
     private RingGenerator ringGenerator;
+    private AudioMixerGroup audioMasterGroup;
 
     private void Awake()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
         engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
+        audioMasterGroup = audioSource.outputAudioMixerGroup;
 
         songs = new List<Song>();
         string[] oggFiles = Directory.GetFiles(Path.Combine(Application.dataPath, "Audio"), "*.ogg");
@@ -89,7 +92,7 @@ public class MusicController : MonoBehaviour
             }
             if (audioSource.isPlaying)
             {
-                if (BeatTimes[beatIdx] < audioSource.time) beatIdx++;
+                if (BeatTimes[beatIdx] < audioSource.time && beatIdx < BeatTimes.Length - 1) beatIdx++;
             }
             playerController.TargetRPM = currSong.BPM;
         }
@@ -127,6 +130,7 @@ public class MusicController : MonoBehaviour
         for (int i = 0; i < 20; i++)
         {
             audioSource.pitch += 0.01f;
+            //audioMasterGroup.audioMixer.SetFloat("Pitch", 1/audioSource.pitch);
             yield return new WaitForSeconds(1f/20f);
         }
     }
@@ -136,6 +140,7 @@ public class MusicController : MonoBehaviour
         for (int i = 0; i < 20; i++)
         {
             audioSource.pitch -= 0.01f;
+            //audioMasterGroup.audioMixer.SetFloat("Pitch", 1/audioSource.pitch);
             yield return new WaitForSeconds(1f/20f);
         }
     }
