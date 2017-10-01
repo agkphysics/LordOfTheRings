@@ -14,6 +14,7 @@ public class Engine : MonoBehaviour {
     public GUISkin skin;
 
     private ProgressBarBehaviour progressBarBehaviour;
+    private MusicController musicController;
 
     //GUI Bool Elements
     public bool IsStarted { get; private set; }
@@ -35,9 +36,12 @@ public class Engine : MonoBehaviour {
         IsWarmingUp = false;
         IsStarted = false;
         GameOver = false;
+
         floor = GameObject.FindGameObjectWithTag("floor");
-        progressBarBehaviour = GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>();
         warp = GameObject.Find("warp");
+
+        progressBarBehaviour = GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>();
+        musicController = GameObject.Find("Music").GetComponent<MusicController>();
     }
 
     public void AddToCurrentProgress(float value)
@@ -68,7 +72,7 @@ public class Engine : MonoBehaviour {
         IsStarted = true;
         IsWarmingUp = true;
         warmupTime += Time.time;
-        GameObject.Find("Music").GetComponent<MusicController>().PlaySong();
+        musicController.PlaySong();
     }
     
     // Only called in editor
@@ -107,10 +111,8 @@ public class Engine : MonoBehaviour {
             warp.SetActive(false);
         }
 
-
-        //Trigger gameOver GUI when score reaches 10,000 points
-        //Hides the game UI and rings as well
-        if (score > targetScore)
+        // Gameover. Hides the game UI and and rings.
+        if (musicController.IsEndOfSession)
         {
             GameOver = true;
             GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);

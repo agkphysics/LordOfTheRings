@@ -23,6 +23,7 @@ public class MusicController : MonoBehaviour
     public float[] BeatTimes { get { return currSong.BeatTimes; } }
     public float NextBeat { get { return BeatTimes[beatIdx]; } }
     public float NextBeatDelta { get { return NextBeat - audioSource.time; } }
+    public Boolean IsEndOfSession { get; set; }
 
     static MusicController()
     {
@@ -36,6 +37,7 @@ public class MusicController : MonoBehaviour
     private List<Song> songs;
     private Song currSong;
     private AudioSource audioSource;
+    private float sessionLen;
     private int idx = 0;
     private int beatIdx = 0;
 
@@ -48,6 +50,7 @@ public class MusicController : MonoBehaviour
         audioSource = gameObject.GetComponent<AudioSource>();
         engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
+        IsEndOfSession = false;
 
         songs = new List<Song>();
         string[] oggFiles = Directory.GetFiles(Path.Combine(Application.dataPath, "Audio"), "*.ogg");
@@ -61,6 +64,8 @@ public class MusicController : MonoBehaviour
             songs.Add(new Song(clip));
             Debug.Log("Loaded audio clip from " + filename);
         }
+
+        sessionLen = songs[0].Clip.length;
     }
 
     private void Start()
@@ -157,6 +162,7 @@ public class MusicController : MonoBehaviour
         if (currSong.IsFinishedInitialising)
         {
             audioSource.Play();
+            Invoke("SetIsEndOfSession", sessionLen);
         }
         else
         {
@@ -175,6 +181,7 @@ public class MusicController : MonoBehaviour
         StopSong();
         currSong = songs[idx++];
         audioSource.clip = currSong.Clip;
+        sessionLen = currSong.Clip.length;
         //new Thread(new ThreadStart(() => {
         //    currSong.Initialise();
         //    playerController.TargetRPM = currSong.BPM;
@@ -182,6 +189,11 @@ public class MusicController : MonoBehaviour
         //})).Start();
         //currSong.OutputIntensityData();
         //currSong.OutputBeatData();
+    }
+
+    private void SetIsEndOfSession()
+    {
+        IsEndOfSession = true;
     }
 
     /// <summary>
