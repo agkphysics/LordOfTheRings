@@ -15,6 +15,7 @@ public class Engine : MonoBehaviour {
 
     private ProgressBarBehaviour progressBarBehaviour;
     private MusicController musicController;
+    private SpeedIndicator speedIndicator;
 
     //GUI Bool Elements
     public bool IsStarted { get; private set; }
@@ -27,6 +28,7 @@ public class Engine : MonoBehaviour {
     public int age = 20;
     public float warmupTime = 5;
     const int targetScore = 100000;
+    public float originalPosition;
 
     private GameObject floor;
     private GameObject warp;
@@ -40,8 +42,11 @@ public class Engine : MonoBehaviour {
         floor = GameObject.FindGameObjectWithTag("floor");
         warp = GameObject.Find("warp");
 
+        speedIndicator = GameObject.Find("SpeedIndicator").GetComponent<SpeedIndicator>();
         progressBarBehaviour = GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>();
         musicController = GameObject.Find("Music").GetComponent<MusicController>();
+
+        originalPosition = speedIndicator.GetCurrentXLocation();
     }
 
     public void AddToCurrentProgress(float value)
@@ -59,6 +64,12 @@ public class Engine : MonoBehaviour {
     public void AddToCurrentCombo(int value)
     {
         combo += value;
+        GameObject.Find("Combo").GetComponent<TextMesh>().text = "COMBO " + combo.ToString();
+    }
+
+    public void ResetCombo()
+    {
+        combo = 0;
         GameObject.Find("Combo").GetComponent<TextMesh>().text = "COMBO " + combo.ToString();
     }
 
@@ -99,6 +110,12 @@ public class Engine : MonoBehaviour {
         if (floor.transform.position.x < GameObject.FindGameObjectWithTag("Player").transform.position.x - floor.transform.localScale.x/2)
         {
             floor.transform.position += new Vector3(floor.transform.localScale.x/2, 0, 0);
+        }
+
+        float currentPos = speedIndicator.GetCurrentXLocation();
+        if (currentPos > originalPosition + 0.14f || currentPos < originalPosition - 0.14f)
+        {
+            ResetCombo();
         }
 
         //Turns off and on warp effect. Activates when combo is 20 or higher.

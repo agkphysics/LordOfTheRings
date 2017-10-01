@@ -17,7 +17,7 @@ public class SpeedIndicator : MonoBehaviour
     private Engine engine;
     private GameObject speedIndicator, speedIndicatorSlow, speedIndicatorFast;
 
-    private float GetCurrentXLocation()
+    public float GetCurrentXLocation()
     {
         return speedIndicator.transform.position.x;
     }
