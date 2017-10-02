@@ -39,6 +39,11 @@ public class MusicController : MonoBehaviour
     private AudioSource audioSource;
     private int idx = 0;
     private int beatIdx = 0;
+    private float pitchChange = 0.10f;
+    private float pitchChangeTime = 1f;
+    private float maxPitch = 1.2f;
+    private float minPitch = 0.8f;
+    private object pitchLock = new object();
 
     private Engine engine;
     private BirdController playerController;
@@ -117,31 +122,37 @@ public class MusicController : MonoBehaviour
 
     public void IncreasePitch()
     {
-        StartCoroutine("_IncreasePitch");
+        if (audioSource.pitch < maxPitch) StartCoroutine("_IncreasePitch");
     }
 
     public void DecreasePitch()
     {
-        StartCoroutine("_DecreasePitch");
+        if (audioSource.pitch > minPitch) StartCoroutine("_DecreasePitch");
     }
 
     private IEnumerator _IncreasePitch()
     {
-        for (int i = 0; i < 20; i++)
+        lock (pitchLock)
         {
-            audioSource.pitch += 0.01f;
-            //audioMasterGroup.audioMixer.SetFloat("Pitch", 1/audioSource.pitch);
-            yield return new WaitForSeconds(1f/20f);
+            for (int i = 0; i < 10 && audioSource.pitch < maxPitch; i++)
+            {
+                audioSource.pitch += pitchChange / 10;
+                //audioMasterGroup.audioMixer.SetFloat("Pitch", 1/audioSource.pitch);
+                yield return new WaitForSeconds(1f / 10f);
+            }
         }
     }
 
     private IEnumerator _DecreasePitch()
     {
-        for (int i = 0; i < 20; i++)
+        lock (pitchLock)
         {
-            audioSource.pitch -= 0.01f;
-            //audioMasterGroup.audioMixer.SetFloat("Pitch", 1/audioSource.pitch);
-            yield return new WaitForSeconds(1f/20f);
+            for (int i = 0; i < 10 && audioSource.pitch > minPitch; i++)
+            {
+                audioSource.pitch -= pitchChange / 10;
+                //audioMasterGroup.audioMixer.SetFloat("Pitch", 1/audioSource.pitch);
+                yield return new WaitForSeconds(1f / 10f);
+            }
         }
     }
 

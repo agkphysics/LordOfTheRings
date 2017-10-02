@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Runtime.InteropServices;
+using System.Collections;
+using System.Threading;
 
 /// <summary>
 /// Interface to the rowing machine API.
@@ -29,6 +31,7 @@ public class Rower : MonoBehaviour {
     public bool DEBUG;
 
     private int numRowers;
+    private float nextUpdateTime;
 
     // Use this for initialization
     void Start ()
@@ -52,7 +55,23 @@ public class Rower : MonoBehaviour {
                 Debug.Log("Number of rowers: " + numRowers);
                 break;
         }
-	}
+        nextUpdateTime = 0;
+        if (numRowers > 0)
+        {
+            new Thread(new ThreadStart(() =>
+            {
+                while (true)
+                {
+                    RowData rowData = new RowData();
+                    GetRowData(ref rowData);
+                    RowPace = rowData.Pace;
+                    RowPower = rowData.Power;
+                    RowDistance = rowData.Horizontal;
+                    Thread.Sleep(100);
+                }
+            })).Start();
+        }
+    }
 	
 	// Update is called once per frame
     void Update()
@@ -66,16 +85,6 @@ public class Rower : MonoBehaviour {
                 RowDistance += (uint)Random.Range(2, 4);
             }
             return;
-        }
-        else if (numRowers > 0)
-        {
-            //if player has rowed inbetween updates, log row data
-            RowData rowData = new RowData();
-            GetRowData(ref rowData);
-
-            RowPace = rowData.Pace;
-            RowPower = rowData.Power;
-            RowDistance = rowData.Horizontal;
         }
     }
 

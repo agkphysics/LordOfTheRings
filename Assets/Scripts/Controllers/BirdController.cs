@@ -10,9 +10,9 @@ public class BirdController : MonoBehaviour {
 
     public Engine.Interval Section { get; set; }
     public float TargetRPM { get; set; }
-    public uint warmupPowerSum { get; private set; }
-    public int warmupCount { get; private set; }
-    public float warmupAverage { get; set; }
+    public uint WarmupPowerSum { get; private set; }
+    public int WarmupCount { get; private set; }
+    public float WarmupAveragePower { get; set; }
 
     public float forwardMovement;
     public float forceMultiplier;
@@ -26,6 +26,7 @@ public class BirdController : MonoBehaviour {
     private Engine engine;
     private Rigidbody rb;
     private RowingMachineController rowingMachine;
+    private MusicController musicController;
 
     private static LoggerService logger;
 
@@ -34,6 +35,7 @@ public class BirdController : MonoBehaviour {
 		engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
         rb = GetComponent<Rigidbody>();
         rowingMachine = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<RowingMachineController>();
+        musicController = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicController>();
         logger = new LoggerService();
     }
 
@@ -42,9 +44,9 @@ public class BirdController : MonoBehaviour {
     {
         Section = Engine.Interval.LOW_INTENSITY;
         TargetRPM = 60;
-        warmupPowerSum = 0;
-        warmupAverage = 0;
-        warmupCount = 0;
+        WarmupPowerSum = 0;
+        WarmupAveragePower = 0;
+        WarmupCount = 0;
         startingPosition = transform.position;
         //transform.position = startingPosition;
 		startingRotation = transform.rotation;
@@ -59,7 +61,7 @@ public class BirdController : MonoBehaviour {
         //track time for polling logs every second
         time -= Time.deltaTime;
 
-        if (time <= 0)
+        if (time <= 0 && engine.IsStarted)
         { 
             LogData();
             time = timeBetweenlogging;
@@ -84,21 +86,21 @@ public class BirdController : MonoBehaviour {
 		}
         else
         {
-            
             if (engine.IsWarmingUp)
             {
                 //Warmup period, time configured witin the GameController
                 if (rowingMachine.WaitingRow)
                 {
-                    warmupPowerSum += rowingMachine.CurrentForce;
-                    warmupCount++;
+                    WarmupPowerSum += rowingMachine.CurrentForce;
+                    WarmupCount++;
 
                     rowingMachine.WaitingRow = false;
                     
-                    rb.velocity = new Vector3(rowingMachine.CurrentForce*forceMultiplier, 0);
+                    //rb.velocity = new Vector3(rowingMachine.CurrentForce*forceMultiplier, 0);
+                    rb.velocity = Vector3.zero;
                     if (!rowingMachine.DEBUG)
                     {
-                    Debug.Log("Current Force: " + rowingMachine.CurrentForce);
+                        Debug.Log("Current Force: " + rowingMachine.CurrentForce);
                     }
                     Debug.Log("Warming up period.");
                 }
@@ -111,11 +113,11 @@ public class BirdController : MonoBehaviour {
                 {
                     rb.velocity = new Vector3(rb.velocity.x, 0, 0);
                 }
-                rb.AddForce(Vector3.right*rowingMachine.CurrentForce/warmupAverage*forceMultiplier, ForceMode.Impulse);
+                rb.AddForce(Vector3.right*rowingMachine.CurrentForce/WarmupAveragePower*forceMultiplier, ForceMode.Impulse);
 
                 if (!rowingMachine.DEBUG)
                 {
-                Debug.Log("Current proportionate force: " + rowingMachine.CurrentForce/warmupAverage);
+                Debug.Log("Current proportionate force: " + rowingMachine.CurrentForce/WarmupAveragePower);
                 }
                 engine.AddToCurrentScore(50);
             }
@@ -123,9 +125,9 @@ public class BirdController : MonoBehaviour {
             // Don't move backwards
             if (rb.velocity.x <= 0) rb.velocity = new Vector3(0, rb.velocity.y);
 
-            if (engine.IsWarmingUp)
+            if (Section == Engine.Interval.HIGH_INTENSITY && GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().currentHeartStatus == HeartRateService.HeartStatus.Resting)
             {
-                rb.velocity = Vector3.zero;
+                musicController.IncreasePitch();
             }
 
             rb.AddForce(-dragForce*Math.Abs(rb.velocity.x), 0, 0);
@@ -163,12 +165,9 @@ public class BirdController : MonoBehaviour {
         Power force = new Power(Time.time.ToString(), rowingMachine.CurrentForce, GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().IsHighIntensity);
         Distance distance = new Distance(Time.time.ToString(), rowingMachine.DistanceTravelled);
         HeartRate heartRate = new HeartRate( Time.time.ToString(), GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().heartRate);
-
-        
         logger.heartRate.Enqueue(heartRate);
         logger.distance.Enqueue(distance);
         logger.power.Enqueue(force);
-
         logger.Log();
     }
 }

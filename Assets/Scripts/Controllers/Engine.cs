@@ -25,7 +25,7 @@ public class Engine : MonoBehaviour {
     int combo = 0;
     public int age = 20;
     public float warmupTime = 5;
-    const int targetScore = 100000;
+    const int targetScore = 1000000;
 
     private GameObject floor;
     private GameObject warp;
@@ -89,7 +89,8 @@ public class Engine : MonoBehaviour {
                 //If player is finished warmup, set warmup power average to be used for controlling player height gain on row.
                 IsWarmingUp = false;
                 BirdController birdController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
-                birdController.warmupAverage = birdController.warmupPowerSum / birdController.warmupCount;
+                birdController.WarmupAveragePower = birdController.WarmupPowerSum / birdController.WarmupCount;
+                birdController.forceMultiplier = 85 / birdController.WarmupAveragePower;
             }
         }
         if (floor.transform.position.x < GameObject.FindGameObjectWithTag("Player").transform.position.x - floor.transform.localScale.x/2)

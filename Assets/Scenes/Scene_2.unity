@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b02662bf5d09524da8d30a029ee6161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DEBUG: 1
+  DEBUG: 0
 --- !u!4 &140830105
 Transform:
   m_ObjectHideFlags: 0
@@ -245,7 +245,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
       propertyPath: forceMultiplier
-      value: 2
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
       propertyPath: forwardMovement
@@ -278,7 +278,7 @@ Prefab:
     - target: {fileID: 20000014098201848, guid: b9a96626d8bec4fad8f84bb48fbf9418,
         type: 2}
       propertyPath: m_CullingMask.m_Bits
-      value: 4294967295
+      value: 4294967263
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
       propertyPath: m_IsActive
@@ -292,6 +292,10 @@ Prefab:
         type: 2}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114000010659319380, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
@@ -567,6 +571,25 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 114848666638350104, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114848666638350104, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114848666638350104, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1960751806427054, guid: 2a6f54f2bcceeb645952dc097665482c, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2a6f54f2bcceeb645952dc097665482c, type: 2}
   m_IsPrefabParent: 0
@@ -599,7 +622,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skin: {fileID: 11400000, guid: 7953503d9e83f8d469b84619849edd4e, type: 2}
   age: 20
-  warmupTime: 5
+  warmupTime: 15
 --- !u!4 &1172479738
 Transform:
   m_ObjectHideFlags: 0
