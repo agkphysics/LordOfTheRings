@@ -10,27 +10,27 @@ using ProgressBar;
 public class Engine : MonoBehaviour {
 
     public enum Interval { LOW_INTENSITY, HIGH_INTENSITY };
-    
-    public GUISkin skin;
 
-    private ProgressBarBehaviour progressBarBehaviour;
-    private MusicController musicController;
-    private SpeedIndicator speedIndicator;
-
-    //GUI Bool Elements
     public bool IsStarted { get; private set; }
     public bool IsWarmingUp { get; private set; }
     public bool GameOver { get; private set; }
     
-    int bestScore = 0;
-    int score = 0;
-    int combo = 0;
+    public GUISkin skin;
     public int age = 20;
     public float warmupTime = 5;
-    const int targetScore = 1000000;
+
+    private int bestScore = 0;
+    private int score = 0;
+    private int combo = 0;
+    private float originalPosition;
+
+    private const int targetScore = 1000000;
 
     private GameObject floor;
     private GameObject warp;
+    private ProgressBarBehaviour progressBarBehaviour;
+    private MusicController musicController;
+    private SpeedIndicator speedIndicator;
 
     void Awake ()
     {
@@ -107,6 +107,7 @@ public class Engine : MonoBehaviour {
                 birdController.forceMultiplier = 85 / birdController.WarmupAveragePower;
             }
         }
+
         if (floor.transform.position.x < GameObject.FindGameObjectWithTag("Player").transform.position.x - floor.transform.localScale.x/2)
         {
             floor.transform.position += new Vector3(floor.transform.localScale.x/2, 0, 0);
@@ -128,8 +129,9 @@ public class Engine : MonoBehaviour {
             warp.SetActive(false);
         }
 
-        // Gameover. Hides the game UI and and rings.
-        if (musicController.IsEndOfSession)
+
+        // End of HIIT routine
+        if (musicController.IsEnded)
         {
             GameOver = true;
             GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);
