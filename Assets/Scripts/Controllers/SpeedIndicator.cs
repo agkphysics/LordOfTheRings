@@ -72,7 +72,7 @@ public class SpeedIndicator : MonoBehaviour
             //}
 
             float targetX = origPosition.x + 0.7f*(float)Math.Tanh((currentMeanRPM - TargetRPM)/20f);
-            transform.Translate(new Vector3(Time.deltaTime*(targetX - transform.localPosition.x), 0, 0), Space.Self);
+            transform.Translate(new Vector3(Time.deltaTime*0.4f*(targetX - transform.localPosition.x), 0, 0), Space.Self);
         }
     }
 }
