@@ -62,10 +62,8 @@ public class MusicController : MonoBehaviour
 
         songs = new List<Song>();
         string[] oggFiles = Directory.GetFiles(Path.Combine(Application.dataPath, "Audio"), "*.ogg");
-
-        for (int i = 0; i < oggFiles.Length; i++)
+        foreach (string filename in oggFiles)
         {
-            string filename = oggFiles[i];
             WWW www = new WWW("file://" + filename);
             while (!www.isDone) { }
             AudioClip clip = www.GetAudioClip(false, false);
