@@ -72,3 +72,5 @@ sysinfo.txt
 /_heart_rate
 /_distance
 /_gitattributes
+
+*.bak
