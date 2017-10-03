@@ -79,9 +79,6 @@ public class BirdController : MonoBehaviour {
 			if (Input.GetKeyDown(KeyCode.Space))
             {
                 engine.StartGame();
-
-                //rb.freezeRotation = false;
-				rb.useGravity = false;
 			}
 		}
         else
@@ -117,7 +114,7 @@ public class BirdController : MonoBehaviour {
 
                 if (!rowingMachine.DEBUG)
                 {
-                Debug.Log("Current proportionate force: " + rowingMachine.CurrentForce/WarmupAveragePower);
+                    Debug.Log("Current proportionate force: " + rowingMachine.CurrentForce/WarmupAveragePower);
                 }
                 engine.AddToCurrentScore(50);
             }
@@ -128,6 +125,10 @@ public class BirdController : MonoBehaviour {
             if (Section == Engine.Interval.HIGH_INTENSITY && GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().currentHeartStatus == HeartRateService.HeartStatus.Resting)
             {
                 musicController.IncreasePitch();
+            }
+            else if (Section == Engine.Interval.LOW_INTENSITY)
+            {
+                musicController.ResetPitch();
             }
 
             rb.AddForce(-dragForce*Math.Abs(rb.velocity.x), 0, 0);

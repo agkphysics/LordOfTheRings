@@ -588,6 +588,66 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1960751806427054, guid: 2a6f54f2bcceeb645952dc097665482c, type: 2}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114533413988527968, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114533413988527968, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114533413988527968, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114533413988527968, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114533413988527968, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_FillCenter
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114533413988527968, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 114570461803904598, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 114570461803904598, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114570461803904598, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114570461803904598, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114570461803904598, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114533413988527968, guid: 2a6f54f2bcceeb645952dc097665482c,
+        type: 2}
+      propertyPath: m_Color.b
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

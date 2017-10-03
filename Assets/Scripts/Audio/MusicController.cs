@@ -81,7 +81,10 @@ public class MusicController : MonoBehaviour
         ringGenerator = GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>();
         currSong = songs[idx++];
         audioSource.clip = currSong.Clip;
-        new Thread(new ThreadStart(() => { foreach (Song song in songs) song.Initialise(); })).Start();
+        new Thread(new ThreadStart(() => {
+            foreach (Song song in songs) song.Initialise();
+            playerController.TargetRPM = currSong.BPM;
+        })).Start();
     }
 
     private void Update()
@@ -105,27 +108,29 @@ public class MusicController : MonoBehaviour
             if (audioSource.isPlaying)
             {
                 if (BeatTimes[beatIdx] < audioSource.time && beatIdx < BeatTimes.Length - 1) beatIdx++;
+
+                GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>().Value = 100f*audioSource.time/currSong.Clip.length;
+                if (Input.GetKeyDown(KeyCode.RightBracket))
+                {
+                    IncreasePitch();
+                }
+                else if (Input.GetKeyDown(KeyCode.LeftBracket))
+                {
+                    DecreasePitch();
+                }
             }
 
-            playerController.TargetRPM = currSong.BPM;
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                currSong.OutputIntensityData();
+                currSong.OutputBeatData();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.N))
         {
             ChangeSong();
             PlaySong();
-        }
-        if (audioSource.isPlaying)
-        {
-            GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>().Value = 100f*audioSource.time/currSong.Clip.length;
-            if (Input.GetKeyDown(KeyCode.RightBracket))
-            {
-                IncreasePitch();
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftBracket))
-            {
-                DecreasePitch();
-            }
         }
     }
 
@@ -139,6 +144,12 @@ public class MusicController : MonoBehaviour
         if (audioSource.pitch > minPitch) StartCoroutine("_DecreasePitch");
     }
 
+    public void ResetPitch()
+    {
+        audioSource.pitch = 1;
+        playerController.TargetRPM = currSong.BPM * audioSource.pitch;
+    }
+
     private IEnumerator _IncreasePitch()
     {
         lock (pitchLock)
@@ -149,6 +160,7 @@ public class MusicController : MonoBehaviour
                 //audioMasterGroup.audioMixer.SetFloat("Pitch", 1/audioSource.pitch);
                 yield return new WaitForSeconds(1f / 10f);
             }
+            playerController.TargetRPM = currSong.BPM * audioSource.pitch;
         }
     }
 
@@ -162,6 +174,7 @@ public class MusicController : MonoBehaviour
                 //audioMasterGroup.audioMixer.SetFloat("Pitch", 1/audioSource.pitch);
                 yield return new WaitForSeconds(1f / 10f);
             }
+            playerController.TargetRPM = currSong.BPM * audioSource.pitch;
         }
     }
 
@@ -202,13 +215,12 @@ public class MusicController : MonoBehaviour
         currSong = songs[idx++];
         audioSource.clip = currSong.Clip;
         sessionLen = currSong.Clip.length;
+        playerController.TargetRPM = currSong.BPM * audioSource.pitch;
         //new Thread(new ThreadStart(() => {
         //    currSong.Initialise();
         //    playerController.TargetRPM = currSong.BPM;
         //    Debug.Log("Current BPM of song is " + currSong.BPM);
         //})).Start();
-        //currSong.OutputIntensityData();
-        //currSong.OutputBeatData();
     }
 
     private void EndSession()
@@ -225,7 +237,7 @@ public class MusicController : MonoBehaviour
         public float Length { get; private set; }
         public float LowThreshold { get; private set; }
         public float HighThreshold { get; private set; }
-        public int BPM { get; private set; }
+        public float BPM { get; private set; }
         public float[] BeatTimes { get; private set; }
         public bool IsFinishedInitialising { get; private set; }
 
@@ -358,10 +370,6 @@ public class MusicController : MonoBehaviour
                         float oldIntensity = cachedData[intensityOffset + channelNum - stepBlockSize];
                         cachedData[intensityOffset + channelNum] = oldIntensity + (rawIntensity - oldIntensity) * IntensityFadeFactor;
                     }
-                }
-                if (audioProgStepBlocks == timeStepBlocks - 2)
-                {
-
                 }
             }
         }
@@ -574,9 +582,11 @@ public class MusicController : MonoBehaviour
                     mode = mode1;
                 }
 
-                BPM = (int)(60*StepsPerSec/mode);
+                BPM = 60*StepsPerSec/mode;
+                while (BPM > 40) BPM /= 2;
                 BeatTimes = new float[idx];
                 for (int i = 0; i < idx; i++) BeatTimes[i] = beatArray[i]/StepsPerSec;
+                Debug.Log("Calculated BPM: " + BPM);
             }
         }
 

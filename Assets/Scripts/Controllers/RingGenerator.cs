@@ -43,7 +43,7 @@ public class RingGenerator : MonoBehaviour {
             if(engine.IsStarted)
             {
                 // Generate initial rings after warmup complete
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 4; i++)
                 {
                     NewRing();
                 }
@@ -57,7 +57,7 @@ public class RingGenerator : MonoBehaviour {
             //check if user is overexerting, if they are perform overexertion handling
             if (hrLvl == HeartRateService.HeartStatus.Overexerting)
             {
-                if (IsHighIntensity == true)
+                if (IsHighIntensity)
                 {
                     HandleOverExertion();
                 }
@@ -71,19 +71,20 @@ public class RingGenerator : MonoBehaviour {
 
     public void NewRing()
     {
-        Vector3 randOffset;
-        if(IsHighIntensity)
+        float nextDistMax, nextDistMin;
+        if (IsHighIntensity)
         {
-            // Calculation for adjusting difficulty
-            float nextDistMax = highRingSeparation * 0.8f + (difficulty * 2f);
-            float nextDistMin = highRingSeparation * 1.2f + (difficulty * 2f);
-            randOffset = new Vector3(Random.Range(nextDistMin, nextDistMax), 0, 0);
+            nextDistMax = highRingSeparation * 1.2f + (difficulty * 2f);
+            nextDistMin = highRingSeparation * 0.8f + (difficulty * 2f);
         }
         else
         {
-            randOffset = new Vector3(Random.Range(13f, 16f), 0, 0);
+            //nextDistMax = 16;
+            //nextDistMin = 13;
+            nextDistMax = highRingSeparation * 0.6f + (difficulty * 2f);
+            nextDistMin = highRingSeparation * 0.4f + (difficulty * 2f);
         }
-        currentPos += randOffset;
+        currentPos += new Vector3(Random.Range(nextDistMin, nextDistMax), 0, 0);
         GameObject generatedRing = Instantiate(ring, transform, false);
         generatedRing.transform.localRotation = Quaternion.Euler(new Vector3(0, 90, 0));
         generatedRing.transform.localPosition = currentPos;
