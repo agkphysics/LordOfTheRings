@@ -25,6 +25,7 @@ public class MusicController : MonoBehaviour
     public float NextBeat { get { return BeatTimes[beatIdx]; } }
     public float NextBeatDelta { get { return NextBeat - audioSource.time; } }
     public Boolean IsEnded { get; set; }
+    public Engine.Interval Intensity { get; private set; }
 
     static MusicController()
     {
@@ -59,6 +60,7 @@ public class MusicController : MonoBehaviour
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
         audioMasterGroup = audioSource.outputAudioMixerGroup;
         IsEnded = false;
+        Intensity = Engine.Interval.LOW_INTENSITY;
 
         songs = new List<Song>();
         string[] oggFiles = Directory.GetFiles(Path.Combine(Application.dataPath, "Audio"), "*.ogg");
@@ -101,6 +103,7 @@ public class MusicController : MonoBehaviour
                 if ((intensity > currSong.HighThreshold && !ringGenerator.IsHighIntensity) || (intensity < currSong.LowThreshold && ringGenerator.IsHighIntensity))
                 {
                     ringGenerator.PhaseChange();
+                    Intensity = Intensity == Engine.Interval.LOW_INTENSITY ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY;
                     Debug.Log("Time until last ring: " + timeToLastRing + ", music intensity: " + intensity + ", " + (ringGenerator.IsHighIntensity ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY));
                 }
             }

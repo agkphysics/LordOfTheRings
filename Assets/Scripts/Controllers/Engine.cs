@@ -82,7 +82,6 @@ public class Engine : MonoBehaviour {
         IsStarted = true;
         IsWarmingUp = true;
         warmupTime += Time.time;
-        musicController.PlaySong();
     }
     
     // Only called in editor
@@ -105,6 +104,7 @@ public class Engine : MonoBehaviour {
                 BirdController birdController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
                 birdController.WarmupAveragePower = birdController.WarmupPowerSum / birdController.WarmupCount;
                 birdController.forceMultiplier = 85 / birdController.WarmupAveragePower;
+                musicController.PlaySong();
             }
         }
 

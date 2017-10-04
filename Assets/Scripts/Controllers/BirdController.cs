@@ -126,7 +126,7 @@ public class BirdController : MonoBehaviour {
             {
                 musicController.IncreasePitch();
             }
-            else if (Section == Engine.Interval.LOW_INTENSITY)
+            else if (musicController.Intensity == Engine.Interval.LOW_INTENSITY)
             {
                 musicController.ResetPitch();
             }
