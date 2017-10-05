@@ -145,12 +145,14 @@ public class Engine : MonoBehaviour {
         if (!IsStarted)
         {
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Welcome to HIITCopter!\n Start rowing to begin!"));
+            GameObject.FindGameObjectWithTag("GUIText").GetComponent<Text>().text = "Welcome to HIITCopter!\n Start rowing to begin!";
         }
-
-        if (IsWarmingUp)
+        else if (IsWarmingUp)
         {
-            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Row to escape from light warp"));
+            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Warmup time!"));
+            GameObject.FindGameObjectWithTag("GUIText").GetComponent<Text>().text = "Warmup time!";
         }
+        else GameObject.FindGameObjectWithTag("GUIText").GetComponent<Text>().text = "";
 
         if (GameOver)
         {
@@ -158,6 +160,7 @@ public class Engine : MonoBehaviour {
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Game Over"));
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8 * 2), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Score" + "\t\t\t\t\t\t\t\t\t" + "Best" + "\n" +
                                                                                                                                       score + "\t\t\t\t\t\t\t\t\t\t" + bestScore + "\nPress 'Space' Twice..."));
+            GameObject.FindGameObjectWithTag("GUIText").GetComponent<Text>().text = "Score\t\t\t\t\t\t\t\t\tBest\n" + score + "\t\t\t\t\t\t\t\t\t\t" + bestScore + "\nPress 'Space' Twice...";
         }
     }
 }

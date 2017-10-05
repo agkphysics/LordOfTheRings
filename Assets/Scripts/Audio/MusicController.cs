@@ -47,6 +47,7 @@ public class MusicController : MonoBehaviour
     private float maxPitch = 1.2f;
     private float minPitch = 0.8f;
     private object pitchLock = new object();
+    private bool stopThread;
 
     private Engine engine;
     private BirdController playerController;
@@ -60,6 +61,7 @@ public class MusicController : MonoBehaviour
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
         audioMasterGroup = audioSource.outputAudioMixerGroup;
         IsEnded = false;
+        stopThread = false;
         Intensity = Engine.Interval.LOW_INTENSITY;
 
         songs = new List<Song>();
@@ -84,9 +86,18 @@ public class MusicController : MonoBehaviour
         currSong = songs[idx++];
         audioSource.clip = currSong.Clip;
         new Thread(new ThreadStart(() => {
-            foreach (Song song in songs) song.Initialise();
+            foreach (Song song in songs)
+            {
+                song.Initialise();
+                if (stopThread) return;
+            }
             playerController.TargetRPM = currSong.BPM;
         })).Start();
+    }
+
+    private void OnApplicationQuit()
+    {
+        stopThread = true;
     }
 
     private void Update()
