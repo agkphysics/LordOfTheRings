@@ -18,10 +18,10 @@ public class Engine : MonoBehaviour {
     public GUISkin skin;
     public int age = 20;
     public float warmupTime = 5;
+    public int combo = 0;
 
     private int bestScore = 0;
     private int score = 0;
-    private int combo = 0;
     private float originalPosition;
 
     private const int targetScore = 1000000;

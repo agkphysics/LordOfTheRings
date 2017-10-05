@@ -22,11 +22,13 @@ public class BirdController : MonoBehaviour {
     private Vector3 startingPosition;
     private Quaternion startingRotation;
     private float time;
+    private float originalPosition;
 
     private Engine engine;
     private Rigidbody rb;
     private RowingMachineController rowingMachine;
     private MusicController musicController;
+    private SpeedIndicator speedIndicator;
 
     private static LoggerService logger;
 
@@ -37,6 +39,8 @@ public class BirdController : MonoBehaviour {
         rowingMachine = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<RowingMachineController>();
         musicController = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicController>();
         logger = new LoggerService();
+        speedIndicator = GameObject.Find("SpeedIndicator").GetComponent<SpeedIndicator>();
+        originalPosition = speedIndicator.GetCurrentXLocation();
     }
 
 	// Use this for initialization
@@ -155,9 +159,35 @@ public class BirdController : MonoBehaviour {
         Section = trigger.gameObject.GetComponent<RingController>().NextRing.GetComponent<RingController>().Section;
         Debug.Log("Entering section " + Section);
 
-        engine.AddToCurrentScore(500);
-        engine.AddToCurrentCombo(1);
-		Destroy(trigger.gameObject);
+        //Rings rewards increased scores depending on combo.
+        float currentPos = speedIndicator.GetCurrentXLocation();
+        if (currentPos > originalPosition + 0.14f || currentPos < originalPosition - 0.14f)
+        {
+            engine.AddToCurrentScore(50);
+            engine.ResetCombo();
+        }
+        else if (engine.combo > 15)
+        {
+            engine.AddToCurrentScore(400);
+            engine.AddToCurrentCombo(1);
+        }
+        else if(engine.combo > 10)
+        {
+            engine.AddToCurrentScore(300);
+            engine.AddToCurrentCombo(1);
+        }
+        else if (engine.combo > 5)
+        {
+            engine.AddToCurrentScore(200);
+            engine.AddToCurrentCombo(1);
+        }
+        else if (engine.combo >= 0)
+        {
+            engine.AddToCurrentScore(100);
+            engine.AddToCurrentCombo(1);
+        }
+
+        Destroy(trigger.gameObject);
 	}
 
     void LogData()
