@@ -111,7 +111,7 @@ public class MusicController : MonoBehaviour
                 if (timeToLastRing > currSong.Length - audioSource.time) timeToLastRing = currSong.Length - audioSource.time;
                 float intensity = currSong.GetIntensityAt(audioSource.time + timeToLastRing);
 
-                if ((intensity > currSong.HighThreshold && !ringGenerator.IsHighIntensity) || (intensity < currSong.LowThreshold && ringGenerator.IsHighIntensity))
+                if (((intensity > currSong.HighThreshold && !ringGenerator.IsHighIntensity) || (intensity < currSong.LowThreshold && ringGenerator.IsHighIntensity)) && !engine.noMusicCondition)
                 {
                     ringGenerator.PhaseChange();
                     Intensity = Intensity == Engine.Interval.LOW_INTENSITY ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY;

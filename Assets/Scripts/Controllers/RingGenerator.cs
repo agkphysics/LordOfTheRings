@@ -94,10 +94,10 @@ public class RingGenerator : MonoBehaviour {
         lastRing = generatedRing;
 
         ringCount++;
-        //if(ringCount >= ringsPerInterval)
-        //{
-        //    PhaseChange();
-        //}
+        if (engine.noMusicCondition && ringCount >= ringsPerInterval)
+        {
+            PhaseChange();
+        }
     }
 
     public void PhaseChange()

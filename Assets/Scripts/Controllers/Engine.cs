@@ -19,10 +19,10 @@ public class Engine : MonoBehaviour {
     public int age = 20;
     public float warmupTime = 5;
     public int combo = 0;
+    public bool noMusicCondition = false;
 
     private int bestScore = 0;
     private int score = 0;
-    private float originalPosition;
 
     private const int targetScore = 1000000;
 
@@ -44,8 +44,6 @@ public class Engine : MonoBehaviour {
         speedIndicator = GameObject.Find("SpeedIndicator").GetComponent<SpeedIndicator>();
         progressBarBehaviour = GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>();
         musicController = GameObject.Find("Music").GetComponent<MusicController>();
-
-        originalPosition = speedIndicator.GetCurrentXLocation();
     }
 
     public void AddToCurrentProgress(float value)
@@ -111,12 +109,6 @@ public class Engine : MonoBehaviour {
         if (floor.transform.position.x < GameObject.FindGameObjectWithTag("Player").transform.position.x - floor.transform.localScale.x/2)
         {
             floor.transform.position += new Vector3(floor.transform.localScale.x/2, 0, 0);
-        }
-
-        float currentPos = speedIndicator.GetCurrentXLocation();
-        if (currentPos > originalPosition + 0.14f || currentPos < originalPosition - 0.14f)
-        {
-            ResetCombo();
         }
 
         //Turns off and on warp effect. Activates when combo is 20 or higher.

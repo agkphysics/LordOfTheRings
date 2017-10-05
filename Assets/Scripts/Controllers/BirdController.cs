@@ -22,7 +22,6 @@ public class BirdController : MonoBehaviour {
     private Vector3 startingPosition;
     private Quaternion startingRotation;
     private float time;
-    private float originalPosition;
 
     private Engine engine;
     private Rigidbody rb;
@@ -40,7 +39,6 @@ public class BirdController : MonoBehaviour {
         musicController = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicController>();
         logger = new LoggerService();
         speedIndicator = GameObject.Find("SpeedIndicator").GetComponent<SpeedIndicator>();
-        originalPosition = speedIndicator.GetCurrentXLocation();
     }
 
 	// Use this for initialization
@@ -161,7 +159,7 @@ public class BirdController : MonoBehaviour {
 
         //Rings rewards increased scores depending on combo.
         float currentPos = speedIndicator.GetCurrentXLocation();
-        if (currentPos > originalPosition + 0.14f || currentPos < originalPosition - 0.14f)
+        if (currentPos > 0.17f || currentPos < -0.17f)
         {
             engine.AddToCurrentScore(50);
             engine.ResetCombo();
