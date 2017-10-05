@@ -162,14 +162,36 @@ public class BirdController : MonoBehaviour {
 
     void LogData()
     {
-        //Logging system for force, distance and heartrate.
-        Power force = new Power(Time.time.ToString(), rowingMachine.CurrentForce, GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().IsHighIntensity);
+        //Logging system for force, distance, heartrate and current mean rpm.
+        Power force = new Power(Time.time.ToString(), rowingMachine.CurrentForce, Section == Engine.Interval.HIGH_INTENSITY);
         Distance distance = new Distance(Time.time.ToString(), rowingMachine.DistanceTravelled);
-        HeartRate heartRate = new HeartRate( Time.time.ToString(), GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().heartRate);
+        HeartRate heartRate = new HeartRate(Time.time.ToString(), GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().heartRate);
+        RPM rpm = new RPM(Time.time.ToString(), rowingMachine.MeanRPM, Section == Engine.Interval.HIGH_INTENSITY);
         logger.heartRate.Enqueue(heartRate);
         logger.distance.Enqueue(distance);
         logger.power.Enqueue(force);
+        logger.rpm.Enqueue(rpm);
         logger.Log();
+    }
+}
+
+[Serializable]
+public class RPM
+{
+    public string time;
+    public bool intervalType;
+    public double rpm;
+
+    public RPM(string time, double rpm, bool interval)
+    {
+        this.time = time;
+        this.rpm = rpm;
+        intervalType = interval;
+    }
+
+    public override string ToString()
+    {
+        return time + "," + rpm + "," + intervalType;
     }
 }
 
