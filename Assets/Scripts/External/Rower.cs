@@ -56,7 +56,7 @@ public class Rower : MonoBehaviour {
                 break;
         }
         nextUpdateTime = 0;
-        if (numRowers > 0)
+        if (numRowers > 0 && !DEBUG)
         {
             new Thread(new ThreadStart(() =>
             {
