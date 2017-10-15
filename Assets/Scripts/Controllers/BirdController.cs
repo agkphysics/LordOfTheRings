@@ -13,11 +13,12 @@ public class BirdController : MonoBehaviour {
     public uint WarmupPowerSum { get; private set; }
     public int WarmupCount { get; private set; }
     public float WarmupAveragePower { get; set; }
-
-    public float forwardMovement;
+    
+    public float maxPowerOutput;
     public float forceMultiplier;
     public float dragForce;
-    public float timeBetweenlogging;
+
+    private const float timeBetweenlogging = 1f;
 
     private Vector3 startingPosition;
     private Quaternion startingRotation;
@@ -46,9 +47,10 @@ public class BirdController : MonoBehaviour {
     {
         Section = Engine.Interval.LOW_INTENSITY;
         TargetRPM = 60;
-        WarmupPowerSum = 0;
-        WarmupAveragePower = 0;
-        WarmupCount = 0;
+        //WarmupPowerSum = 0;
+        //WarmupAveragePower = 0;
+        //WarmupCount = 0;
+
         startingPosition = transform.position;
         //transform.position = startingPosition;
 		startingRotation = transform.rotation;
@@ -85,26 +87,7 @@ public class BirdController : MonoBehaviour {
 		}
         else
         {
-            if (engine.IsWarmingUp)
-            {
-                //Warmup period, time configured witin the GameController
-                if (rowingMachine.WaitingRow)
-                {
-                    WarmupPowerSum += rowingMachine.CurrentForce;
-                    WarmupCount++;
-
-                    rowingMachine.WaitingRow = false;
-                    
-                    //rb.velocity = new Vector3(rowingMachine.CurrentForce*forceMultiplier, 0);
-                    rb.velocity = Vector3.zero;
-                    if (!rowingMachine.DEBUG)
-                    {
-                        Debug.Log("Current Force: " + rowingMachine.CurrentForce);
-                    }
-                    Debug.Log("Warming up period.");
-                }
-            }
-            else if (rowingMachine.WaitingRow)
+            if (rowingMachine.WaitingRow)
             {
                 rowingMachine.WaitingRow = false;
 
@@ -112,11 +95,11 @@ public class BirdController : MonoBehaviour {
                 {
                     rb.velocity = new Vector3(rb.velocity.x, 0, 0);
                 }
-                rb.AddForce(Vector3.right*rowingMachine.CurrentForce/WarmupAveragePower*forceMultiplier, ForceMode.Impulse);
+                rb.AddForce(Vector3.right*rowingMachine.CurrentForce*forceMultiplier/maxPowerOutput, ForceMode.Impulse);
 
                 if (!rowingMachine.DEBUG)
                 {
-                    Debug.Log("Current proportionate force: " + rowingMachine.CurrentForce/WarmupAveragePower);
+                    Debug.Log("Current proportionate force: " + rowingMachine.CurrentForce*forceMultiplier/maxPowerOutput);
                 }
                 engine.AddToCurrentScore(50);
             }
@@ -132,6 +115,8 @@ public class BirdController : MonoBehaviour {
             {
                 musicController.ResetPitch();
             }
+
+            if (engine.noMusicCondition) TargetRPM = Section == Engine.Interval.HIGH_INTENSITY ? 35 : 25 ;
 
             rb.AddForce(-dragForce*Math.Abs(rb.velocity.x), 0, 0);
         }

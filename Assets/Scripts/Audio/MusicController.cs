@@ -85,14 +85,18 @@ public class MusicController : MonoBehaviour
         ringGenerator = GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>();
         currSong = songs[idx++];
         audioSource.clip = currSong.Clip;
-        new Thread(new ThreadStart(() => {
-            foreach (Song song in songs)
+        if (!engine.noMusicCondition)
+        {
+            new Thread(new ThreadStart(() =>
             {
-                song.Initialise();
-                if (stopThread) return;
-            }
-            playerController.TargetRPM = currSong.BPM;
-        })).Start();
+                foreach (Song song in songs)
+                {
+                    song.Initialise();
+                    if (stopThread) return;
+                }
+                playerController.TargetRPM = currSong.BPM;
+            })).Start();
+        }
     }
 
     private void OnApplicationQuit()
@@ -195,7 +199,7 @@ public class MusicController : MonoBehaviour
     private void OnGUI()
     {
         GUI.skin = engine.skin;
-        if (!currSong.IsFinishedInitialising) GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 12)), new GUIContent("Loading song..."));
+        if (!currSong.IsFinishedInitialising && !engine.noMusicCondition) GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 12)), new GUIContent("Loading song..."));
     }
 
     public void StopSong()

@@ -99,9 +99,9 @@ public class Engine : MonoBehaviour {
             {
                 //If player is finished warmup, set warmup power average to be used for controlling player height gain on row.
                 IsWarmingUp = false;
-                BirdController birdController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
-                birdController.WarmupAveragePower = birdController.WarmupPowerSum / birdController.WarmupCount;
-                birdController.forceMultiplier = 85 / birdController.WarmupAveragePower;
+                //BirdController birdController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
+                //birdController.WarmupAveragePower = birdController.WarmupPowerSum / birdController.WarmupCount;
+                //birdController.forceMultiplier = 85 / birdController.WarmupAveragePower;
                 musicController.PlaySong();
             }
         }
