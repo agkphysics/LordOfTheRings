@@ -132,10 +132,16 @@ public class OVRTracker
 		switch (tracker)
 		{
 			case 0:
-				p = OVRPlugin.GetNodePose(OVRPlugin.Node.TrackerZero).ToOVRPose();
+				p = OVRPlugin.GetNodePose(OVRPlugin.Node.TrackerZero, OVRPlugin.Step.Render).ToOVRPose();
 				break;
 			case 1:
-				p = OVRPlugin.GetNodePose(OVRPlugin.Node.TrackerOne).ToOVRPose();
+				p = OVRPlugin.GetNodePose(OVRPlugin.Node.TrackerOne, OVRPlugin.Step.Render).ToOVRPose();
+				break;
+			case 2:
+				p = OVRPlugin.GetNodePose(OVRPlugin.Node.TrackerTwo, OVRPlugin.Step.Render).ToOVRPose();
+				break;
+			case 3:
+				p = OVRPlugin.GetNodePose(OVRPlugin.Node.TrackerThree, OVRPlugin.Step.Render).ToOVRPose();
 				break;
 			default:
 				return OVRPose.identity;
@@ -162,6 +168,10 @@ public class OVRTracker
 				return OVRPlugin.GetNodePositionTracked(OVRPlugin.Node.TrackerZero);
 			case 1:
 				return OVRPlugin.GetNodePositionTracked(OVRPlugin.Node.TrackerOne);
+			case 2:
+				return OVRPlugin.GetNodePositionTracked(OVRPlugin.Node.TrackerTwo);
+			case 3:
+				return OVRPlugin.GetNodePositionTracked(OVRPlugin.Node.TrackerThree);
 			default:
 				return false;
 		}
@@ -178,6 +188,10 @@ public class OVRTracker
 				return OVRPlugin.GetNodePresent(OVRPlugin.Node.TrackerZero);
 			case 1:
 				return OVRPlugin.GetNodePresent(OVRPlugin.Node.TrackerOne);
+			case 2:
+				return OVRPlugin.GetNodePresent(OVRPlugin.Node.TrackerTwo);
+			case 3:
+				return OVRPlugin.GetNodePresent(OVRPlugin.Node.TrackerThree);
 			default:
 				return false;
 		}

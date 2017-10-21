@@ -4,8 +4,8 @@ using System.Collections;
 /// <summary>
 /// Controller for detecting rows.
 /// </summary>
-public class RowingMachineController : MonoBehaviour {
-
+public class RowingMachineController : MonoBehaviour
+{
     public bool WaitingRow { get; set; }
     public uint DistanceTravelled { get; private set; } 
     public uint CurrentForce { get; private set; }
@@ -24,8 +24,7 @@ public class RowingMachineController : MonoBehaviour {
 
     private Rower rower;
     private Engine engine;
-
-    private uint oldDistance;
+    
     private uint oldPower;
     private uint oldPace;
 
@@ -89,8 +88,7 @@ public class RowingMachineController : MonoBehaviour {
         currIdx = (currIdx + 1) % rowTimes.Length;
         DistanceTravelled = distance;
         WaitingRow = true;
-
-        oldDistance = distance;
+        
         oldPower = power;
         oldPace = pace;
         lastRowTime = Time.time;

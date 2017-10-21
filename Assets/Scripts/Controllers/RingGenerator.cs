@@ -4,8 +4,8 @@ using System.Collections;
 /// <summary>
 /// Script which generates rings.
 /// </summary>
-public class RingGenerator : MonoBehaviour {
-
+public class RingGenerator : MonoBehaviour
+{
     public GameObject ring;
 
     public GameObject LastGeneratedRing { get { return lastRing; } }

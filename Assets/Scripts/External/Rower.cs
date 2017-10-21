@@ -6,8 +6,8 @@ using System.Threading;
 /// <summary>
 /// Interface to the rowing machine API.
 /// </summary>
-public class Rower : MonoBehaviour {
-
+public class Rower : MonoBehaviour
+{
     public struct RowData
     {
         public uint Pace;
@@ -31,7 +31,6 @@ public class Rower : MonoBehaviour {
     public bool DEBUG;
 
     private int numRowers;
-    private float nextUpdateTime;
 
     // Use this for initialization
     void Start ()
@@ -55,7 +54,6 @@ public class Rower : MonoBehaviour {
                 Debug.Log("Number of rowers: " + numRowers);
                 break;
         }
-        nextUpdateTime = 0;
         if (numRowers > 0 && !DEBUG)
         {
             new Thread(new ThreadStart(() =>

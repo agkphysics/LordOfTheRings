@@ -4,7 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-public class LoggerService {
+public class LoggerService
+{
     public Queue<HeartRate> heartRate = new Queue<HeartRate>();
     public Queue<Distance> distance = new Queue<Distance>();
     public Queue<Power> power = new Queue<Power>();

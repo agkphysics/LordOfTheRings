@@ -43,7 +43,6 @@ public class MusicController : MonoBehaviour
     private int idx = 0;
     private int beatIdx = 0;
     private float pitchChange = 0.10f;
-    private float pitchChangeTime = 1f;
     private float maxPitch = 1.2f;
     private float minPitch = 0.8f;
     private object pitchLock = new object();

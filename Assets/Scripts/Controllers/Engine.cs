@@ -7,8 +7,8 @@ using ProgressBar;
 /// <summary>
 /// Main game controller.
 /// </summary>
-public class Engine : MonoBehaviour {
-
+public class Engine : MonoBehaviour
+{
     public enum Interval { LOW_INTENSITY, HIGH_INTENSITY };
 
     public bool IsStarted { get; private set; }
@@ -30,7 +30,6 @@ public class Engine : MonoBehaviour {
     private GameObject warp;
     private ProgressBarBehaviour progressBarBehaviour;
     private MusicController musicController;
-    private SpeedIndicator speedIndicator;
 
     void Awake ()
     {
@@ -39,9 +38,8 @@ public class Engine : MonoBehaviour {
         GameOver = false;
 
         floor = GameObject.FindGameObjectWithTag("floor");
-        warp = GameObject.Find("warp");
-
-        speedIndicator = GameObject.Find("SpeedIndicator").GetComponent<SpeedIndicator>();
+        warp = GameObject.FindGameObjectWithTag("Warp");
+        
         progressBarBehaviour = GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>();
         musicController = GameObject.Find("Music").GetComponent<MusicController>();
     }

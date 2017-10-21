@@ -6,22 +6,17 @@ using System.Collections;
 /// </summary>
 public class RingController : MonoBehaviour
 {
-
     public GameObject NextRing { get; set; }
     public Engine.Interval Section { get; set; }
 
     private BirdController playerController;
     private RingGenerator ringGenerator;
     private RowingMachineController rowingMachine;
-    private SpeedIndicator speedIndicator;
-    private MusicController musicController;
 
     private void Awake ()
     {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
         rowingMachine = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<RowingMachineController>();
-        speedIndicator = GameObject.Find("SpeedIndicator").GetComponent<SpeedIndicator>();
-        musicController = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicController>();
     }
 	
     private void Start()

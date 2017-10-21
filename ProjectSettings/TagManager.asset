@@ -4,24 +4,14 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - ring
   - score
-  - ringcreator
-  - ringParent
   - floor
-  - ringCollider
-  - birdCamera
-  - thumb
-  - ringCreator
-  - pipeCollider
   - pipecreator
-  - pipe
   - RowingMachine
   - HRMonitor
   - Warp
   - RPMText
   - Music
-  - particle
   - GUIText
   layers:
   - Default
@@ -32,7 +22,7 @@ TagManager:
   - UI
   - 
   - 
-  - Pipe
+  - 
   - 
   - 
   - 

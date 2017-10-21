@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-using ProgressBar;
 
 /// <summary>
 /// Script which controls the player, called 'bird' due to being a Flappy Bird VR derivative.
 /// </summary>
-public class BirdController : MonoBehaviour {
-
+public class BirdController : MonoBehaviour
+{
     public Engine.Interval Section { get; set; }
     public float TargetRPM { get; set; }
     public uint WarmupPowerSum { get; private set; }
@@ -143,7 +142,7 @@ public class BirdController : MonoBehaviour {
         Debug.Log("Entering section " + Section);
 
         //Rings rewards increased scores depending on combo.
-        float currentPos = speedIndicator.GetCurrentXLocation();
+        float currentPos = speedIndicator.CurrentXLocation;
         if (currentPos > 0.17f || currentPos < -0.17f)
         {
             engine.AddToCurrentScore(50);

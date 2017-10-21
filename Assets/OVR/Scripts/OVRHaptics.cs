@@ -113,39 +113,6 @@ public static class OVRHaptics
 
 	private class OVRHapticsOutput
 	{
-		private class NativeBuffer
-		{
-			private int m_numBytes = 0;
-			private IntPtr m_ptr = IntPtr.Zero;
-
-			public IntPtr GetPointer(int byteOffset = 0)
-			{
-				if (byteOffset < 0 || byteOffset >= m_numBytes)
-				{
-					//Debug.LogError("Attempted invalid access - Allocated: " + m_numBytes + " Requested: " + byteOffset);
-					return IntPtr.Zero;
-				}
-
-				return (byteOffset == 0) ? m_ptr : new IntPtr(m_ptr.ToInt64() + byteOffset);
-			}
-
-			public NativeBuffer(int numBytes)
-			{
-				m_ptr = Marshal.AllocHGlobal(numBytes);
-				m_numBytes = numBytes;
-			}
-
-			~NativeBuffer()
-			{
-				if (m_ptr != IntPtr.Zero)
-				{
-					Marshal.FreeHGlobal(m_ptr);
-					m_ptr = IntPtr.Zero;
-					m_numBytes = 0;
-				}
-			}
-		}
-
 		private class ClipPlaybackTracker
 		{
 			public int ReadCount { get; set; }
@@ -165,7 +132,7 @@ public static class OVRHaptics
 		private int m_numUnderruns = 0;
 		private List<ClipPlaybackTracker> m_pendingClips = new List<ClipPlaybackTracker>();
 		private uint m_controller = 0;
-		private NativeBuffer m_nativeBuffer = new NativeBuffer(OVRHaptics.Config.MaximumBufferSamplesCount * OVRHaptics.Config.SampleSizeInBytes);
+		private OVRNativeBuffer m_nativeBuffer = new OVRNativeBuffer(OVRHaptics.Config.MaximumBufferSamplesCount * OVRHaptics.Config.SampleSizeInBytes);
 		private OVRHapticsClip m_paddingClip = new OVRHapticsClip();
 
 		public OVRHapticsOutput(uint controller)
