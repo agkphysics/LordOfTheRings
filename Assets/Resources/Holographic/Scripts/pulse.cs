@@ -52,7 +52,7 @@ public class pulse : MonoBehaviour
 		this.transform.Find("p_text").GetComponent<TextMesh>().text=pulse_.ToString();
         delay = 1/pulse_;
 
-        switch (hrscript.calculateHeartStatus())
+        switch (hrscript.CalculateHeartStatus())
         {
             case HeartRateService.HeartStatus.Resting:
                 this.GetComponent<Renderer>().material.color = defaultColor;

@@ -336,8 +336,7 @@ AudioSource:
   m_GameObject: {fileID: 666482537}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: b7bc44686e59a8748ad8d5cdb12fb12e,
-    type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -461,10 +460,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skin: {fileID: 11400000, guid: 7953503d9e83f8d469b84619849edd4e, type: 2}
-  age: 20
+  age: 21
   warmupTime: 2
   combo: 0
-  noMusicCondition: 0
+  noMusicCondition: 1
 --- !u!4 &1172479738
 Transform:
   m_ObjectHideFlags: 0
@@ -691,6 +690,25 @@ Prefab:
     - target: {fileID: 1950091191467128, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
       propertyPath: m_TagString
       value: Warp
+      objectReference: {fileID: 0}
+    - target: {fileID: 20937445095779804, guid: b9a96626d8bec4fad8f84bb48fbf9418,
+        type: 2}
+      propertyPath: m_CullingMask.m_Bits
+      value: 4294967263
+      objectReference: {fileID: 0}
+    - target: {fileID: 20958358342185056, guid: b9a96626d8bec4fad8f84bb48fbf9418,
+        type: 2}
+      propertyPath: m_CullingMask.m_Bits
+      value: 4294967263
+      objectReference: {fileID: 0}
+    - target: {fileID: 20791054083666982, guid: b9a96626d8bec4fad8f84bb48fbf9418,
+        type: 2}
+      propertyPath: m_CullingMask.m_Bits
+      value: 4294967263
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}
+      propertyPath: maxPowerOutput
+      value: 150
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b9a96626d8bec4fad8f84bb48fbf9418, type: 2}

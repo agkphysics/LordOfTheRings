@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 using System;
 
 public class HeartRateService : MonoBehaviour {
@@ -20,7 +19,7 @@ public class HeartRateService : MonoBehaviour {
         time = Time.time;
         if (maxHeartRate == 0)
         {
-            this.maxHeartRate = calculateMaxHeartRate();
+            maxHeartRate = CalculateMaxHeartRate();
         }
     }
 	
@@ -37,7 +36,7 @@ public class HeartRateService : MonoBehaviour {
             time = Time.time;
         }
 
-        this.currentHeartStatus = calculateHeartStatus();
+        currentHeartStatus = CalculateHeartStatus();
     }
 
     IEnumerator WaitForRequest(WWW www)
@@ -49,34 +48,31 @@ public class HeartRateService : MonoBehaviour {
         {
             Debug.Log("WWW Ok!: " + www.text);
         }
-        else {
-            Debug.Log("WWW Error: " + www.error);
-        }
         if (www.text != null && www.text.Length >0 )
         {
             var jsonHeartRate = JsonUtility.FromJson<HeartRate>(www.text);
-            this.heartRate = (jsonHeartRate.heartrate);
+            heartRate = (jsonHeartRate.heartrate);
         } else
         {
-            this.heartRate = default_heart_rate;
+            heartRate = default_heart_rate;
         }
 
         if (www.text.Length != 0)
         {
             var jsonHeartRate = JsonUtility.FromJson<HeartRate>(www.text);
-            this.heartRate = (jsonHeartRate.heartrate);
+            heartRate = (jsonHeartRate.heartrate);
         }
     }
 
-    public HeartStatus calculateHeartStatus()
+    public HeartStatus CalculateHeartStatus()
     {
         //calculate what heart rate zone the user is in based on their max heart rate.
         //>90% = overexerting, 90%> hr > 70% = optimal
-        if((this.heartRate  / this.maxHeartRate) > 0.90)
+        if((heartRate / maxHeartRate) > 0.90)
         {
             return HeartStatus.Overexerting;
         }
-        else if ((this.heartRate / this.maxHeartRate) > 0.70)
+        else if ((heartRate / maxHeartRate) > 0.70)
         {
             return HeartStatus.Optimal;
         }
@@ -86,9 +82,9 @@ public class HeartRateService : MonoBehaviour {
         }
     }
 
-    private Double calculateMaxHeartRate()
+    private Double CalculateMaxHeartRate()
     {
-        var age = this.config.age;
+        var age = config.age;
         double maxHeartRate = (208 - (0.7*age));
         return maxHeartRate;
     }

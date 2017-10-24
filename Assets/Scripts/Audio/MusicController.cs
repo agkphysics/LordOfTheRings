@@ -51,14 +51,12 @@ public class MusicController : MonoBehaviour
     private Engine engine;
     private BirdController playerController;
     private RingGenerator ringGenerator;
-    private AudioMixerGroup audioMasterGroup;
 
     private void Awake()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
         engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
-        audioMasterGroup = audioSource.outputAudioMixerGroup;
         IsEnded = false;
         stopThread = false;
         Intensity = Engine.Interval.LOW_INTENSITY;
@@ -174,7 +172,6 @@ public class MusicController : MonoBehaviour
             for (int i = 0; i < 10 && audioSource.pitch < maxPitch; i++)
             {
                 audioSource.pitch += pitchChange / 10;
-                //audioMasterGroup.audioMixer.SetFloat("Pitch", 1/audioSource.pitch);
                 yield return new WaitForSeconds(1f / 10f);
             }
             playerController.TargetRPM = currSong.BPM * audioSource.pitch;
@@ -188,7 +185,6 @@ public class MusicController : MonoBehaviour
             for (int i = 0; i < 10 && audioSource.pitch > minPitch; i++)
             {
                 audioSource.pitch -= pitchChange / 10;
-                //audioMasterGroup.audioMixer.SetFloat("Pitch", 1/audioSource.pitch);
                 yield return new WaitForSeconds(1f / 10f);
             }
             playerController.TargetRPM = currSong.BPM * audioSource.pitch;
