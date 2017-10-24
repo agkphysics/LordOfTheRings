@@ -79,7 +79,7 @@ public class MusicController : MonoBehaviour
 
     private void Start()
     {
-        ringGenerator = GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>();
+        ringGenerator = GameObject.FindGameObjectWithTag("RingCreator").GetComponent<RingGenerator>();
         currSong = songs[idx++];
         audioSource.clip = currSong.Clip;
         if (!engine.noMusicCondition)
@@ -124,7 +124,7 @@ public class MusicController : MonoBehaviour
             {
                 if (BeatTimes[beatIdx] < audioSource.time && beatIdx < BeatTimes.Length - 1) beatIdx++;
 
-                GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>().Value = 100f*audioSource.time/currSong.Clip.length;
+                GameObject.FindGameObjectWithTag("ProgressBar").GetComponent<ProgressBarBehaviour>().Value = 100f*audioSource.time/currSong.Clip.length;
                 if (Input.GetKeyDown(KeyCode.RightBracket))
                 {
                     IncreasePitch();

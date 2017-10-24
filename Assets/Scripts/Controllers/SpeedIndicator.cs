@@ -22,7 +22,7 @@ public class SpeedIndicator : MonoBehaviour
         rowingMachine = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<RowingMachineController>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
         engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
-        speedIndicator = GameObject.Find("SpeedIndicator");
+        speedIndicator = GameObject.FindGameObjectWithTag("SpeedIndicator");
     }
 
     // Use this for initialization

@@ -4,15 +4,20 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - score
   - floor
-  - pipecreator
   - RowingMachine
   - HRMonitor
   - Warp
-  - RPMText
   - Music
   - GUIText
+  - ring
+  - particle
+  - SpeedIndicator
+  - RingCreator
+  - RPM
+  - ProgressBar
+  - Score
+  - Combo
   layers:
   - Default
   - TransparentFX

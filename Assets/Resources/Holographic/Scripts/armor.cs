@@ -27,7 +27,7 @@ public class armor : MonoBehaviour
 
 	void Start ()
 	{
-        rowingMachine= GameObject.Find("RowingMachine");
+        rowingMachine= GameObject.FindGameObjectWithTag("RowingMachine");
         rowerScript= rowingMachine.GetComponent<Rower>();
         armor_ = rowerScript.RowPower;
         Debug.Log(armor_);

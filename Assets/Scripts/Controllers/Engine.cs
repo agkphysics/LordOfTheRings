@@ -40,8 +40,8 @@ public class Engine : MonoBehaviour
         floor = GameObject.FindGameObjectWithTag("floor");
         warp = GameObject.FindGameObjectWithTag("Warp");
         
-        progressBarBehaviour = GameObject.Find("ProgressBar").GetComponent<ProgressBarBehaviour>();
-        musicController = GameObject.Find("Music").GetComponent<MusicController>();
+        progressBarBehaviour = GameObject.FindGameObjectWithTag("ProgressBar").GetComponent<ProgressBarBehaviour>();
+        musicController = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicController>();
     }
 
     public void AddToCurrentProgress(float value)
@@ -53,19 +53,19 @@ public class Engine : MonoBehaviour
     public void AddToCurrentScore(int value)
     {
         score += value;
-        GameObject.Find("Score").GetComponent<TextMesh>().text = score.ToString();
+        GameObject.FindGameObjectWithTag("Score").GetComponent<TextMesh>().text = score.ToString();
     }
 
     public void AddToCurrentCombo(int value)
     {
         combo += value;
-        GameObject.Find("Combo").GetComponent<TextMesh>().text = "COMBO " + combo.ToString();
+        GameObject.FindGameObjectWithTag("Combo").GetComponent<TextMesh>().text = "COMBO " + combo.ToString();
     }
 
     public void ResetCombo()
     {
         combo = 0;
-        GameObject.Find("Combo").GetComponent<TextMesh>().text = "COMBO " + combo.ToString();
+        GameObject.FindGameObjectWithTag("Combo").GetComponent<TextMesh>().text = "COMBO " + combo.ToString();
     }
 
     public void CompareCurrentScoreToBest()
@@ -125,7 +125,7 @@ public class Engine : MonoBehaviour
         {
             GameOver = true;
             GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);
-            GameObject.FindGameObjectWithTag("pipecreator").SetActive(false);
+            GameObject.FindGameObjectWithTag("RingCreator").SetActive(false);
         }
     }
 

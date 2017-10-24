@@ -96,6 +96,6 @@ public class RowingMachineController : MonoBehaviour
         {
             Debug.Log("Row detected: distance = " + distance + ", power = " + power + ", pace = " + pace);
         }
-        GameObject.Find("RPM").GetComponent<TextMesh>().text = Mathf.RoundToInt(MeanRPM) + "RPM";
+        GameObject.FindGameObjectWithTag("RPM").GetComponent<TextMesh>().text = Mathf.RoundToInt(MeanRPM) + "RPM";
     }
 }

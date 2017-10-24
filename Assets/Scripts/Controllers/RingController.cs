@@ -21,7 +21,7 @@ public class RingController : MonoBehaviour
 	
     private void Start()
     {
-        ringGenerator = GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>();
+        ringGenerator = GameObject.FindGameObjectWithTag("RingCreator").GetComponent<RingGenerator>();
     }
 
     void Update ()

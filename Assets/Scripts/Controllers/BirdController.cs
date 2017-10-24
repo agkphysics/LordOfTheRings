@@ -38,7 +38,7 @@ public class BirdController : MonoBehaviour
         rowingMachine = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<RowingMachineController>();
         musicController = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicController>();
         logger = new LoggerService();
-        speedIndicator = GameObject.Find("SpeedIndicator").GetComponent<SpeedIndicator>();
+        speedIndicator = GameObject.FindGameObjectWithTag("SpeedIndicator").GetComponent<SpeedIndicator>();
     }
 
 	// Use this for initialization
@@ -137,7 +137,7 @@ public class BirdController : MonoBehaviour
 	void OnTriggerEnter(Collider trigger)
     {
         //On collision with ring, create new ring and increment score by 500, remove ring
-        GameObject.FindGameObjectWithTag("pipecreator").GetComponent<RingGenerator>().NewRing();
+        GameObject.FindGameObjectWithTag("RingCreator").GetComponent<RingGenerator>().NewRing();
         Section = trigger.gameObject.GetComponent<RingController>().NextRing.GetComponent<RingController>().Section;
         Debug.Log("Entering section " + Section);
 

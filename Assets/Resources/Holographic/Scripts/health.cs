@@ -26,7 +26,7 @@ public class health : MonoBehaviour
 
 	void Start ()
 	{
-        rowingMachine = GameObject.Find("RowingMachine");
+        rowingMachine = GameObject.FindGameObjectWithTag("RowingMachine");
         rowerScript = rowingMachine.GetComponent<Rower>();
         health_ = rowerScript.RowPower;
 

@@ -201,6 +201,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 1a8323cfca871964e9393c3de12d2d32, type: 2}
+      propertyPath: m_TagString
+      value: RingCreator
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1a8323cfca871964e9393c3de12d2d32, type: 2}
   m_IsPrefabParent: 0
@@ -598,6 +602,26 @@ Prefab:
         type: 2}
       propertyPath: m_FontData.m_FontSize
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1929129621060588, guid: 2a6f54f2bcceeb645952dc097665482c, type: 2}
+      propertyPath: m_TagString
+      value: SpeedIndicator
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012437401462, guid: 2a6f54f2bcceeb645952dc097665482c, type: 2}
+      propertyPath: m_TagString
+      value: RPM
+      objectReference: {fileID: 0}
+    - target: {fileID: 1012980480017614, guid: 2a6f54f2bcceeb645952dc097665482c, type: 2}
+      propertyPath: m_TagString
+      value: Score
+      objectReference: {fileID: 0}
+    - target: {fileID: 1340270090086900, guid: 2a6f54f2bcceeb645952dc097665482c, type: 2}
+      propertyPath: m_TagString
+      value: Combo
+      objectReference: {fileID: 0}
+    - target: {fileID: 1098759423612240, guid: 2a6f54f2bcceeb645952dc097665482c, type: 2}
+      propertyPath: m_TagString
+      value: ProgressBar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2a6f54f2bcceeb645952dc097665482c, type: 2}
