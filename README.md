@@ -1,67 +1,16 @@
-# Lord Of the Rings
-## An HIIT exergame
+# Lord Of the Rings - an HIIT Exergame
 
-This game is based off [HIIT-Copter](https://github.com/Ofekw/HIIT-Copter) described below.
+High-intensity interval training (HIIT) has been proven to be superior to moderate-intensity continuous training in improving Cardiorespiratory fitness, which is a strong determinant of morbidity and mortality. However some researchers has addressed that HIIT requires "an extremely high level of subject motivation" and question whether the general population could safely or practically tolerate the extreme nature of the exercise regimen. Lord of the Rings was developed to embrace the benefits of HIIT. It aims to induce HIIT training in a safe and enjoyable way, with the power of music and the gameplay.
 
----
+Game demo can be seen here: https://youtu.be/ONr2rf9xyMM
 
-## HIIT (High Intensity Interval Training) Copter
-
-Research has shown that intense cardiovascular exercise has been proven to be an effective means to maintaining good health and improving fitness levels. This cardio is called High Intensity Interval Training. The concept of interval training is the transition from low-moderate intensity intervals to very high intensity intervals. However, this form of exercise is very demanding and can be tedious, which can lead to discouragement and a lack of motivation by the end user.
-
-This repo has a proof of concept, novel exergame which successfully and implicitly induces a HIIT workout; masking the tiresome nature of an explosive cardiovascular workout whilst attempting to mitigate overexertion. This is achieved through an immersive yet simple game environment that subtly and intuitively enforces periods of high intensity work. This is accomplished without explicitly instructing the player to perform high intensity work.  The game employs novel algorithms that creates a curated procedurally generated world, which intuitively forces the user into high intensity and low intensity exercise.
-
-Our user study demonstrates a statistically significant increase in exercise engagement and motivation when using the exergame when compared to a workout following pre-recorded instruction. By employing an exercise machine that directly translates real world actions into the game world and the inclusion of a virtual reality headset; players were left immersed and engaged. This led to levels of engagement that seemed to offset the deterrence and loss of enthusiasm associated with intense physical exertion. 
+## Running the Game
 
 
-Game demo can be seen here:
-
-[![HIIT Copter promo](http://img.youtube.com/vi/QqtGDxjESN0/0.jpg)](http://www.youtube.com/watch?v=QqtGDxjESN0)
-
-## Work Contributions
-
-Jared
-  * Ring spawning and generation
-  * Dynamic difficulty via heart rate during high intensity periods
-  * Length and diffuclty of intensity intervals and switching
-  * Warm up period to set difficulty dynamically
-  * Rowing power to movement balancing
-
-Harry
-  * Camera calibration
-  * Ring spawning and generation
-  * Initial dynamic difficulty adaptation via heart rate during high intensity periods 
-  * User Interface and heads up display
-  * Visuals
-  * Heart rate service interface with game
-  * User study statistical analysis and evaluation
-  
-Ofek
-  * Base architecture (including controllers, physics, procedural generation etc)
-  * Placeholder assets
-  * Heart rate service (recieves heartate data from web service, can be polled at any time to identify current heartate zone)
-  * Bluetooth heart rate software, (including web service to communicate with the game engine). Repo for the bluetooth software and   webservice: https://github.com/Ofekw/hiitcopter-heartrate-service
-  * Logging system (all metrics such as heart rate, power and distance traveled is logged as a unique csv)
-  * Config system
-  
-Alex
-  * System to convert rowing machine data to in game rows
-  * Ring spawning and generation
-  * Interval intensity handling, and interval switching
-  * Asset creation (Rings)
-  * Warmup Period
-  * Dynamic difficulty based on warmup
-  * Dynamic difficulty based on heart rate
-  
-Patrick
-  * Oculus support
-  * Initial UI
-  * Scoring
-  * Visuals (Rings, Warp Speed and Skybox)
 
 ## Development Requirements
   * Oculus DK2 or Commercial tested/supported
-  * Unity 5.4.1
+  * Unity 2017.1.1f1
 
 ## How To setup and use heartrate service:
 * Clone this repo: https://github.com/Ofekw/hiitcopter-heartrate-service
@@ -81,3 +30,20 @@ If the oculus is not operating correctly when launching the project, perform the
  * Check safety warning on oculus is accepted
  * With commercial oculus, player must be wearing oculus before starting game
 
+## Work Contributions
+
+Aaron
+  * 
+
+Matthew
+  * 
+
+Ocean
+  * 
+  
+Jeff
+  * 
+
+## Acknowledgements
+HIITCopter - https://github.com/Ofekw/HIIT-Copter
+Tour de Tune 2016s2 - https://bitbucket.org/lsha074/tourdetune2
