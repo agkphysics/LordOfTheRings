@@ -2,6 +2,7 @@
 using System;
 
 /// <summary>
+/// Script which controls the player.
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
