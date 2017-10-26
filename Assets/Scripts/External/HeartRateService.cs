@@ -2,6 +2,9 @@
 using System.Collections;
 using System;
 
+/// <summary>
+/// Script which calculate heart status.
+/// </summary>
 public class HeartRateService : MonoBehaviour {
 
     public enum HeartStatus { Resting, Optimal, Overexerting};
@@ -25,7 +28,6 @@ public class HeartRateService : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
         string config = System.IO.File.ReadAllText(Application.dataPath + "/config.json");
         this.config = JsonUtility.FromJson<Config>(config);
 
@@ -43,16 +45,18 @@ public class HeartRateService : MonoBehaviour {
     {
         yield return www;
 
-        // check for errors
+        // Check for errors
         if (www.error == null)
         {
             Debug.Log("WWW Ok!: " + www.text);
         }
-        if (www.text != null && www.text.Length >0 )
+
+        if (www.text != null && www.text.Length > 0)
         {
             var jsonHeartRate = JsonUtility.FromJson<HeartRate>(www.text);
             heartRate = (jsonHeartRate.heartrate);
-        } else
+        }
+        else
         {
             heartRate = default_heart_rate;
         }
@@ -66,8 +70,8 @@ public class HeartRateService : MonoBehaviour {
 
     public HeartStatus CalculateHeartStatus()
     {
-        //calculate what heart rate zone the user is in based on their max heart rate.
-        //>90% = overexerting, 90%> hr > 70% = optimal
+        // Calculate what heart rate zone the user is in based on their max heart rate.
+        // > 90% = overexerting, 90% > hr > 70% = optimal
         if((heartRate / maxHeartRate) > 0.90)
         {
             return HeartStatus.Overexerting;

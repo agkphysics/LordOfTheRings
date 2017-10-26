@@ -6,7 +6,6 @@
 public class RingGenerator : MonoBehaviour
 {
     public GameObject ring;
-
     public GameObject LastGeneratedRing { get { return lastRing; } }
     public bool IsHighIntensity { get; set; }
 
@@ -20,6 +19,7 @@ public class RingGenerator : MonoBehaviour
     private HeartRateService hrLvl;
     private bool hasInitialSpawned = false;
     private int ringCount = 0;
+    
     private GameObject lastRing;
 
     private void Awake()
@@ -53,14 +53,12 @@ public class RingGenerator : MonoBehaviour
 
         if (!engine.IsWarmingUp)
         {
-            //check if user is overexerting, if they are perform overexertion handling
-            if (hrLvl.currentHeartStatus == HeartRateService.HeartStatus.Overexerting)
+            // Check if user is overexerting, if they are perform overexertion handling
+            if (IsHighIntensity && hrLvl.currentHeartStatus == HeartRateService.HeartStatus.Overexerting)
             {
-                if (IsHighIntensity)
-                {
-                    HandleOverExertion();
-                }
+                HandleOverExertion();
             }
+
             if (Input.GetKeyDown(KeyCode.P))
             {
                 NewRing();
@@ -100,7 +98,7 @@ public class RingGenerator : MonoBehaviour
     public void PhaseChange()
     {
         ringCount = 0;
-        //If heart rate is dangerously high, go to a low intensity interval.
+        // If heart rate is dangerously high, go to a low intensity interval.
         if (hrLvl.currentHeartStatus == HeartRateService.HeartStatus.Overexerting)
         {
             DecreaseDifficulty();

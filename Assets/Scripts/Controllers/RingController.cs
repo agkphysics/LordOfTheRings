@@ -26,9 +26,7 @@ public class RingController : MonoBehaviour
     void Update ()
     {
         float val = Mathf.Exp(-0.1f*Mathf.Clamp((transform.position.x - playerController.transform.position.x - 10), 0, float.MaxValue));
-        val *= Mathf.Exp(-0.06f*Mathf.Abs(rowingMachine.MeanRPM - playerController.TargetRPM));
-
-        //float val = Mathf.Exp(-0.2f*Mathf.Abs((ringGenerator.LastGeneratedRing.transform.position.x - playerController.transform.position.x)/playerController.GetComponent<Rigidbody>().velocity.x - musicController.NextBeatDelta));
+        val *= Mathf.Exp(-0.06f * Mathf.Abs(rowingMachine.MeanRPM - playerController.TargetRPM));
 
         GetComponent<MeshRenderer>().material.color = Color.Lerp(Color.red, Color.green, val);
 

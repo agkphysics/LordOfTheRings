@@ -16,7 +16,7 @@ public class Rower : MonoBehaviour
     }
 
     [DllImport("C2API", EntryPoint = "InitRower")]
-    public static extern int InitRower();      //Returns: -1: Init failed, -2: No connected rower detected, >0: number of initialised rowers
+    public static extern int InitRower();      // Returns: -1: Init failed, -2: No connected rower detected, >0: number of initialised rowers
 
     [DllImport("C2API", EntryPoint = "GetRowData")]
     public static extern void GetRowData(ref RowData rowData);

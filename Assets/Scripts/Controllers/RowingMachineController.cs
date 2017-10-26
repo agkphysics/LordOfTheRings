@@ -6,7 +6,7 @@
 public class RowingMachineController : MonoBehaviour
 {
     public bool WaitingRow { get; set; }
-    public uint DistanceTravelled { get; private set; } 
+    public uint DistanceTravelled { get; private set; }
     public uint CurrentForce { get; private set; }
     public bool DEBUG { get { return rower.DEBUG; } }
 
@@ -56,6 +56,7 @@ public class RowingMachineController : MonoBehaviour
             }
 
             CurrentForce = power;
+
             //Compare users previous pace and power to their new pace and power to check for difference
             //Currently no way of just getting if the user has rowed so detection done by looking for differences
             if (oldPace != pace || oldPower != power)

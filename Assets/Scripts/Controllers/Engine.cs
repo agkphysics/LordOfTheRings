@@ -21,8 +21,6 @@ public class Engine : MonoBehaviour
     private int bestScore = 0;
     private int score = 0;
 
-    private const int targetScore = 1000000;
-
     private GameObject floor;
     private GameObject warp;
     private GameObject player;
@@ -86,7 +84,7 @@ public class Engine : MonoBehaviour
     {
         if(IsWarmingUp)
         {
-            if(Time.time > (warmupTime))
+            if(Time.time > warmupTime)
             {
                 //If player is finished warmup, set warmup power average to be used for controlling player height gain on row.
                 IsWarmingUp = false;
@@ -104,7 +102,7 @@ public class Engine : MonoBehaviour
         {
             warp.SetActive(true);
         }
-        if (combo < 20)
+        else
         {
             warp.SetActive(false);
         }
@@ -124,11 +122,11 @@ public class Engine : MonoBehaviour
         GUI.skin = skin;
         if (!IsStarted)
         {
-            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Welcome to HIITCopter!\n Start rowing to begin!"));
+            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Welcome to Lord of the Rings!\n Start rowing to begin!"));
         }
         else if (IsWarmingUp)
         {
-            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Warmup time!"));
+            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Warmup time!\n Use your maximum power!"));
         }
 
         if (GameOver)

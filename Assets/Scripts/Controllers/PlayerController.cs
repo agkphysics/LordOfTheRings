@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        //track time for polling logs every second
+        // Track time for polling logs every second
         time -= Time.deltaTime;
 
         if (time <= 0 && engine.IsStarted)
@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
             time = timeBetweenlogging;
         }
 
-        //Recenter oculus when F12 pressed
+        // Recenter oculus when F12 pressed
         if (Input.GetKey(KeyCode.F12))
         {
             UnityEngine.VR.InputTracking.Recenter();
@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
 
         if (!engine.IsStarted)
         {
-            //Reset game variables when space pressed at start of game
+            // Reset game variables when space pressed at start of game
 			if (Input.GetKeyDown(KeyCode.Space))
             {
                 engine.StartGame();

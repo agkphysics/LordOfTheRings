@@ -58,6 +58,7 @@ public class MusicController : MonoBehaviour
         engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         progressBar = GameObject.FindGameObjectWithTag("ProgressBar").GetComponent<ProgressBarBehaviour>();
+        ringGenerator = GameObject.FindGameObjectWithTag("RingCreator").GetComponent<RingGenerator>();
 
         IsEnded = false;
         stopThread = false;
@@ -81,7 +82,6 @@ public class MusicController : MonoBehaviour
 
     private void Start()
     {
-        ringGenerator = GameObject.FindGameObjectWithTag("RingCreator").GetComponent<RingGenerator>();
         currSong = songs[idx++];
         audioSource.clip = currSong.Clip;
         if (!engine.noMusicCondition)
@@ -105,49 +105,48 @@ public class MusicController : MonoBehaviour
 
     private void Update()
     {
-        if (currSong.IsFinishedInitialising)
-        {
-            if (engine.IsStarted && !engine.IsWarmingUp)
-            {
-                float playerVelocity = playerController.GetComponent<Rigidbody>().velocity.x + 1f;
-                float timeToLastRing = Mathf.Abs(ringGenerator.LastGeneratedRing.transform.position.x - playerController.transform.position.x) / playerVelocity;
-                if (timeToLastRing > currSong.Length - audioSource.time) timeToLastRing = currSong.Length - audioSource.time;
-                float intensity = currSong.GetIntensityAt(audioSource.time + timeToLastRing);
-
-                if (((intensity > currSong.HighThreshold && !ringGenerator.IsHighIntensity) || (intensity < currSong.LowThreshold && ringGenerator.IsHighIntensity)) && !engine.noMusicCondition)
-                {
-                    ringGenerator.PhaseChange();
-                    Intensity = Intensity == Engine.Interval.LOW_INTENSITY ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY;
-                    Debug.Log("Time until last ring: " + timeToLastRing + ", music intensity: " + intensity + ", " + (ringGenerator.IsHighIntensity ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY));
-                }
-            }
-
-            if (audioSource.isPlaying)
-            {
-                if (BeatTimes[beatIdx] < audioSource.time && beatIdx < BeatTimes.Length - 1) beatIdx++;
-
-                progressBar.Value = 100f*audioSource.time/currSong.Clip.length;
-                if (Input.GetKeyDown(KeyCode.RightBracket))
-                {
-                    IncreasePitch();
-                }
-                else if (Input.GetKeyDown(KeyCode.LeftBracket))
-                {
-                    DecreasePitch();
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                currSong.OutputIntensityData();
-                currSong.OutputBeatData();
-            }
-        }
-
         if (Input.GetKeyDown(KeyCode.N))
         {
             ChangeSong();
             PlaySong();
+        }
+
+        if (!currSong.IsFinishedInitialising) return;
+        
+        if (engine.IsStarted && !engine.IsWarmingUp)
+        {
+            float playerVelocity = playerController.GetComponent<Rigidbody>().velocity.x + 1f;
+            float timeToLastRing = Mathf.Abs(ringGenerator.LastGeneratedRing.transform.position.x - playerController.transform.position.x) / playerVelocity;
+            if (timeToLastRing > currSong.Length - audioSource.time) timeToLastRing = currSong.Length - audioSource.time;
+            float intensity = currSong.GetIntensityAt(audioSource.time + timeToLastRing);
+
+            if (((intensity > currSong.HighThreshold && !ringGenerator.IsHighIntensity) || (intensity < currSong.LowThreshold && ringGenerator.IsHighIntensity)) && !engine.noMusicCondition)
+            {
+                ringGenerator.PhaseChange();
+                Intensity = Intensity == Engine.Interval.LOW_INTENSITY ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY;
+                Debug.Log("Time until last ring: " + timeToLastRing + ", music intensity: " + intensity + ", " + (ringGenerator.IsHighIntensity ? Engine.Interval.HIGH_INTENSITY : Engine.Interval.LOW_INTENSITY));
+            }
+        }
+
+        if (audioSource.isPlaying)
+        {
+            if (BeatTimes[beatIdx] < audioSource.time && beatIdx < BeatTimes.Length - 1) beatIdx++;
+
+            progressBar.Value = 100f*audioSource.time/currSong.Clip.length;
+            if (Input.GetKeyDown(KeyCode.RightBracket))
+            {
+                IncreasePitch();
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftBracket))
+            {
+                DecreasePitch();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            currSong.OutputIntensityData();
+            currSong.OutputBeatData();
         }
     }
 
@@ -196,7 +195,10 @@ public class MusicController : MonoBehaviour
     private void OnGUI()
     {
         GUI.skin = engine.skin;
-        if (!currSong.IsFinishedInitialising && !engine.noMusicCondition) GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 12)), new GUIContent("Loading song..."));
+        if (!currSong.IsFinishedInitialising && !engine.noMusicCondition)
+        {
+            GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 12)), new GUIContent("Loading song..."));
+        }
     }
 
     public void StopSong()
@@ -231,11 +233,6 @@ public class MusicController : MonoBehaviour
         audioSource.clip = currSong.Clip;
         sessionLen = currSong.Clip.length;
         playerController.TargetRPM = currSong.BPM * audioSource.pitch;
-        //new Thread(new ThreadStart(() => {
-        //    currSong.Initialise();
-        //    playerController.TargetRPM = currSong.BPM;
-        //    Debug.Log("Current BPM of song is " + currSong.BPM);
-        //})).Start();
     }
 
     private void EndSession()
@@ -337,7 +334,7 @@ public class MusicController : MonoBehaviour
             {
                 int offsetCurr = blockOffset + i * numChannels + channelNum;
                 int offsetPrev = offsetCurr - stepBlockSize;
-                float intensityMult = 1.0f;//AudioAnalysis.getHearingAbility(i);
+                float intensityMult = 1.0f; // AudioAnalysis.getHearingAbility(i);
 
                 float hitComponent = 0.0f;
                 float holdComponent = holdScale * cachedData[offsetCurr];
@@ -461,34 +458,6 @@ public class MusicController : MonoBehaviour
             int numDeletedBins = hist.Length - _hist.Length;
             for (int i = 0; i < _hist.Length; i++) _hist[i] = hist[i + numDeletedBins];
             hist = _hist;
-
-            // Uses the balanced histogram thresholding algorithm from https://en.wikipedia.org/wiki/Balanced_histogram_thresholding
-            //int iStart = 0, iEnd = hist.Length - 1, iMid = (iStart + iEnd)/2;
-            //int wLeft = 0, wRight = 0;
-            //for (int i = 0; i < iMid + 1; i++) wLeft += hist[i];
-            //for (int i = iMid + 1; i < iEnd; i++) wRight += hist[i];
-            //while (iStart < iEnd)
-            //{
-            //    if (wRight > wLeft)
-            //    {
-            //        wRight -= hist[iEnd--];
-            //        if ((iStart + iEnd)/2 < iMid)
-            //        {
-            //            wRight += hist[iMid];
-            //            wLeft -= hist[iMid--];
-            //        }
-            //    }
-            //    else
-            //    {
-            //        wLeft -= hist[iStart++];
-            //        if ((iStart + iEnd)/2 >= iMid)
-            //        {
-            //            wLeft += hist[iMid + 1];
-            //            wRight -= hist[iMid + 1];
-            //            iMid++;
-            //        }
-            //    }
-            //}
 
             // Adaptive thresholding algorithm
             int total = 0, totalWeight = 0;
