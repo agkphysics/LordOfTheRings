@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// Script which generates rings.
@@ -18,7 +17,7 @@ public class RingGenerator : MonoBehaviour
     private Engine engine;
     private Vector3 currentPos;
 
-    private HeartRateService.HeartStatus hrLvl;
+    private HeartRateService hrLvl;
     private bool hasInitialSpawned = false;
     private int ringCount = 0;
     private GameObject lastRing;
@@ -34,6 +33,7 @@ public class RingGenerator : MonoBehaviour
         GameObject playerController = GameObject.FindGameObjectWithTag("Player");
         currentPos = Vector3.zero;
         transform.position = new Vector3(0, playerController.transform.position.y, 0);
+        hrLvl = GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>();
     }
 
     void Update()
@@ -53,9 +53,8 @@ public class RingGenerator : MonoBehaviour
 
         if (!engine.IsWarmingUp)
         {
-            hrLvl = GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().currentHeartStatus;
             //check if user is overexerting, if they are perform overexertion handling
-            if (hrLvl == HeartRateService.HeartStatus.Overexerting)
+            if (hrLvl.currentHeartStatus == HeartRateService.HeartStatus.Overexerting)
             {
                 if (IsHighIntensity)
                 {
@@ -79,8 +78,6 @@ public class RingGenerator : MonoBehaviour
         }
         else
         {
-            //nextDistMax = 16;
-            //nextDistMin = 13;
             nextDistMax = highRingSeparation * 0.6f + (difficulty * 2f);
             nextDistMin = highRingSeparation * 0.4f + (difficulty * 2f);
         }
@@ -104,13 +101,13 @@ public class RingGenerator : MonoBehaviour
     {
         ringCount = 0;
         //If heart rate is dangerously high, go to a low intensity interval.
-        if (hrLvl == HeartRateService.HeartStatus.Overexerting)
+        if (hrLvl.currentHeartStatus == HeartRateService.HeartStatus.Overexerting)
         {
             DecreaseDifficulty();
             IsHighIntensity = false;
         } 
         // Case where in high intensity interval but low heart rate. Increase difficulty of next high intensity
-        else if (IsHighIntensity && hrLvl == HeartRateService.HeartStatus.Resting)
+        else if (IsHighIntensity && hrLvl.currentHeartStatus == HeartRateService.HeartStatus.Resting)
         {
             IncreaseDifficulty();
             IsHighIntensity = false;

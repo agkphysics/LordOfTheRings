@@ -6,7 +6,6 @@ using System;
 using System.Threading;
 using System.Collections;
 using ProgressBar;
-using UnityEngine.Audio;
 
 /// <summary>
 /// This class analyses the music to determine intensities.
@@ -51,12 +50,15 @@ public class MusicController : MonoBehaviour
     private Engine engine;
     private BirdController playerController;
     private RingGenerator ringGenerator;
+    private ProgressBarBehaviour progressBar;
 
     private void Awake()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
         engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
+        progressBar = GameObject.FindGameObjectWithTag("ProgressBar").GetComponent<ProgressBarBehaviour>();
+
         IsEnded = false;
         stopThread = false;
         Intensity = Engine.Interval.LOW_INTENSITY;
@@ -124,7 +126,7 @@ public class MusicController : MonoBehaviour
             {
                 if (BeatTimes[beatIdx] < audioSource.time && beatIdx < BeatTimes.Length - 1) beatIdx++;
 
-                GameObject.FindGameObjectWithTag("ProgressBar").GetComponent<ProgressBarBehaviour>().Value = 100f*audioSource.time/currSong.Clip.length;
+                progressBar.Value = 100f*audioSource.time/currSong.Clip.length;
                 if (Input.GetKeyDown(KeyCode.RightBracket))
                 {
                     IncreasePitch();

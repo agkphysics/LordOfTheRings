@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
-using System;
 using ProgressBar;
 
 /// <summary>
@@ -28,6 +26,10 @@ public class Engine : MonoBehaviour
 
     private GameObject floor;
     private GameObject warp;
+    private GameObject player;
+    private GameObject mainCamera;
+    private GameObject ringCreator;
+
     private ProgressBarBehaviour progressBarBehaviour;
     private MusicController musicController;
 
@@ -39,7 +41,10 @@ public class Engine : MonoBehaviour
 
         floor = GameObject.FindGameObjectWithTag("floor");
         warp = GameObject.FindGameObjectWithTag("Warp");
-        
+        player = GameObject.FindGameObjectWithTag("Player");
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        ringCreator =  GameObject.FindGameObjectWithTag("RingCreator");
+
         progressBarBehaviour = GameObject.FindGameObjectWithTag("ProgressBar").GetComponent<ProgressBarBehaviour>();
         musicController = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicController>();
     }
@@ -104,7 +109,7 @@ public class Engine : MonoBehaviour
             }
         }
 
-        if (floor.transform.position.x < GameObject.FindGameObjectWithTag("Player").transform.position.x - floor.transform.localScale.x/2)
+        if (floor.transform.position.x < player.transform.position.x - floor.transform.localScale.x/2)
         {
             floor.transform.position += new Vector3(floor.transform.localScale.x/2, 0, 0);
         }
@@ -124,8 +129,8 @@ public class Engine : MonoBehaviour
         if (musicController.IsEnded)
         {
             GameOver = true;
-            GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);
-            GameObject.FindGameObjectWithTag("RingCreator").SetActive(false);
+            mainCamera.SetActive(false);
+            ringCreator.SetActive(false);
         }
     }
 
@@ -135,14 +140,11 @@ public class Engine : MonoBehaviour
         if (!IsStarted)
         {
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Welcome to HIITCopter!\n Start rowing to begin!"));
-            GameObject.FindGameObjectWithTag("GUIText").GetComponent<Text>().text = "Welcome to HIITCopter!\n Start rowing to begin!";
         }
         else if (IsWarmingUp)
         {
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 4), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Warmup time!"));
-            GameObject.FindGameObjectWithTag("GUIText").GetComponent<Text>().text = "Warmup time!";
         }
-        else GameObject.FindGameObjectWithTag("GUIText").GetComponent<Text>().text = "";
 
         if (GameOver)
         {
@@ -150,7 +152,6 @@ public class Engine : MonoBehaviour
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Game Over"));
             GUI.Box(new Rect((Screen.width / 3), (Screen.height / 8 * 2), (Screen.width / 3), (Screen.height / 8)), new GUIContent("Score" + "\t\t\t\t\t\t\t\t\t" + "Best" + "\n" +
                                                                                                                                       score + "\t\t\t\t\t\t\t\t\t\t" + bestScore + "\nPress 'Space' Twice..."));
-            GameObject.FindGameObjectWithTag("GUIText").GetComponent<Text>().text = "Score\t\t\t\t\t\t\t\t\tBest\n" + score + "\t\t\t\t\t\t\t\t\t\t" + bestScore + "\nPress 'Space' Twice...";
         }
     }
 }

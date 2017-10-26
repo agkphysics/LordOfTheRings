@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 
 /// <summary>
@@ -28,17 +27,20 @@ public class BirdController : MonoBehaviour
     private RowingMachineController rowingMachine;
     private MusicController musicController;
     private SpeedIndicator speedIndicator;
+    private HeartRateService hrService;
 
     private static LoggerService logger;
 
     void Awake()
     {
 		engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
-        rb = GetComponent<Rigidbody>();
         rowingMachine = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<RowingMachineController>();
         musicController = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicController>();
-        logger = new LoggerService();
         speedIndicator = GameObject.FindGameObjectWithTag("SpeedIndicator").GetComponent<SpeedIndicator>();
+        hrService = GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>();
+
+        rb = GetComponent<Rigidbody>();
+        logger = new LoggerService();
     }
 
 	// Use this for initialization
@@ -106,7 +108,7 @@ public class BirdController : MonoBehaviour
             // Don't move backwards
             if (rb.velocity.x <= 0) rb.velocity = new Vector3(0, rb.velocity.y);
 
-            if (Section == Engine.Interval.HIGH_INTENSITY && GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().currentHeartStatus == HeartRateService.HeartStatus.Resting)
+            if (Section == Engine.Interval.HIGH_INTENSITY && hrService.currentHeartStatus == HeartRateService.HeartStatus.Resting)
             {
                 musicController.IncreasePitch();
             }
@@ -177,8 +179,9 @@ public class BirdController : MonoBehaviour
         //Logging system for force, distance, heartrate and current mean rpm.
         Power force = new Power(Time.time.ToString(), rowingMachine.CurrentForce, Section == Engine.Interval.HIGH_INTENSITY);
         Distance distance = new Distance(Time.time.ToString(), rowingMachine.DistanceTravelled);
-        HeartRate heartRate = new HeartRate(Time.time.ToString(), GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>().heartRate);
+        HeartRate heartRate = new HeartRate(Time.time.ToString(), hrService.heartRate);
         RPM rpm = new RPM(Time.time.ToString(), rowingMachine.MeanRPM, Section == Engine.Interval.HIGH_INTENSITY);
+
         logger.heartRate.Enqueue(heartRate);
         logger.distance.Enqueue(distance);
         logger.power.Enqueue(force);
