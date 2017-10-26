@@ -11,14 +11,14 @@ public class SpeedIndicator : MonoBehaviour
     private float currentMeanRPM;
     private Vector3 origPosition;
     private RowingMachineController rowingMachine;
-    private BirdController playerController;
+    private PlayerController playerController;
     private Engine engine;
     private GameObject speedIndicator;
 
     private void Awake()
     {
         rowingMachine = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<RowingMachineController>();
-        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
         speedIndicator = GameObject.FindGameObjectWithTag("SpeedIndicator");
     }

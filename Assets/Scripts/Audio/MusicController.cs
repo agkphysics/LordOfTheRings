@@ -48,7 +48,7 @@ public class MusicController : MonoBehaviour
     private bool stopThread;
 
     private Engine engine;
-    private BirdController playerController;
+    private PlayerController playerController;
     private RingGenerator ringGenerator;
     private ProgressBarBehaviour progressBar;
 
@@ -56,7 +56,7 @@ public class MusicController : MonoBehaviour
     {
         audioSource = gameObject.GetComponent<AudioSource>();
         engine = GameObject.FindGameObjectWithTag("GameController").GetComponent<Engine>();
-        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         progressBar = GameObject.FindGameObjectWithTag("ProgressBar").GetComponent<ProgressBarBehaviour>();
 
         IsEnded = false;

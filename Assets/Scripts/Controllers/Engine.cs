@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using ProgressBar;
 
 /// <summary>
@@ -49,12 +48,6 @@ public class Engine : MonoBehaviour
         musicController = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicController>();
     }
 
-    public void AddToCurrentProgress(float value)
-    {
-        progressBarBehaviour.IncrementValue(value);
-        Debug.Log("Current percentage" + progressBarBehaviour.Value);
-    }
-
     public void AddToCurrentScore(int value)
     {
         score += value;
@@ -71,11 +64,6 @@ public class Engine : MonoBehaviour
     {
         combo = 0;
         GameObject.FindGameObjectWithTag("Combo").GetComponent<TextMesh>().text = "COMBO " + combo.ToString();
-    }
-
-    public void CompareCurrentScoreToBest()
-    {
-        if(score > bestScore) bestScore = score;
     }
 
     public void StartGame()
@@ -102,9 +90,6 @@ public class Engine : MonoBehaviour
             {
                 //If player is finished warmup, set warmup power average to be used for controlling player height gain on row.
                 IsWarmingUp = false;
-                //BirdController birdController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
-                //birdController.WarmupAveragePower = birdController.WarmupPowerSum / birdController.WarmupCount;
-                //birdController.forceMultiplier = 85 / birdController.WarmupAveragePower;
                 musicController.PlaySong();
             }
         }

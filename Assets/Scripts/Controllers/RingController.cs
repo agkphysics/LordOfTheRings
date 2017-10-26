@@ -8,13 +8,13 @@ public class RingController : MonoBehaviour
     public GameObject NextRing { get; set; }
     public Engine.Interval Section { get; set; }
 
-    private BirdController playerController;
+    private PlayerController playerController;
     private RingGenerator ringGenerator;
     private RowingMachineController rowingMachine;
 
     private void Awake ()
     {
-        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         rowingMachine = GameObject.FindGameObjectWithTag("RowingMachine").GetComponent<RowingMachineController>();
     }
 	

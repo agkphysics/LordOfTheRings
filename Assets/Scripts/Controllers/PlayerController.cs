@@ -2,9 +2,8 @@
 using System;
 
 /// <summary>
-/// Script which controls the player, called 'bird' due to being a Flappy Bird VR derivative.
 /// </summary>
-public class BirdController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public Engine.Interval Section { get; set; }
     public float TargetRPM { get; set; }
@@ -28,6 +27,7 @@ public class BirdController : MonoBehaviour
     private MusicController musicController;
     private SpeedIndicator speedIndicator;
     private HeartRateService hrService;
+    private RingGenerator ringGenerator;
 
     private static LoggerService logger;
 
@@ -38,6 +38,7 @@ public class BirdController : MonoBehaviour
         musicController = GameObject.FindGameObjectWithTag("Music").GetComponent<MusicController>();
         speedIndicator = GameObject.FindGameObjectWithTag("SpeedIndicator").GetComponent<SpeedIndicator>();
         hrService = GameObject.FindGameObjectWithTag("HRMonitor").GetComponent<HeartRateService>();
+        ringGenerator = GameObject.FindGameObjectWithTag("RingCreator").GetComponent<RingGenerator>();
 
         rb = GetComponent<Rigidbody>();
         logger = new LoggerService();
@@ -48,12 +49,8 @@ public class BirdController : MonoBehaviour
     {
         Section = Engine.Interval.LOW_INTENSITY;
         TargetRPM = 60;
-        //WarmupPowerSum = 0;
-        //WarmupAveragePower = 0;
-        //WarmupCount = 0;
 
         startingPosition = transform.position;
-        //transform.position = startingPosition;
 		startingRotation = transform.rotation;
 
         rb.useGravity = false;
@@ -123,11 +120,6 @@ public class BirdController : MonoBehaviour
         }
 	}
 
-	void FixedUpdate()
-    {
-
-	}
-
 	void PlayerReset()
     {
 		rb.velocity = Vector3.zero;
@@ -138,12 +130,12 @@ public class BirdController : MonoBehaviour
 
 	void OnTriggerEnter(Collider trigger)
     {
-        //On collision with ring, create new ring and increment score by 500, remove ring
-        GameObject.FindGameObjectWithTag("RingCreator").GetComponent<RingGenerator>().NewRing();
+        // On collision with ring, create new ring and increment score by 500, remove ring
+        ringGenerator.NewRing();
         Section = trigger.gameObject.GetComponent<RingController>().NextRing.GetComponent<RingController>().Section;
         Debug.Log("Entering section " + Section);
 
-        //Rings rewards increased scores depending on combo.
+        // Rings rewards increased scores depending on combo.
         float currentPos = speedIndicator.CurrentXLocation;
         if (currentPos > 0.17f || currentPos < -0.17f)
         {
@@ -176,11 +168,11 @@ public class BirdController : MonoBehaviour
 
     void LogData()
     {
-        //Logging system for force, distance, heartrate and current mean rpm.
-        Power force = new Power(Time.time.ToString(), rowingMachine.CurrentForce, Section == Engine.Interval.HIGH_INTENSITY);
-        Distance distance = new Distance(Time.time.ToString(), rowingMachine.DistanceTravelled);
-        HeartRate heartRate = new HeartRate(Time.time.ToString(), hrService.heartRate);
-        RPM rpm = new RPM(Time.time.ToString(), rowingMachine.MeanRPM, Section == Engine.Interval.HIGH_INTENSITY);
+        // Logging system for force, distance, heartrate and current mean rpm.
+        var force = new Power(Time.time.ToString(), rowingMachine.CurrentForce, Section == Engine.Interval.HIGH_INTENSITY);
+        var distance = new Distance(Time.time.ToString(), rowingMachine.DistanceTravelled);
+        var heartRate = new HeartRate(Time.time.ToString(), hrService.heartRate);
+        var rpm = new RPM(Time.time.ToString(), rowingMachine.MeanRPM, Section == Engine.Interval.HIGH_INTENSITY);
 
         logger.heartRate.Enqueue(heartRate);
         logger.distance.Enqueue(distance);
@@ -252,6 +244,7 @@ public class Distance
 {
     public String time;
     public double distance;
+
     public Distance(String time, double data)
     {
         this.time = time;
