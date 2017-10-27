@@ -6,13 +6,13 @@ Game demo can be seen here: https://youtu.be/ONr2rf9xyMM
 
 ## Main Features
  * Players are required to collect rings by rowing forward. Ring generation is based on music intensity: High intensity rings correspond to high intensity music and similarly for low intensity rings.
- * HIIT routine synchronization: Rings’ colour is based on the level of synchronisation between rowing rate and music tempo. More green means RPM (rows per minute) is close to music tempo, more red means less sync. Synchronisation is also shown in the synchronization bar on the top of the picture.
+ * HIIT routine synchronization: Rings’ colour is based on the level of synchronisation between rowing rate and music tempo. More green means RPM (rows per minute) is close to music tempo, more red means less sync. Synchronisation is also shown in the synchronization bar on the top.
  * High intensity sections have a larger distance between rings, encouraging the player to row more forcefully.
  * If a player's heart rate is not high enough during high intensity sections, music speeds up.
  * Players can choose their own songs by placing them under the Audio directory. Songs are automatically analysed when starting the game.
  * Target rowing rate is based on the tempo of the song.
 
-![ScreenShot](screenshot.jpg)
+![ScreenShot](screenshot.JPG)
 
 ## Running the Game
 Once the game is launched, wait until the "Loading song..." GUI box disappears - this will takes a few seconds. Then press the space bar to start the game.
