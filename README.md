@@ -100,11 +100,11 @@ Matthew
 Ocean
   * Research on song genres and HIIT routines for rowing machine
   * HIIT music composition
-  * Game over logic, clean up, documentation
+  * Game over logic, code cleanup and refactoring, documentation
   * Pilot Study and User Study
   
 Jeff
-  * 
+  * HUD redesign and implementations
 
 ## Acknowledgements
  * HIITCopter - https://github.com/Ofekw/HIIT-Copter
