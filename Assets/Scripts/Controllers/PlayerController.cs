@@ -131,14 +131,14 @@ public class PlayerController : MonoBehaviour
 
 	void OnTriggerEnter(Collider trigger)
     {
-        // On collision with ring, create new ring and increment score by 500, remove ring
+        // On collision with ring, create new ring and increment score depending on combo count, remove ring
         ringGenerator.NewRing();
         Section = trigger.gameObject.GetComponent<RingController>().NextRing.GetComponent<RingController>().Section;
         Debug.Log("Entering section " + Section);
 
         // Rings rewards increased scores depending on combo.
-        float currentPos = speedIndicator.CurrentXLocation;
-        if (currentPos > 0.17f || currentPos < -0.17f)
+        float currentPos = 2 * speedIndicator.CurrentXLocation;
+        if (currentPos > 0.19f || currentPos < -0.19f)
         {
             engine.AddToCurrentScore(50);
             engine.ResetCombo();
