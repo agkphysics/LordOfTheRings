@@ -92,7 +92,10 @@ Aaron
 * Bluetooth heart rate logger
 
 Matthew
-  * 
+  * Game environment and tilesets
+  * Tileset generation
+  * Combo UI and score interaction
+  * Warp effect generation
 
 Ocean
   * Research on song genres and HIIT routines for rowing machine
