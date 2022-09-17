@@ -1,5 +1,29 @@
 # Lord Of the Rings - an HIIT Exergame
 
+## Paper
+We have published our study in ACSW 2019 [1], the paper is available here:
+https://dl.acm.org/doi/abs/10.1145/3290688.3290740
+
+[1] A. Keesing, M. Ooi, O. Wu, X. Ye, L. Shaw, and B. C. Wünsche, 'HIIT With Hits: Using Music and Gameplay to Induce HIIT in Exergames', in Proceedings of the Australasian Computer Science Week Multiconference - ACSW 2019, Sydney, NSW, Australia, 2019, pp. 1–10. doi: 10.1145/3290688.3290740.
+
+If you wish to cite this work, you can copy the citation below:
+```
+@inproceedings{keesingHIITHitsUsing2019,
+author = {Keesing, Aaron and Ooi, Matthew and Wu, Ocean and Ye, Xinghao and Shaw, Lindsay and W\"{u}nsche, Burkhard C.},
+title = {HIIT With Hits: Using Music and Gameplay to Induce HIIT in Exergames},
+year = {2019},
+isbn = {9781450366038},
+publisher = {Association for Computing Machinery},
+url = {https://doi.org/10.1145/3290688.3290740},
+doi = {10.1145/3290688.3290740},
+booktitle = {Proceedings of the Australasian Computer Science Week Multiconference},
+articleno = {36},
+numpages = {10},
+}
+```
+
+
+## Summary
 High-intensity interval training (HIIT) has been proven to be superior to
 moderate-intensity continuous training in improving Cardiorespiratory fitness,
 which is a strong determinant of morbidity and mortality. However some
